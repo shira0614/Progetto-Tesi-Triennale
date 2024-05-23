@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 'coltivatore'
     },
+
 })
 
 userSchema.plugin(passportLocalMongoose, {usernameField: 'username'})

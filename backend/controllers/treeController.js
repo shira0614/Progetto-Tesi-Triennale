@@ -1,22 +1,10 @@
 const Tree = require('../models/treeModel')
 const Replica = require('../models/replicaModel')
-const User = require('../models/userModel')
-const jwt = require('jsonwebtoken')
-
-
-function getNewReplicaName(myTree) {
-    return myTree.treeUniqueId + String(myTree.replicas.length).padStart(3, "0")
-}
 
 module.exports = {
     addTree: async (req, res) => {
-        // Logica di definizione del nome
-       // const familyCode = 'LL';
-       // const inoculationStatus = 'X';
-        const trees = await treeModel.find({})
 
         const local_tree = {
-          //  treeUniqueId: familyCode + String(trees.length).padStart(5, "0") + inoculationStatus,
             cultivar: req.body.cultivar,
             owner: req.userId,
             specieNomeComune: req.body.specieNomeComune,
@@ -27,13 +15,10 @@ module.exports = {
             dateOfBirth: req.body.dateOfBirth,
             notes: req.body.notes
         }
-        
-        // local_tree.replicas.push({
-        //    replicaUniqueId: getNewReplicaName(local_tree)
-        // })
 
         try {
             const tree = await Tree.create(local_tree)
+            await tree.save()
             res.json({"message": "Tree inserted", "tree": tree})
         } catch (err) {
             res.status(500).json({message: err.message})
@@ -43,7 +28,7 @@ module.exports = {
     getTrees: async (req, res) => {
         try {
             const trees = await Tree.find({
-                owner: res.locals.user._id
+                owner: req.userId
             })
             if(!trees) {
                 res.status(404).json({message: "Trees not found"})
@@ -56,18 +41,36 @@ module.exports = {
         
     },
 
-    // vedere bene questa POST
+    getReplicas: async (req, res) => {
+        try {
+            const replicas = await Replica.find({
+                treeId: req.body.treeId
+            })
+            if(!replicas) {
+                res.status(404).json({message: "Replicas not found"})
+            }
+            res.json(replicas)
+        } catch (err) {
+            res.status(500).json({message: err.message})
+        }
+    },
 
     newReplica: async (req, res) => {
-        const replica = await Replica.create({
-             treeId: req.body.treeId
-         })
-        const tree = await Tree.findOne({_id: req.body.treeId})
-        tree.replicas.push({
-            replicaUniqueId: getNewReplicaName(tree)
-        })
-        await tree.save()
-        res.json({"message": "replica inserita", "tree": tree})
+        try {
+            const replica = await Replica.create({
+                treeId: req.body.treeId
+            })
+            const tree = await Tree.findOne({_id: req.body.treeId})
+            if (!tree) {
+                return res.status(404).json({message: "Tree not found"});
+            }
+            await replica.save()
+            tree.replicas.push({ replicaUniqueId: replica.replicaUniqueId })
+            await tree.save()
+            res.json({"message": "replica inserita", "tree": tree, "id replica" : replica.replicaUniqueId})
+        } catch (err) {
+            res.status(500).json({message: err.message})
+        }
     }
 
     //TODO Metodo per inviare le repliche al laboratorio

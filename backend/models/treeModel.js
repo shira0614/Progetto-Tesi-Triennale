@@ -28,17 +28,17 @@ const cultivar = Object.freeze({
     Moraiolo: 'MO'
 })
 
-const treeModel = mongoose.model('Tree', treeSchema)
-
-module.exports = treeModel
-
 treeSchema.pre('save', async function(next) {
-    if (this.isModified('cultivar')) {
+    if (this.isNew || this.isModified('cultivar')) {
         const familyCode = cultivar[this.cultivar]
         const inoculationStatus = this.inoculated ? 'I' : 'N';
-        const trees = await treeModel.find({})
+        const trees = await mongoose.model('Tree').find({})
         this.treeUniqueId = familyCode + String(trees.length).padStart(5, "0") + inoculationStatus;
         console.log(this.treeUniqueId)
     }
     next()
 })
+
+const treeModel = mongoose.model('Tree', treeSchema)
+
+module.exports = treeModel

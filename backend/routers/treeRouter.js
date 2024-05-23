@@ -6,8 +6,9 @@ const router = express.Router()
 
 router.use(verifyToken)
 
-router.post('/newTree', treeController.addTree)
+router.post('/addTree', treeController.addTree)
 router.post('/newReplica', treeController.newReplica)
-router.get('/all', treeController.getTrees)
+router.post('/replicas', treeController.getReplicas)
+router.get('/', treeController.getTrees)
 
 module.exports = router
