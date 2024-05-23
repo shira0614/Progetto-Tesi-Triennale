@@ -8,9 +8,12 @@ module.exports = {
         await Analysis.create({
             partyId: req.body.partyId,
             replica: req.body.replicaId,
-            status: 'shipped'
+            status: 'shipped',
+            protocolID : req.body.protocolID,
+            notes: req.body.notes,
+            documents: [req.body.document]
         })
-        res.json({'message': 'analysis created'})
+        getTree: async (req, res) =>      res.json({'message': 'analysis created'})
     },
 
     acceptAnalysis: async (req, res) => {
@@ -27,6 +30,7 @@ module.exports = {
         if (req.body.document) {
             const analysis = await Analysis.findOne({_id: req.body.analysisId})
             analysis.documents.push(req.body.document)
+            analysis.status = 'completed'
             analysis.save()
             res.json({'message': 'analisi salvata', 'analisi': analysis})
         }

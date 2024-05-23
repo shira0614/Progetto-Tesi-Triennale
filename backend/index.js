@@ -1,11 +1,18 @@
+require('dotenv').config({path: './config.env'})
 const express = require('express')
 const mongoose = require('mongoose')
+
 // const autoIncrement = require('mongoose-auto-increment')
 
-const router = require('./routers/index')
+const userRoute = require('./routers/userRouter');
+const treeRoute = require('./routers/treeRouter');
+const verifyRoute = require('./routers/verifyRouter');
 
-mongoose.connect('mongodb+srv://sciueferrara:Ciaoatutti.123!@cluster0.d9fbxpj.mongodb.net/Omibreed?retryWrites=true&w=majority&appName=Cluster0')
-const db = mongoose.connection
+const User = require('./models/userModel');
+const passport = require('passport');
+const expressSession = require("express-session");
+const ATLAS_URI = process.env.ATLAS_URI || "";
+const SECRET_KEY = process.env.SECRET_KEY || "";
 
 // autoIncrement.initialize(db)
 
@@ -13,10 +20,29 @@ const app = express()
 
 
 app.use(express.json())
-app.use(router)
+// app.use(router)
+app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi
+app.use(expressSession(
+    {
+        secret: SECRET_KEY,
+        resave: false,
+        saveUninitialized: true,
+    }));  //secret passcode, è usata per segnare il session cookie.
+app.use(passport.initialize())
+app.use(passport.session())
 
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-db.once('open', () => app.listen(5002, () => {
+app.use('/api/user', userRoute)
+app.use('/api/trees', treeRoute)
+app.use('/api/verify', verifyRoute)
+
+mongoose.connect(ATLAS_URI)
+const db = mongoose.connection
+
+db.once('open', () => app.listen(3000, () => {
     console.log('DB connesso e app pronta')
 }))
 

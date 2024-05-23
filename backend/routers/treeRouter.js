@@ -1,12 +1,13 @@
 const express = require('express')
 const treeController = require('../controllers/treeController')
-const verifyToken = require('../controllers/authentication')
+const verifyToken = require('../middleware/verifytoken.js')
 
-const treeRouter = express.Router()
+const router = express.Router()
 
-treeRouter.post('/newTree', treeController.newTree)
-treeRouter.post('/newReplica', treeController.newReplica)
-treeRouter.post('/login', treeController.login)
-treeRouter.get('/all', verifyToken, treeController.getTrees)
+router.use(verifyToken)
 
-module.exports = treeRouter
+router.post('/newTree', treeController.addTree)
+router.post('/newReplica', treeController.newReplica)
+router.get('/all', treeController.getTrees)
+
+module.exports = router

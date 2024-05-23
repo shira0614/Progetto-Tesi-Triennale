@@ -6,19 +6,17 @@ const replicaSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Tree'
     },
-    replicaUniqueId: String,
-})
-
-//da rivedere
-replicaSchema.pre("save", async function(next) {
-    // const otherReplicas = await replicaModel.find({treeId: this.treeId})
-    if (this.isModified('treeId')) {
-        const myTree = await Tree.findOne({_id: this.treeId})
-        this.replicaUniqueId = myTree.treeUniqueId + String(myTree.replicas.length).padStart(3, "0")
-    }
-    next()
 })
 
 const replicaModel = mongoose.model('Replica', replicaSchema)
 
 module.exports = replicaModel
+
+replicaSchema.pre("save", async function(next) {
+    const otherReplicas = await replicaModel.find({treeId: this.treeId})
+    if (this.isModified('treeId')) {
+        const myTree = await Tree.findOne({_id: this.treeId})
+        this.replicaUniqueId = myTree.treeUniqueId + String(myTree.replicas.length).padStart(3, "0");
+    }
+    next()
+})
