@@ -1,8 +1,14 @@
 const mongoose = require('mongoose')
 
 const analysisSchema = new mongoose.Schema({
-    partyId: mongoose.Schema.ObjectId,
-    replica: mongoose.Schema.ObjectId,
+    laboratory: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    },
+    replica: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Replica'
+    },
     status: String,
     protocolId: String,
     notes: String,

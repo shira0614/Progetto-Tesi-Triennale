@@ -1,28 +1,43 @@
 const Replica = require('../models/replicaModel')
 const Analysis = require('../models/analysisModel')
 const mongoose = require("mongoose");
+const User = require("../models/userModel");
 
 module.exports = {
     createAnalysis: async (req, res) => {
-        // Gestire autorizzazione coltivatore
-        await Analysis.create({
-            partyId: req.body.partyId,
-            replica: req.body.replicaId,
-            status: 'shipped',
-            protocolID : req.body.protocolID,
-            notes: req.body.notes,
-            documents: [req.body.document]
-        })
-        getTree: async (req, res) =>      res.json({'message': 'analysis created'})
+        try {
+            const replica = await Replica.findOne({ _id: req.body.replicaId })
+            if(!replica) {
+                return res.status(404).json({ message: 'Replica not found' });
+            }
+            await Analysis.create({
+                laboratory: req.userId,
+                replica: req.body.replicaId,
+                status: 'shipped',
+                protocolID : req.body.protocolID,
+                notes: req.body.notes,
+                documents: [req.body.document]
+            })
+
+            res.json({ 'message': 'analysis created' });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
     },
 
     acceptAnalysis: async (req, res) => {
-        // Gestire autorizzazione azienda
-        const analysis = await Analysis.findOne({_id: req.body.analysisId})
-        analysis.status = req.body.newStatus
-        if (req.body.notes) analysis.notes = req.body.notes
-        await analysis.save()
-        res.json({'message': 'analisi salvata', 'analisi': analysis})
+        try {
+            const analysis = await Analysis.findOne({_id: req.body.analysisId})
+            if (!analysis) {
+                return res.status(404).json({ message: 'Analysis not found' });
+            }
+            analysis.status = 'accepted'
+            if (req.body.notes) analysis.notes = req.body.notes
+            await analysis.save()
+            res.json({'message': 'analysis saved', 'analysis': analysis})
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
     },
 
     updateAnalysis: async (req, res) => {
@@ -36,4 +51,6 @@ module.exports = {
         }
         res.json({'message': 'errore'})
     }
+
+    //TODO GET ANALYSIS
 }
