@@ -11,7 +11,8 @@ module.exports = {
                 return res.status(404).json({ message: 'Replica not found' });
             }
             await Analysis.create({
-                laboratory: req.userId,
+                shipper: req.userId,
+                laboratory: req.body.laboratoryId,
                 replica: req.body.replicaId,
                 status: 'shipped',
                 protocolID : req.body.protocolID,
@@ -31,7 +32,7 @@ module.exports = {
             if (!analysis) {
                 return res.status(404).json({ message: 'Analysis not found' });
             }
-            analysis.status = 'accepted'
+            analysis.status = req.body.status
             if (req.body.notes) analysis.notes = req.body.notes
             await analysis.save()
             res.json({'message': 'analysis saved', 'analysis': analysis})
@@ -40,17 +41,58 @@ module.exports = {
         }
     },
 
+    //sending files over http?
     updateAnalysis: async (req, res) => {
-        // Gestire autorizzazione azienda
-        if (req.body.document) {
-            const analysis = await Analysis.findOne({_id: req.body.analysisId})
-            analysis.documents.push(req.body.document)
-            analysis.status = 'completed'
-            analysis.save()
-            res.json({'message': 'analisi salvata', 'analisi': analysis})
+        try {
+            if (req.body.document) {
+                const analysis = await Analysis.findOne({_id: req.body.analysisId});
+                if (!analysis) {
+                    return res.status(404).json({ 'message': 'Analysis not found' });
+                }
+                analysis.documents.push(req.body.document);
+                analysis.status = 'completed';
+                await analysis.save();
+                return res.json({ 'message': 'Analysis saved', 'analysis': analysis });
+            }
+            return res.status(400).json({ 'message': 'No document provided' });
+        } catch (err) {
+            return res.status(500).json({ 'message': 'An error occurred', 'error': err.message });
         }
-        res.json({'message': 'errore'})
-    }
+    },
 
-    //TODO GET ANALYSIS
+    getLabAnalyses: async (req, res) => {
+        try {
+            const user = await User.findOne({ _id: req.userId });
+            if (user.role === 'laboratorio') {
+                const analyses = await Analysis.find({ laboratory: req.userId });
+                if(!analyses) {
+                    return res.status(404).json({ 'message': 'No analyses found' });
+                } else {
+                    return res.json({ 'analyses': analyses });
+                }
+            } else {
+                return res.status(403).json({ 'message': 'Unauthorized' });
+            }
+        } catch (err) {
+            return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
+        }
+    },
+
+    getAnalyses: async (req, res) => {
+        try {
+            const user = await User.findOne({ _id: req.userId });
+            if (user.role === 'coltivatore') {
+                const analyses = await Analysis.find({ shipper: req.userId });
+                if(!analyses) {
+                    return res.status(404).json({ 'message': 'No analyses found' });
+                } else {
+                    return res.json({ 'analyses': analyses });
+                }
+            } else {
+                return res.status(403).json({ 'message': 'Unauthorized' });
+            }
+        } catch (err) {
+            return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
+        }
+    }
 }

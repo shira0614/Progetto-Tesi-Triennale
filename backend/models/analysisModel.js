@@ -9,7 +9,14 @@ const analysisSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Replica'
     },
-    status: String,
+    shipper: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    },
+    status: {
+        type: String,
+        enum: ['shipped', 'completed', 'accepted', 'rejected']
+    },
     protocolId: String,
     notes: String,
     documents: [String]

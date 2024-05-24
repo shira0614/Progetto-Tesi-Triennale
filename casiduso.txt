@@ -1,15 +1,16 @@
 ATTORE COLTIVATORE
-• Login
-• Creazione pianta con dettagli pianta
+• Login X
+• Creazione pianta con dettagli pianta X
 • Creazione replica di una pianta (ogni pianta deve avere almeno una replica perché posso inviare ai laboratori solo le repliche) che "specializza" la pianta sulla proprietà "parte della pianta"
-• Invio di una replica ai laboratori
+• Invio di una replica ai laboratori X
 • Visualizzazioni varie (es. le proprie piante)
+Visualizzazione status delle analisi (accettate, rifiutate)
  
 ATTORE LABORATORIO
-• Login
-• Visualizzazione repliche ricevute
-• Accettazione/rifiuto analisi
-• Inserimento analisi replica (note testo libero + un file generico)
+• Login X
+• Visualizzazione repliche ricevute X
+• Accettazione/rifiuto analisi X
+• Inserimento analisi replica (note testo libero + un file generico) X
  
 ATTORE ADMIN
 • Creazione utente coltivatore / laboratorio

@@ -1,5 +1,6 @@
 require('dotenv').config({path: './config.env'})
 const express = require('express')
+// const cors = require('cors')
 const mongoose = require('mongoose')
 
 const userRoute = require('./routers/userRouter');
@@ -16,7 +17,7 @@ const SECRET_KEY = process.env.SECRET_KEY || "";
 
 const app = express()
 
-
+// app.use(cors());
 app.use(express.json())
 // app.use(router)
 app.use(express.urlencoded({extended: true}));
