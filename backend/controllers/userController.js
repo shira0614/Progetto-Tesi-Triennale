@@ -34,7 +34,8 @@ const authUser = (req, res) => {
                         {
                             data: {
                                 userId: user._id,
-                                username: user.username
+                                username: user.username,
+                                role: user.role
                             },
                             exp: new Date().setDate(new Date().getDate() + 1) // expires in 24h
                         },

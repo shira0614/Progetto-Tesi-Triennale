@@ -4,14 +4,30 @@ import LabHome from "./LabHome.jsx";
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
+import { useEffect } from "react";
+import { getApi } from "../utils/apiEndpoints.js";
+
 
 export default function AuthRoutes() {
     const [token, setToken] = useState(verifyToken());
+    const [userRole, setUserRole] = useState(null);
 
-    const privateRouter = createBrowserRouter([
-        {path: '/login', element: <Login verify={setToken}/>},
-        {path: "/colt", element: <ColtHome />},
-        {path: "/lab", element: <LabHome />}
+    useEffect(() => {
+        if (token) {
+            getApi('roleChecking')
+                .then(data => setUserRole(data.role))
+                .catch(err => console.error(err));
+        }
+    }, [token]);
+
+    const coltRouter = createBrowserRouter([
+        {path: "/", element: <ColtHome />},
+        {path: "/login", element: <Login verify={setToken} />}
+    ]);
+
+    const labRouter = createBrowserRouter([
+        {path: "/", element: <LabHome />},
+        {path: "/login", element: <Login verify={setToken} />}
     ]);
 
     const publicRouter = createBrowserRouter([
@@ -20,6 +36,16 @@ export default function AuthRoutes() {
     ]);
 
     return (
-        <RouterProvider router={token ? privateRouter : publicRouter}/>
+        <RouterProvider router={
+            (() => {
+                if(!token) {
+                    return publicRouter;
+                } else if(userRole === 'coltivatore') {
+                    return coltRouter;
+                } else if(userRole === 'laboratorio') {
+                    return labRouter;
+                }
+            })()
+        }/>
     );
 }
