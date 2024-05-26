@@ -11,6 +11,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --forest:       #2E644A;
+  --lime:        #73D645;
+  --spring:       #5ACB65;
+  --trans: transparent;
 }
 
 a {
@@ -66,4 +71,45 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+
+.leaf {
+  background-color: var(--forest);
+  background-image:
+   repeating-radial-gradient(
+    circle at 4.2em 1.47em,
+    var(--spring),
+    var(--spring) 1.62em,
+    var(--trans) 1.665em,
+    var(--trans) 6em),
+   repeating-radial-gradient(
+    circle at -1.2em 1.47em,
+    var(--lime),
+    var(--lime) 1.62em,
+    var(--trans) 1.665em,
+    var(--trans) 6em);
+  background-size: 3em 3.75em;
+  background-position: 1.5em 0.45em;
+}
+
+.leaf::before,
+.leaf::after {
+  background-image:
+   repeating-radial-gradient(
+    circle at 4.2em 1.47em,
+    var(--spring),
+    var(--spring) 1.62em,
+    var(--trans) 1.665em,
+    var(--trans) 6em),
+   repeating-radial-gradient(
+    circle at -1.2em 1.47em,
+    var(--lime),
+    var(--lime) 1.62em,
+    var(--trans) 1.665em,
+    var(--trans) 6em);
+  background-size: 3em 3.75em;
+  background-position: 0 2.25em;
+  border-radius: 0.36em;
+  content: '';
 }

@@ -7,31 +7,79 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+
+const baseURL = 'http://localhost:3000'
 
 export default function SignInSide({verify}) {
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        fetch(`${baseURL}/api/user/login`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: data.get('username'),
+                password: data.get('password')
+            }),
+        }).then((response) => response.json()).then((data) => {
+            verify(data.success);
+            if (!data.success) {
+                alert("Email o password incorretti")
+            } else {
+                window.localStorage.setItem("token", data.token) //Salvo il token in local storage
+                navigate('/', {replace: true})
+            }
+        }).catch(e => {
+            console.log(e)
+        })
     };
 
     return (
+        <>
+            <Collapse in={open}>
+                <Alert
+                    action={
+                        <IconButton
+                            color="inherit"
+                            size="small"
+                            severity="warning"
+                            onClick={() => {
+                                setOpen(false);
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
+                    Fai richiesta a un responsabile per la creazione di un account Coltivatore o un account Laboratorio.
+                </Alert>
+        </Collapse>
             <Grid container component="main" sx={{ height: '100vh', width: '100vw' }}>
                 <Grid
                     item
                     xs={false}
                     sm={4}
                     md={7}
+                    className='leaf'
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                       /* backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)', */
+                       /* backgroundRepeat: 'repeat',
+                         backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900], 
+                        backgroundSize: '2em',
+                        backgroundPosition: 'center', */
                     }}
                 />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -80,7 +128,9 @@ export default function SignInSide({verify}) {
                                 Accedi
                             </Button>
                             <Grid container>
-                                    <Link href="#" variant="body2">
+                                    <Link onClick={() => {
+                                        setOpen(true);
+                                    }}>
                                         {"Non hai un account?"}
                                     </Link>
                             </Grid>
@@ -88,5 +138,6 @@ export default function SignInSide({verify}) {
                     </Box>
                 </Grid>
             </Grid>
+        </>
     );
 }
