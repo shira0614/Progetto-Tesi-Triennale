@@ -44,6 +44,8 @@ export default function AuthRoutes() {
                     return coltRouter;
                 } else if(userRole === 'laboratorio') {
                     return labRouter;
+                } else {
+                    return publicRouter; // default router
                 }
             })()
         }/>

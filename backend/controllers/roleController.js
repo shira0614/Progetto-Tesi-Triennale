@@ -1,5 +1,5 @@
 const roleChecking = async (req, res) => {
-    res.status(200).json({error: "false", message: "Role checking is working fine", role: req.user.role});
+    res.status(200).json({role: req.user.role});
 };
 
 module.exports = roleChecking;

@@ -5,6 +5,6 @@ const roleChecking = require("../controllers/roleController.js");
 
 router.use(checkRole);
 
-router.get("/", roleChecking);
+router.get("/roleChecking", roleChecking);
 
 module.exports = router;

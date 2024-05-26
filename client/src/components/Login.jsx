@@ -47,25 +47,6 @@ export default function SignInSide({verify}) {
 
     return (
         <>
-            <Collapse in={open}>
-                <Alert
-                    action={
-                        <IconButton
-                            color="inherit"
-                            size="small"
-                            severity="warning"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    Fai richiesta a un responsabile per la creazione di un account Coltivatore o un account Laboratorio.
-                </Alert>
-        </Collapse>
             <Grid container component="main" sx={{ height: '100vh', width: '100vw' }}>
                 <Grid
                     item
@@ -73,14 +54,6 @@ export default function SignInSide({verify}) {
                     sm={4}
                     md={7}
                     className='leaf'
-                    sx={{
-                       /* backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)', */
-                       /* backgroundRepeat: 'repeat',
-                         backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900], 
-                        backgroundSize: '2em',
-                        backgroundPosition: 'center', */
-                    }}
                 />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
@@ -105,8 +78,7 @@ export default function SignInSide({verify}) {
                                 fullWidth
                                 id="email"
                                 label="Username"
-                                name="email"
-                                autoComplete="email"
+                                name="username"
                                 autoFocus
                             />
                             <TextField
@@ -133,6 +105,22 @@ export default function SignInSide({verify}) {
                                     }}>
                                         {"Non hai un account?"}
                                     </Link>
+                                    <Collapse in={open}>
+                                    <Alert severity="warning" action={
+                                        <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size='small'
+                                        onClick={() => {
+                                            setOpen(false);
+                                        }}
+                                        >
+                                        <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }>
+                                    Per la creazione di un account, rivolgiti a un responsabile.
+                                    </Alert>
+                                    </Collapse>
                             </Grid>
                         </Box>
                     </Box>
