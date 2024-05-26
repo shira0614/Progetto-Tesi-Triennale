@@ -44,7 +44,9 @@ const authUser = (req, res) => {
                     res.status(201).json({
                         success: true,
                         message: "Login successful",
-                        token: token
+                        token: token,
+                        role: user.role,
+                        username: user.username
                     });
                 }}
         }

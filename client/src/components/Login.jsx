@@ -37,7 +37,9 @@ export default function SignInSide({verify}) {
             if (!data.success) {
                 alert("Email o password incorretti")
             } else {
-                window.localStorage.setItem("token", data.token) //Salvo il token in local storage
+                window.localStorage.setItem("token", data.token)
+                window.localStorage.setItem("role", data.role)
+                window.localStorage.setItem("username", data.username)
                 navigate('/', {replace: true})
             }
         }).catch(e => {
@@ -65,7 +67,7 @@ export default function SignInSide({verify}) {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <Avatar sx={{ m: 1, bgcolor: '#73d645' }}>
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">

@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 const verifyToken = (req, res, next)=> {
-    const token = req.headers['authorization'];
+    const token = req.headers['Authorization'];
 
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });

@@ -5,7 +5,6 @@ import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getApi } from "../utils/apiEndpoints.js";
 
 
 export default function AuthRoutes() {
@@ -14,11 +13,9 @@ export default function AuthRoutes() {
 
     useEffect(() => {
         if (token) {
-            getApi('roleChecking')
-                .then(data => setUserRole(data.role))
-                .catch(err => console.error(err));
+            setUserRole(localStorage.getItem('role'));
         }
-    }, [token]);
+    }, [token])
 
     const coltRouter = createBrowserRouter([
         {path: "/", element: <ColtHome />},

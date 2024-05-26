@@ -6,7 +6,7 @@ async function getApi(endpoint) {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
-                'Authentication': localStorage.getItem('token'),
+                'Authorization': localStorage.getItem('token'),
             },
         });
         const content = await response.json();
@@ -27,7 +27,7 @@ async function postApi(endpoint, body) {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                'Authentication': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(body)
         });
@@ -49,7 +49,7 @@ async function putApi(endpoint, body) {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
-                'Authentication': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(body)
         });
@@ -71,7 +71,7 @@ async function deleteApi(endpoint, id) {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json',
-                'Authentication': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token')
             },
         });
         const content = await response.json();
