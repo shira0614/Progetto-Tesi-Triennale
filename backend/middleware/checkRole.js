@@ -45,18 +45,4 @@ const checkSuperRole = async (req, res, next) => {
     }
 };
 
-const checkRole = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        } else {
-            req.user = user;
-            next();
-        }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
-module.exports = {checkColtRole, checkLabRole, checkSuperRole, checkRole}
+module.exports = {checkColtRole, checkLabRole, checkSuperRole}
