@@ -38,8 +38,6 @@ export default function DrawerAppBar() {
         const route = navItems.find((route) => route.path === location.pathname);
         if (route) {
             setSelectedRoute(route.path);
-        } else {
-            setSelectedRoute('/');
         }
     }, [location, navItems]);
 

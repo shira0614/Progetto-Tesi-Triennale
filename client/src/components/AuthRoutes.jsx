@@ -1,6 +1,7 @@
 import Login from './Login';
 import ColtHome from "./ColtHome.jsx";
 import LabHome from "./LabHome.jsx";
+import LabRequests from "./LabRequests.jsx";
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
@@ -26,7 +27,8 @@ export default function AuthRoutes() {
 
     const labRouter = createBrowserRouter([
         {path: "/", element: <LabHome />},
-        {path: "/login", element: <Login verify={setToken} />}
+        {path: "/login", element: <Login verify={setToken} />},
+        {path: "/new", element: <LabRequests />}
     ]);
 
     const publicRouter = createBrowserRouter([

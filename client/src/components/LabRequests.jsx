@@ -1,13 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import DrawerAppBar from './DrawerAppBar';
-import AnalysisCard from "./AnalysisCard.jsx";
-import {useEffect, useState} from "react";
-import { getApi } from '../utils/apiEndpoints.js'
-import Loading from "./Loading.jsx";
-import { filterAnalyses } from '../utils/analysisUtils.js';
-import Box from "@mui/material/Box";
+import { getApi } from '../utils/apiEndpoints';
+import { useState, useEffect } from 'react';
+import Loading from './Loading';
+import AnalysisCard from './AnalysisCard';
+import { Box } from '@mui/material';
+import { shippedAnalyses } from '../utils/analysisUtils';
 
-export default function LabHome() {
+export default function LabRequests() {
     const [analysisList, setAnalysisList] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,12 +27,12 @@ export default function LabHome() {
         if (loading) {
             return <Loading />
         }
-
     return (
+        <>
         <Box sx={{ overflowY: 'auto' }}>
             <DrawerAppBar />
             <Box>
-            {analysisList && filterAnalyses(analysisList, 'shipped').map((analysis) => {
+            {analysisList && shippedAnalyses(analysisList).map((analysis) => {
                 return(
                     <AnalysisCard
                         key={analysis._id}
@@ -49,5 +49,7 @@ export default function LabHome() {
             })}
             </Box>
         </Box>
-    )
-}
+        </>
+    );
+};
+
