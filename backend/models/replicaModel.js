@@ -6,7 +6,8 @@ const replicaSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Tree'
     },
-    replicaUniqueId: String
+    replicaUniqueId: String,
+    image: String
 })
 
 replicaSchema.pre("save", async function(next) {

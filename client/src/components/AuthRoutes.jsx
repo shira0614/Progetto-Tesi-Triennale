@@ -12,10 +12,12 @@ export default function AuthRoutes() {
     const [userRole, setUserRole] = useState(null);
 
     useEffect(() => {
-        if (token) {
+        const result = verifyToken();
+        setToken(result);
+        if (result) {
             setUserRole(localStorage.getItem('role'));
         }
-    }, [token])
+    }, []);
 
     const coltRouter = createBrowserRouter([
         {path: "/", element: <ColtHome />},

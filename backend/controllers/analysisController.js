@@ -1,12 +1,13 @@
+const User = require("../models/userModel")
 const Replica = require('../models/replicaModel')
 const Analysis = require('../models/analysisModel')
 const mongoose = require("mongoose");
-const User = require("../models/userModel");
+
 
 module.exports = {
     createAnalysis: async (req, res) => {
         try {
-            const replica = await Replica.findOne({ _id: req.body.replicaId })
+            const replica = await Replica.findOne({ _id: req.body.replicaId });
             if(!replica) {
                 return res.status(404).json({ message: 'Replica not found' });
             }
@@ -19,7 +20,6 @@ module.exports = {
                 notes: req.body.notes,
                 documents: [req.body.document]
             })
-
             res.json({ 'message': 'analysis created' });
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -62,17 +62,12 @@ module.exports = {
 
     getLabAnalyses: async (req, res) => {
         try {
-            const user = await User.findOne({ _id: req.userId });
-            if (user.role === 'laboratorio') {
-                const analyses = await Analysis.find({ laboratory: req.userId });
+                const analyses = await Analysis.find({ laboratory: req.userId }).populate(['shipper', 'replica']);
                 if(!analyses) {
                     return res.status(404).json({ 'message': 'No analyses found' });
                 } else {
-                    return res.json({ 'analyses': analyses });
+                    return res.json(analyses);
                 }
-            } else {
-                return res.status(403).json({ 'message': 'Unauthorized' });
-            }
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
         }

@@ -114,18 +114,15 @@ export default function DrawerAppBar() {
                         {navItems.map((item) => (
                             <Button key={item.label}
                                     onClick={() => navigate(item.path)}
-                                    sx={{ color: '#fff', m: '0.5rem' ,
-                                        bgcolor: selectedRoute === item.path ? '#000000' : '#0c0e0b',
+                                    sx={{ m: '0.5rem' ,
+                                        backgroundColor: location.pathname === item.path ? '#ffffff' : '#0c0e0b',
+                                        color: location.pathname === item.path ? '#000000' : '#ffffff',
                                 "&:hover": {
                                     backgroundColor: "#262c23",
-                                    borderRadius: "10px"
-                                },
-                                "&.Mui-selected": {
-                                    backgroundColor: "#000000",
-                                    borderRadius: "10px"
                                 },
                                 "&.Mui-selected:hover": {
-                                    backgroundColor: "#262c23"
+                                    backgroundColor: "#262c23",
+                                    color: '#ffffff' //TODO fixare selected text color
                                 }
                             }}>
                                 {item.label}
@@ -150,6 +147,7 @@ export default function DrawerAppBar() {
                     {drawer}
                 </Drawer>
             </nav>
+            <Toolbar sx={{ mt: '4rem'}}/>
         </Box>
     );
 }

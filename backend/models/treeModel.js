@@ -19,7 +19,8 @@ const treeSchema = new mongoose.Schema({
     inoculated: Boolean,
     infectionType: String,
     dateOfBirth: Date,
-    notes: String
+    notes: String,
+    image: String
 })
 
 const cultivar = Object.freeze({

@@ -19,7 +19,8 @@ const analysisSchema = new mongoose.Schema({
     },
     protocolId: String,
     notes: String,
-    documents: [String]
+    documents: [String],
+    image: String
 })
 
 const analysisModel = mongoose.model('Analysis', analysisSchema)

@@ -12,13 +12,17 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 
 const baseURL = 'http://localhost:3000'
 
-export default function SignInSide({verify}) {
+export default function Login({verify}) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+
+    // useEffect(() => {
+     //   localStorage.clear();
+   // }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
