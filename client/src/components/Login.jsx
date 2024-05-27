@@ -78,7 +78,7 @@ export default function SignInSide({verify}) {
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="email"
+                                id="username"
                                 label="Username"
                                 name="username"
                                 autoFocus

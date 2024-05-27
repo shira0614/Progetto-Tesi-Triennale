@@ -1,8 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -15,18 +13,35 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {useEffect, useState} from "react";
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRounded';
+import {ListItemIcon} from "@mui/material";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const coltNav = [
-    {path: '/', label: 'Home'},
+    {path: '/', label: 'Home', icon: HomeRoundedIcon},
 ]
 const labNav = [
-    {path: '/', label: 'Home'},
+    {path: '/', label: 'Home', icon: HomeRoundedIcon},
+    {path: '/new', label: 'Notifiche', icon: MarkEmailUnreadRoundedIcon},
 ]
 
 export default function DrawerAppBar() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [username, setUsername] = useState('');
     const navItems = localStorage.getItem('role') === 'coltivatore' ? coltNav : labNav;
+    const location = useLocation();
+    const [selectedRoute, setSelectedRoute] = React.useState(location.pathname);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const route = navItems.find((route) => route.path === location.pathname);
+        if (route) {
+            setSelectedRoute(route.path);
+        } else {
+            setSelectedRoute('/');
+        }
+    }, [location, navItems]);
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
@@ -48,8 +63,27 @@ export default function DrawerAppBar() {
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item.label} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item.label} />
+                        <ListItemButton
+                            onClick={() => navigate(item.path)}
+                            selected={selectedRoute === item.path}
+                            sx={{
+                                m: '0.5rem',
+                                "&.Mui-selected": {
+                                    backgroundColor: "#0c0e0b",
+                                    borderRadius: "10px"
+                                },
+                                ":hover": {
+                                    borderRadius: "10px"
+                                },
+                                "&.Mui-selected:hover": {
+                                    backgroundColor: "#262c23"
+                                },
+                            }}>
+                            <ListItemIcon>
+                                <item.icon sx={{color: (selectedRoute === item.path) ? 'white' : 'black'}}/>
+                            </ListItemIcon>
+                            <ListItemText primary={item.label}
+                                          sx={{color: (selectedRoute === item.path) ? 'white' : 'black'}}/>
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -59,7 +93,7 @@ export default function DrawerAppBar() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <AppBar component="nav" sx={{ height: '10vh', pt: '1vh' }}>
+            <AppBar component="nav" sx={{ height: '10vh', pt: '1vh', bgcolor: '#0c0e0b' }}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -78,7 +112,22 @@ export default function DrawerAppBar() {
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
-                            <Button key={item.label} sx={{ color: '#fff' }}>
+                            <Button key={item.label}
+                                    onClick={() => navigate(item.path)}
+                                    sx={{ color: '#fff', m: '0.5rem' ,
+                                        bgcolor: selectedRoute === item.path ? '#000000' : '#0c0e0b',
+                                "&:hover": {
+                                    backgroundColor: "#262c23",
+                                    borderRadius: "10px"
+                                },
+                                "&.Mui-selected": {
+                                    backgroundColor: "#000000",
+                                    borderRadius: "10px"
+                                },
+                                "&.Mui-selected:hover": {
+                                    backgroundColor: "#262c23"
+                                }
+                            }}>
                                 {item.label}
                             </Button>
                         ))}
