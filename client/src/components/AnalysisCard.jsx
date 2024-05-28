@@ -6,13 +6,13 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import '../index.css'
 import AcceptDialog from "./AcceptDialogue.jsx";
+import RejectDialog from "./RejectDialogue.jsx";
 import { useState } from 'react';
 
 const ExpandMore = styled((props) => {
@@ -83,13 +83,13 @@ export function NewAnalysisCard(props) {
     const [ openAccept, setOpenAccept ] = useState(false)
     const [ openDelete, setOpenDelete] = useState(false)
 
-    const handleOpenAccept = () => {
-        setOpenAccept(true)
-    }
+    const handleOpenAccept = () => {setOpenAccept(true)}
+    const handleOpenDelete = () => {setOpenDelete(true)}
 
     return (
         <>
         <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
+        <RejectDialog setOpen={setOpenDelete} isOpen={openDelete} id={props._id}/>
         <Box sx={{ minWidth: '30vw', m: '1rem' }}>
             <Card variant="outlined">
                 <CardContent>
@@ -123,7 +123,7 @@ export function NewAnalysisCard(props) {
                 </CardContent>
                 <CardActions>
                     <Button sx={{ color: '#2E644A'}} onClick={handleOpenAccept}>Accetta</Button>
-                    <Button sx={{ color: '#d32727'}}>Rifiuta</Button>
+                    <Button sx={{ color: '#d32727'}} onClick={handleOpenDelete}>Rifiuta</Button>
                 </CardActions>
             </Card>
         </Box>

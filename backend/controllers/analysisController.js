@@ -101,5 +101,18 @@ module.exports = {
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
         }
+    },
+
+    deleteAnalysis: async (req, res) => {
+        try {
+            const analysis = await Analysis.findOneAndDelete({ _id: req.params.analysisId });
+            if(!analysis) {
+                return res.status(404).json({ 'message': 'Analysis not found' });
+            } else {
+                return res.status(200).json({ 'message': 'Analysis deleted successfully' });
+            }
+        } catch (err) {
+            return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
+        }
     }
 }

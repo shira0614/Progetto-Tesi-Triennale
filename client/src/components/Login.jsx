@@ -86,6 +86,7 @@ export default function Login({verify}) {
                                 label="Username"
                                 name="username"
                                 autoFocus
+                                sx={{ borderColor: '#0c0e0b'}}
                             />
                             <TextField
                                 margin="normal"
@@ -96,17 +97,18 @@ export default function Login({verify}) {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                sx={{ borderColor: '#0c0e0b'}}
                             />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 2, backgroundColor: '#0c0e0b' , color: '#ffffff' , borderColor: '#0c0e0b' }}
                             >
                                 Accedi
                             </Button>
                             <Grid container>
-                                    <Link onClick={() => {
+                                    <Link sx={{color: '#0c0e0b'}} onClick={() => {
                                         setOpen(true);
                                     }}>
                                         {"Non hai un account?"}

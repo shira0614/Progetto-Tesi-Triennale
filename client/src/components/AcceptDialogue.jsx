@@ -52,10 +52,10 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit} autoFocus>
+                    <Button onClick={handleSubmit} sx={{ color: '#2E644A', borderColor: '#2E644A'}} autoFocus>
                         Accetta
                     </Button>
-                    <Button onClick={handleClose}>Annulla</Button>
+                    <Button onClick={handleClose} sx={{ color: '#0c0e0b' }}>Annulla</Button>
                 </DialogActions>
             </Dialog>
     );
