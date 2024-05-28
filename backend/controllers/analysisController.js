@@ -18,7 +18,9 @@ module.exports = {
                 status: 'shipped',
                 protocolID : req.body.protocolID,
                 notes: req.body.notes,
-                documents: [req.body.document]
+                documents: [req.body.document],
+                image: req.body.image
+
             })
             res.json({ 'message': 'analysis created' });
         } catch (err) {
@@ -32,7 +34,7 @@ module.exports = {
             if (!analysis) {
                 return res.status(404).json({ message: 'Analysis not found' });
             }
-            analysis.status = req.body.status
+            analysis.status = 'accepted'
             if (req.body.notes) analysis.notes = req.body.notes
             await analysis.save()
             res.json({'message': 'analysis saved', 'analysis': analysis})
@@ -62,7 +64,17 @@ module.exports = {
 
     getLabAnalyses: async (req, res) => {
         try {
-                const analyses = await Analysis.find({ laboratory: req.userId }).populate(['shipper', 'replica']);
+                const analyses = await Analysis.find({ laboratory: req.userId }).populate([
+                    'shipper',
+                    'replica',
+                    {
+                        path: 'replica',
+                        populate: {
+                            path: 'treeId',
+                            model: 'Tree' // replace 'Tree' with your Tree model name
+                        }
+                    }
+                ]);
                 if(!analyses) {
                     return res.status(404).json({ 'message': 'No analyses found' });
                 } else {

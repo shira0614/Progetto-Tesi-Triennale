@@ -68,7 +68,7 @@ export default function Login({verify}) {
                             mx: 4,
                             display: 'flex',
                             flexDirection: 'column',
-                            alignItems: 'center',
+                            alignItems: 'center'
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: '#73d645' }}>

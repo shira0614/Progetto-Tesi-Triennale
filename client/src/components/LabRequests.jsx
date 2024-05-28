@@ -3,13 +3,15 @@ import DrawerAppBar from './DrawerAppBar';
 import { getApi } from '../utils/apiEndpoints';
 import { useState, useEffect } from 'react';
 import Loading from './Loading';
-import AnalysisCard from './AnalysisCard';
+import { NewAnalysisCard } from './AnalysisCard';
 import { Box } from '@mui/material';
 import { shippedAnalyses } from '../utils/analysisUtils';
+import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 
 export default function LabRequests() {
     const [analysisList, setAnalysisList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const analysisValue = { analysisList, setAnalysisList }
 
     useEffect(() => {
         getApi('analysis/labAnalyses')
@@ -27,28 +29,32 @@ export default function LabRequests() {
         if (loading) {
             return <Loading />
         }
+
     return (
         <>
-        <Box sx={{ overflowY: 'auto' }}>
-            <DrawerAppBar />
-            <Box>
-            {analysisList && shippedAnalyses(analysisList).map((analysis) => {
-                return(
-                    <AnalysisCard
-                        key={analysis._id}
-                        laboratory={analysis.laboratory}
-                        replica={analysis.replica}
-                        shipper={analysis.shipper}
-                        status={analysis.status}
-                        protocolId={analysis.protocolId}
-                        notes={analysis.notes}
-                        documents={analysis.documents}
-                        image={analysis.image}
-                    />
-                )
-            })}
-            </Box>
-        </Box>
+            <AnalysisContext.Provider value={analysisValue}>
+                <Box sx={{ overflowY: 'auto' }}>
+                    <DrawerAppBar />
+                    <Box>
+                    {analysisList && shippedAnalyses(analysisList).map((analysis) => {
+                        return(
+                            <NewAnalysisCard
+                                key={analysis._id}
+                                _id={analysis._id}
+                                laboratory={analysis.laboratory}
+                                replica={analysis.replica}
+                                shipper={analysis.shipper}
+                                status={analysis.status}
+                                protocolId={analysis.protocolId}
+                                notes={analysis.notes}
+                                documents={analysis.documents}
+                                image={analysis.image}
+                            />
+                        )
+                    })}
+                    </Box>
+                </Box>
+            </AnalysisContext.Provider>
         </>
     );
 };

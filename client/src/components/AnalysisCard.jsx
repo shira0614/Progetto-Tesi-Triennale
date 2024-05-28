@@ -9,13 +9,11 @@ import { styled } from '@mui/material/styles';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import '../index.css'
+import AcceptDialog from "./AcceptDialogue.jsx";
+import { useState } from 'react';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -28,14 +26,15 @@ const ExpandMore = styled((props) => {
     }),
   }));
 
-export default function AnalysisCard(props) {
-    const [expanded, setExpanded] = React.useState(false);
+export function HomeAnalysisCard(props) {
+    const [expanded, setExpanded] = useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+      };
+
     return (
-        <Box sx={{ minWidth: 275 }}>
+        <Box sx={{ minWidth: 275, m: '1rem' }}>
             <Card variant="outlined">
                 <CardContent>
                     <Typography variant='h5' gutterBottom>
@@ -47,6 +46,16 @@ export default function AnalysisCard(props) {
                     <Typography variant="body2">
                         Status: {props.status}
                     </Typography>
+                    <Box>
+                        {
+                            props.image? <CardMedia
+                                component="img"
+                                alt="plant image"
+                                height="140"
+                                // image= ''
+                            /> : <div className='leaf'/>
+                        }
+                    </Box>
                 </CardContent>
                 <CardActions>
                     <Button size="small">Modifica</Button>
@@ -61,10 +70,63 @@ export default function AnalysisCard(props) {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
+                    <Typography variant='h6'>Dettagli</Typography>
                     <Typography paragraph>qui i dati sulla replica</Typography>
                     </CardContent>
                 </Collapse>
             </Card>
         </Box>
+    );
+}
+
+export function NewAnalysisCard(props) {
+    const [ openAccept, setOpenAccept ] = useState(false)
+    const [ openDelete, setOpenDelete] = useState(false)
+
+    const handleOpenAccept = () => {
+        setOpenAccept(true)
+    }
+
+    return (
+        <>
+        <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
+        <Box sx={{ minWidth: '30vw', m: '1rem' }}>
+            <Card variant="outlined">
+                <CardContent>
+                    <Typography variant='h5' gutterBottom>
+                        {props.replica.replicaUniqueId}
+                    </Typography>
+                    <Typography variant="body1">
+                        {props.shipper.username}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        Status: {props.status}
+                    </Typography>
+                    <Typography variant='h6'>Dettagli</Typography>
+                    <Typography variant='h7'>Pianta madre: {props.replica.treeId.treeUniqueId}</Typography>
+                    &nbsp;
+                    <Typography variant='body2' color="text.secondary" display='inline'>{props.replica.treeId.sottospecie}, {props.replica.treeId.cultivar}</Typography>
+                    <Typography variant='h7' display='block'>Inoculazione: {props.replica.treeId.inoculated? 'Si' : 'No'}</Typography>
+                    <Typography variant='h7' display='block'>Infezione: {props.replica.treeId.infectionType}</Typography>
+                    <Typography variant='h7'>Note: </Typography>
+                    <Typography variant='body1'>{props.notes ? props.notes : 'Nessuna'}</Typography>
+                    <Box>
+                        {
+                            props.image? <CardMedia
+                                component="img"
+                                alt="plant image"
+                                height="140"
+                                // image= ''
+                            /> : <div className='leaf'/>
+                        }
+                    </Box>
+                </CardContent>
+                <CardActions>
+                    <Button sx={{ color: '#2E644A'}} onClick={handleOpenAccept}>Accetta</Button>
+                    <Button sx={{ color: '#d32727'}}>Rifiuta</Button>
+                </CardActions>
+            </Card>
+        </Box>
+        </>
     );
 }

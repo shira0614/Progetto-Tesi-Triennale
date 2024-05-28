@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DrawerAppBar from './DrawerAppBar';
-import AnalysisCard from "./AnalysisCard.jsx";
+import { HomeAnalysisCard } from "./AnalysisCard.jsx";
 import {useEffect, useState} from "react";
 import { getApi } from '../utils/apiEndpoints.js'
 import Loading from "./Loading.jsx";
@@ -27,15 +27,15 @@ export default function LabHome() {
         if (loading) {
             return <Loading />
         }
-
     return (
         <Box sx={{ overflowY: 'auto' }}>
             <DrawerAppBar />
             <Box>
             {analysisList && filterAnalyses(analysisList, 'shipped').map((analysis) => {
                 return(
-                    <AnalysisCard
+                    <HomeAnalysisCard
                         key={analysis._id}
+                        _id={analysis._id}
                         laboratory={analysis.laboratory}
                         replica={analysis.replica}
                         shipper={analysis.shipper}
