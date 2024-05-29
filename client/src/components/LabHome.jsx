@@ -23,7 +23,7 @@ export default function LabHome() {
                 console.log(e);
                 setLoading(false);
             })
-    }, [analysisList]);
+    }, []);
 
     //TODO Loading component
         if (loading) {

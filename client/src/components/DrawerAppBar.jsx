@@ -23,7 +23,7 @@ const coltNav = [
 ]
 const labNav = [
     {path: '/', label: 'Home', icon: HomeRoundedIcon},
-    {path: '/new', label: 'Notifiche', icon: MarkEmailUnreadRoundedIcon},
+    {path: '/new', label: 'Richieste', icon: MarkEmailUnreadRoundedIcon},
 ]
 
 export default function DrawerAppBar() {

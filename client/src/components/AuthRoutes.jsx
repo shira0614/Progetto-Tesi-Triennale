@@ -7,7 +7,6 @@ import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
 import { useEffect } from "react";
 
-
 export default function AuthRoutes() {
     const [token, setToken] = useState(verifyToken());
     const [userRole, setUserRole] = useState(null);

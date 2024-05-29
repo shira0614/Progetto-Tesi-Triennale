@@ -71,7 +71,7 @@ export default function Login({verify}) {
                             alignItems: 'center'
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: '#73d645' }}>
+                        <Avatar sx={{ m: 1, bgcolor: '#2E644A' }}>
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">

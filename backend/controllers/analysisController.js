@@ -2,7 +2,8 @@ const User = require("../models/userModel")
 const Replica = require('../models/replicaModel')
 const Analysis = require('../models/analysisModel')
 const mongoose = require("mongoose");
-
+const multer = require("multer");
+const upload = multer({ dest: './uploads/' });
 
 module.exports = {
     createAnalysis: async (req, res) => {
@@ -52,6 +53,7 @@ module.exports = {
                     return res.status(404).json({ 'message': 'Analysis not found' });
                 }
                 analysis.documents.push(req.body.document);
+                analysis.image = req.body.image;
                 analysis.status = 'completed';
                 await analysis.save();
                 return res.json({ 'message': 'Analysis saved', 'analysis': analysis });
@@ -59,6 +61,28 @@ module.exports = {
             return res.status(400).json({ 'message': 'No document provided' });
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error': err.message });
+        }
+    },
+
+    addDocument: async (req, res) => {
+        try {
+            const analysis = await Analysis.findOne({ _id: req.params.analysisId });
+            if (!analysis) {
+                return res.status(404).json({ message: 'Analysis not found' });
+            }
+            const file = req.file;
+            if (!file) {
+                return res.status(400).json({ message: 'No file provided' });
+            }
+            analysis.documents.push({
+                data: fs.readFileSync(file.path),
+                contentType: file.mimetype
+            });
+            await analysis.save();
+            fs.unlinkSync(file.path); // Delete file after saving to database
+            return res.json({ message: 'File added to analysis', analysis: analysis });
+        } catch (err) {
+            return res.status(500).json({ message: 'An error occurred', error: err.message });
         }
     },
 

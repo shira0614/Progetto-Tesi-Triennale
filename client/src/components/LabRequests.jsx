@@ -23,7 +23,7 @@ export default function LabRequests() {
                 console.log(e);
                 setLoading(false);
             })
-    }, [analysisList]);
+    }, []);
 
     //TODO Loading component
         if (loading) {

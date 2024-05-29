@@ -13,6 +13,13 @@ export const theme = createTheme({
     },
     secondary: {
         main: '#73d645',
+    },
+    app: {
+        main: '#0c0e0b',
+        forest: '#2E644A',
+        lime: '#73d645',
+        spring: '#5ACB65',
+        error: '#d32727'
     }
   }
 })
