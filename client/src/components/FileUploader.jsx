@@ -32,8 +32,8 @@ const SingleFileUploader = () => {
             formData.append("file", file);
 
             try {
-                // You can write the URL of your server or any other endpoint used for file upload
-                const result = await fetch("https://httpbin.org/post", {
+                //TODO aggiungere endpoint
+                const result = await fetch("", {
                     method: "POST",
                     body: formData,
                 });

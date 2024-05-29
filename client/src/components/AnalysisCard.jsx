@@ -31,7 +31,6 @@ const ExpandMore = styled((props) => {
 export function HomeAnalysisCard(props) {
     const [expanded, setExpanded] = useState(false);
     const [openUpload, setOpenUpload] = useState(false)
-    const navigate = useNavigate();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -42,7 +41,7 @@ export function HomeAnalysisCard(props) {
         <>
 
             <Box sx={{ minWidth: '40vw', m: '1rem' }}>
-                <Card variant="outlined">
+                <Card >
                     <CardContent>
                         <Typography variant='h5' gutterBottom>
                             {props.replica.replicaUniqueId}
@@ -105,7 +104,7 @@ export function NewAnalysisCard(props) {
         <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
         <RejectDialog setOpen={setOpenDelete} isOpen={openDelete} id={props._id}/>
         <Box sx={{ minWidth: '30vw', m: '1rem' }}>
-            <Card variant="outlined">
+            <Card >
                 <CardContent>
                     <Typography variant='h5' gutterBottom>
                         {props.replica.replicaUniqueId}
