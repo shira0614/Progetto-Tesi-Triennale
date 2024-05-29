@@ -12,9 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --forest:       #2E644A;
-  --lime:        #73D645;
-  --spring:       #5ACB65;
+  --forest: #2E644A;
+  --lime: #73D645;
+  --spring: #5ACB65;
   --trans: transparent;
 }
 
@@ -30,25 +30,6 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -104,3 +85,42 @@ button:focus-visible {
   border-radius: 0.36em;
   content: '';
 }
+
+.leaf-mini {
+  background-color: var(--forest);
+  background-image:
+          repeating-radial-gradient(
+                  circle at 2.8em 0.98em,
+                  var(--spring),
+                  var(--spring) 1.08em,
+                  var(--trans) 1.11em,
+                  var(--trans) 4em),
+          repeating-radial-gradient(
+                  circle at -0.8em 0.98em,
+                  var(--lime),
+                  var(--lime) 1.08em,
+                  var(--trans) 1.11em,
+                  var(--trans) 4em);
+  background-size: 2em 2.5em;
+  background-position: 1em 0.3em;
+}
+
+.leaf-mini::before,
+.leaf-mini::after {
+  background-image:
+          repeating-radial-gradient(
+                  circle at 2.8em 0.98em,
+                  var(--spring),
+                  var(--spring) 1.08em,
+                  var(--trans) 1.11em,
+                  var(--trans) 4em),
+          repeating-radial-gradient(
+                  circle at -0.8em 0.98em,
+                  var(--lime),
+                  var(--lime) 1.08em,
+                  var(--trans) 1.11em,
+                  var(--trans) 4em);
+  background-size: 2em 2.5em;
+  background-position: 0 1.5em;
+}
+

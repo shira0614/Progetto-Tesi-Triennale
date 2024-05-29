@@ -15,14 +15,17 @@ import Button from '@mui/material/Button';
 import {useEffect, useState} from "react";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRounded';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import {ListItemIcon} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 
+
 const coltNav = [
     {path: '/', label: 'Home', icon: HomeRoundedIcon},
+    {path: '/analyses', label: 'Analisi', icon: BorderColorRoundedIcon}
 ]
 const labNav = [
-    {path: '/', label: 'Home', icon: HomeRoundedIcon},
+    {path: '/', label: 'Analisi in corso', icon: BorderColorRoundedIcon},
     {path: '/new', label: 'Richieste', icon: MarkEmailUnreadRoundedIcon},
 ]
 

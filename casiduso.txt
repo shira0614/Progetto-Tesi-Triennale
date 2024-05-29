@@ -5,12 +5,14 @@ ATTORE COLTIVATORE
 • Invio di una replica ai laboratori X
 • Visualizzazioni varie (es. le proprie piante)
 Visualizzazione status delle analisi (accettate, rifiutate)
+ricerca?
  
 ATTORE LABORATORIO
 • Login X
 • Visualizzazione repliche ricevute X
 • Accettazione/rifiuto analisi X
 • Inserimento analisi replica (note testo libero + un file generico) X
+ricerca?
  
 ATTORE ADMIN
 • Creazione utente coltivatore / laboratorio

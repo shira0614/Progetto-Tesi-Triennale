@@ -7,7 +7,7 @@ const replicaSchema = new mongoose.Schema({
         ref: 'Tree'
     },
     replicaUniqueId: String,
-    image: String
+    image: Buffer
 })
 
 replicaSchema.pre("save", async function(next) {

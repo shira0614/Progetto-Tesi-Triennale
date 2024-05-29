@@ -6,6 +6,7 @@ import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
 import { useEffect } from "react";
+import ColtAnalysis from "./ColtAnalysis.jsx";
 
 export default function AuthRoutes() {
     const [token, setToken] = useState(verifyToken());
@@ -21,7 +22,8 @@ export default function AuthRoutes() {
 
     const coltRouter = createBrowserRouter([
         {path: "/", element: <ColtHome />},
-        {path: "/login", element: <Login verify={setToken} />}
+        {path: "/login", element: <Login verify={setToken} />},
+        {path: "/analyses", element: <ColtAnalysis />}
     ]);
 
     const labRouter = createBrowserRouter([

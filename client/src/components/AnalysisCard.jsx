@@ -39,55 +39,60 @@ export function HomeAnalysisCard(props) {
     const handleOpenUpload = () => { setOpenUpload(true) }
     return (
         <>
-
-            <Box sx={{ minWidth: '40vw', m: '1rem' }}>
-                <Card >
-                    <CardContent>
-                        <Typography variant='h5' gutterBottom>
-                            {props.replica.replicaUniqueId}
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                            {props.shipper.username}
-                        </Typography>
-                        <Typography variant="body2">
-                            Status: {props.status}
-                        </Typography>
-                        <Box>
-                            {
-                                props.image? <CardMedia
-                                    component="img"
-                                    alt="plant image"
-                                    height="140"
-                                    // image= ''
-                                /> : <div className='leaf'/>
-                            }
-                        </Box>
-                    </CardContent>
-                    <CardActions>
-                        <Button onClick={handleOpenUpload} sx={{ color: '#2E644A' }}>Compila</Button>
-                        <ExpandMore
-                            expand={expanded}
-                            onClick={handleExpandClick}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                            >
-                            <ExpandMoreIcon />
-                        </ExpandMore>
-                    </CardActions>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <CardContent>
-                            <Typography variant='h6'>Dettagli</Typography>
-                            <Typography variant='h7'>Pianta madre: {props.replica.treeId.treeUniqueId}</Typography>
-                            &nbsp;
-                            <Typography variant='body2' color="text.secondary" display='inline'>{props.replica.treeId.sottospecie}, {props.replica.treeId.cultivar}</Typography>
-                            <Typography variant='h7' display='block'>Inoculazione: {props.replica.treeId.inoculated? 'Si' : 'No'}</Typography>
-                            <Typography variant='h7' display='block'>Infezione: {props.replica.treeId.infectionType}</Typography>
-                            <Typography variant='h7'>Note: </Typography>
-                            <Typography variant='body1'>{props.notes ? props.notes : 'Nessuna'}</Typography>
+            { /* qui il component CompleteDialogue */ }
+                <Card sx={{
+                    display: 'flex',
+                    border: '3px solid',
+                    borderColor: '#ffffff00',
+                    m: '1rem',
+                }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                        <CardContent sx={{ flex: '1 0 auto' }}>
+                                <Typography variant='h5' gutterBottom >
+                                    {props.replica.replicaUniqueId}
+                                </Typography>
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                    {props.shipper.username}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Status: {props.status}
+                                </Typography>
                         </CardContent>
-                    </Collapse>
+                        <CardActions>
+                            <Button onClick={handleOpenUpload} sx={{ color: '#2E644A' }}>Compila</Button>
+                            <ExpandMore
+                                expand={expanded}
+                                onClick={handleExpandClick}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </ExpandMore>
+                        </CardActions>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <CardContent>
+                                <Typography variant='h6' display='block'>Dettagli</Typography>
+                                <Typography variant='h7'>Pianta madre: {props.replica.treeId.treeUniqueId}</Typography>
+                                &nbsp;
+                                <Typography variant='body2' color="text.secondary" display='inline'>{props.replica.treeId.sottospecie}, {props.replica.treeId.cultivar}</Typography>
+                                <Typography variant='h7' display='block'>Inoculazione: {props.replica.treeId.inoculated? 'Si' : 'No'}</Typography>
+                                <Typography variant='h7' display='block'>Infezione: {props.replica.treeId.infectionType}</Typography>
+                                <Typography variant='h7'>Note: </Typography>
+                                <Typography variant='body1'>{props.notes ? props.notes : 'Nessuna'}</Typography>
+                            </CardContent>
+                        </Collapse>
+                    </Box>
+                        {
+                            props.image ? <CardMedia
+                                component="img"
+                                alt="plant image"
+                                height="140"
+                                image = {props.image}
+                            /> : <Box className='leaf-mini' sx={{
+                                minWidth: '10vw', minHeight: '100%', ml: 4
+                            }}/>
+                        }
                 </Card>
-            </Box>
         </>
     );
 }
@@ -103,9 +108,14 @@ export function NewAnalysisCard(props) {
         <>
         <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
         <RejectDialog setOpen={setOpenDelete} isOpen={openDelete} id={props._id}/>
-        <Box sx={{ minWidth: '30vw', m: '1rem' }}>
-            <Card >
-                <CardContent>
+            <Card sx={{
+                display: 'flex',
+                border: '3px solid',
+                borderColor: '#ffffff00',
+                m: '1rem',
+            }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant='h5' gutterBottom>
                         {props.replica.replicaUniqueId}
                     </Typography>
@@ -123,23 +133,23 @@ export function NewAnalysisCard(props) {
                     <Typography variant='h7' display='block'>Infezione: {props.replica.treeId.infectionType}</Typography>
                     <Typography variant='h7'>Note: </Typography>
                     <Typography variant='body1'>{props.notes ? props.notes : 'Nessuna'}</Typography>
-                    <Box>
-                        {
-                            props.image? <CardMedia
-                                component="img"
-                                alt="plant image"
-                                height="140"
-                                // image= ''
-                            /> : <div className='leaf'/>
-                        }
-                    </Box>
                 </CardContent>
                 <CardActions>
                     <Button sx={{ color: '#2E644A'}} onClick={handleOpenAccept}>Accetta</Button>
                     <Button sx={{ color: '#d32727'}} onClick={handleOpenDelete}>Rifiuta</Button>
                 </CardActions>
+                </Box>
+                {
+                    props.image ? <CardMedia
+                        component="img"
+                        alt="plant image"
+                        height="140"
+                        image = {props.image}
+                    /> : <Box className='leaf-mini' sx={{
+                        minWidth: '10vw', minHeight: '100%', ml: 4
+                    }}/>
+                }
             </Card>
-        </Box>
         </>
     );
 }

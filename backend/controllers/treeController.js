@@ -12,7 +12,7 @@ module.exports = {
             sottospecie: req.body.sottospecie,
             inoculated: req.body.inoculated,
             infectionType: req.body.infectionType,
-            dateOfBirth: req.body.dateOfBirth,
+            timestamp: new Date(),
             notes: req.body.notes
         }
 
@@ -29,10 +29,11 @@ module.exports = {
         try {
             const trees = await Tree.find({
                 owner: req.userId
-            })
+            }).populate('replicas')
             if(!trees) {
                 res.status(404).json({message: "Trees not found"})
             }
+
             console.log(trees)
             res.json(trees)
         } catch (err) {
@@ -73,7 +74,6 @@ module.exports = {
         }
     }
 
-    //TODO Metodo per inviare le repliche al laboratorio
 
 }
 
