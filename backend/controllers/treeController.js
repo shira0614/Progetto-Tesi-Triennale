@@ -12,7 +12,7 @@ module.exports = {
             sottospecie: req.body.sottospecie,
             inoculated: req.body.inoculated,
             infectionType: req.body.infectionType,
-            timestamp: new Date(),
+            timestamp: req.body.timestamp ? req.body.timestamp : new Date(),
             notes: req.body.notes
         }
 

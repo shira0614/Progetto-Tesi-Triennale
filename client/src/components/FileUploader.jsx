@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 const Result = ({ status }) => {
     if (status === "success") {
-        return <p>✅ File uploaded successfully!</p>;
+        return <p> File uploaded successfully!</p>;
     } else if (status === "fail") {
-        return <p>❌ File upload failed!</p>;
+        return <p> File upload failed!</p>;
     } else if (status === "uploading") {
-        return <p>⏳ Uploading selected file...</p>;
+        return <p> Uploading selected file...</p>;
     } else {
         return null;
     }
