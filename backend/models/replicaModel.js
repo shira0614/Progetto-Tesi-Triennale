@@ -17,7 +17,7 @@ replicaSchema.pre("save", async function(next) {
         const otherReplicas = await mongoose.model('Replica').find({treeId: this.treeId})
         this.replicaUniqueId = myTree.treeUniqueId + String(otherReplicas.length + 1).padStart(3, "0");
     }
-    next()
+    next();
 })
 
 const replicaModel = mongoose.model('Replica', replicaSchema)

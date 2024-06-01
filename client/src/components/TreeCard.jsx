@@ -5,8 +5,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 export default function TreeCard(props) {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/${props._id}`);
+    }
+
     return (
         <Card sx={{
             display: 'flex',
@@ -14,7 +20,7 @@ export default function TreeCard(props) {
             borderColor: '#ffffff00',
             m: '1rem',
         }}>
-            <CardActionArea>
+            <CardActionArea onClick={handleClick}>
                 <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
                         <Typography gutterBottom variant="h5" component="div">

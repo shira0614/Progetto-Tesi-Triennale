@@ -95,7 +95,7 @@ module.exports = {
                         path: 'replica',
                         populate: {
                             path: 'treeId',
-                            model: 'Tree' // replace 'Tree' with your Tree model name
+                            model: 'Tree'
                         }
                     }
                 ]);

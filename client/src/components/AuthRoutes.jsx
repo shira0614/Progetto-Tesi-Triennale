@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ColtAnalysis from "./ColtAnalysis.jsx";
 import AddTree from './AddTree.jsx';
+import TreeView from './TreeView.jsx';
 
 export default function AuthRoutes() {
     const [token, setToken] = useState(verifyToken());
@@ -34,6 +35,7 @@ export default function AuthRoutes() {
                 <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
                 <Route path="/addTree" element={userRole === 'coltivatore' ? <AddTree /> : null} />
                 <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
+                <Route path="/:treeId" element={userRole === 'coltivatore' ? <TreeView /> : null } />
             </Routes>
         </BrowserRouter>
     );

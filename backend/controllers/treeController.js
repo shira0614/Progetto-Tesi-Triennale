@@ -42,11 +42,25 @@ module.exports = {
         
     },
 
+    getTree: async (req, res) => {
+        try {
+            const tree = await Tree.findOne({
+                _id: req.params.treeId
+            }).populate('replicas')
+            if(!tree) {
+                res.status(404).json({message: "Tree not found"})
+            }
+            res.json(tree)
+        } catch (err) {
+            res.status(500).json({message: err.message})
+        }
+    },
+
     getReplicas: async (req, res) => {
         try {
             const replicas = await Replica.find({
-                treeId: req.body.treeId
-            })
+                treeId: req.params.treeId
+            }).populate('treeId')
             if(!replicas) {
                 res.status(404).json({message: "Replicas not found"})
             }
