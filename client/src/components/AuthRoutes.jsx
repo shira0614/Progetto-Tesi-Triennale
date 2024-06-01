@@ -2,7 +2,7 @@ import Login from './Login';
 import ColtHome from "./ColtHome.jsx";
 import LabHome from "./LabHome.jsx";
 import LabRequests from "./LabRequests.jsx";
-import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, Route, Router, RouterProvider, Routes, BrowserRouter} from "react-router-dom";
 import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -21,37 +21,20 @@ export default function AuthRoutes() {
         }
     }, []);
 
-    const coltRouter = createBrowserRouter([
-        {path: "/", element: <ColtHome />},
-        {path: "/login", element: <Login verify={setToken} />},
-        {path: "/analyses", element: <ColtAnalysis />},
-        {path: '/addTree', element: <AddTree />}
-    ]);
-
-    const labRouter = createBrowserRouter([
-        {path: "/", element: <LabHome />},
-        {path: "/login", element: <Login verify={setToken} />},
-        {path: "/new", element: <LabRequests />}
-    ]);
-
-    const publicRouter = createBrowserRouter([
-        {path: "/", element: <Navigate to="/login" />},
-        {path: "/login", element: <Login verify={setToken} />}
-    ]);
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, [localStorage.getItem('role')]);
 
     return (
-        <RouterProvider router={
-            (() => {
-                if(!token) {
-                    return publicRouter;
-                } else if(userRole === 'coltivatore') {
-                    return coltRouter;
-                } else if(userRole === 'laboratorio') {
-                    return labRouter;
-                } else {
-                    return publicRouter; // default router
-                }
-            })()
-        }/>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/login" element={<Login verify={setToken} />} />
+                <Route path="/" element={userRole === 'coltivatore' ? <ColtHome /> : <LabHome />} />
+                <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
+                <Route path="/addTree" element={userRole === 'coltivatore' ? <AddTree /> : null} />
+                <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
+            </Routes>
+        </BrowserRouter>
     );
 }

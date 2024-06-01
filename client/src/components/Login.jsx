@@ -20,9 +20,9 @@ export default function Login({verify}) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
-    // useEffect(() => {
-     //   localStorage.clear();
-   // }, []);
+    useEffect(() => {
+     localStorage.clear();
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();

@@ -19,9 +19,9 @@ module.exports = {
         try {
             const tree = await Tree.create(local_tree)
             await tree.save()
-            res.json({"message": "Tree inserted", "tree": tree})
+            res.json({"message": "Tree inserted", "tree": tree, "success": true})
         } catch (err) {
-            res.status(500).json({message: err.message})
+            res.status(500).json({message: err.message, "success": false})
         }
     },
 
