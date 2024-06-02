@@ -19,6 +19,9 @@ export default function ReplicaCard(props) {
                     <Typography fontWeight='bold'>Campioni:
                         <Typography display='inline'> {props.sample}</Typography>
                     </Typography>
+                    <Typography fontWeight='bold'>Note:
+                        <Typography display='inline'> {props.notes}</Typography>
+                    </Typography>
                 </CardContent>
             </Box>
             {

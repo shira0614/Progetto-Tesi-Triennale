@@ -14,7 +14,8 @@ import { SingleTreeContext } from "./context/TreeContext.jsx";
 
 export default function TreeView() {
     const { treeId } = useParams();
-    const [tree, setTree] = React.useState(null);
+    const [tree, setTree] = useState(null);
+    const [replicas, setReplicas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false)
     const treeValue = { tree, setTree };
@@ -30,7 +31,10 @@ export default function TreeView() {
                 response.timestamp = `${day}/${month}/${year}`;
 
                 setTree(response);
-                setLoading(false);
+                getApi(`trees/${treeId}/replicas`).then((response) => {
+                    setReplicas(response);
+                    setLoading(false);
+                })
             })
             .catch((e) => {
                 console.log(e);
@@ -99,13 +103,14 @@ export default function TreeView() {
                             <AddIcon />
                         </Fab>
                         {
-                            tree.replicas.map((replica) => {
+                            replicas.map((replica) => {
                                 return (
                                     <ReplicaCard
                                         key={replica._id}
                                         replicaUniqueId={replica.replicaUniqueId}
                                         image={replica.image}
                                         sample={replica.sample}
+                                        notes={replica.notes}
                                     />
                                 )
                             })

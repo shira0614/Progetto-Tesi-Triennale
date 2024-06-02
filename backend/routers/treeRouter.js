@@ -11,7 +11,7 @@ router.use(checkColtRole)
 
 router.post('/addTree', treeController.addTree)
 router.post('/newReplica', treeController.newReplica)
-router.post('/:treeId/replicas', treeController.getReplicas)
+router.get('/:treeId/replicas', treeController.getReplicas)
 router.get('/:treeId', treeController.getTree)
 router.get('/', treeController.getTrees)
 

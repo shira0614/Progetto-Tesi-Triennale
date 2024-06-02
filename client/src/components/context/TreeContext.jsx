@@ -10,6 +10,8 @@ export const TreeContext = createContext(
 export const SingleTreeContext = createContext(
     {
         tree: null,
-        setTree: () => {}
+        setTree: () => {},
+        replicas: [],
+        setReplicas: () => {}
     }
 );
