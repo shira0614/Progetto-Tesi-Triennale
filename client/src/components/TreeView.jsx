@@ -18,7 +18,7 @@ export default function TreeView() {
     const [replicas, setReplicas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false)
-    const treeValue = { tree, setTree };
+    const treeValue = { tree, setTree, replicas, setReplicas };
 
     useEffect(() => {
         getApi(`trees/${treeId}`)

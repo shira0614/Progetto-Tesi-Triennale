@@ -11,7 +11,7 @@ import { useContext } from "react";
 import {SingleTreeContext} from "./context/TreeContext.jsx";
 
 export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
-    const {tree, setTree} = useContext(SingleTreeContext)
+    const {replicas, setReplicas} = useContext(SingleTreeContext)
 
     const handleClose = () => {
         setOpen(false)
@@ -29,8 +29,8 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
         postApi('trees/newReplica', body).then((response) => {
             console.log(response);
             if(response.success) {
-                tree.replicas.push(response.replica);
-                setTree(tree);
+                replicas.push(response.replica)
+                setReplicas(replicas)
                 setOpen(false);
             }
         }).catch((e) => {
