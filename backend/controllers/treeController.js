@@ -73,7 +73,10 @@ module.exports = {
     newReplica: async (req, res) => {
         try {
             const replica = await Replica.create({
-                treeId: req.body.treeId
+                treeId: req.body.treeId,
+                image: req.body.image,
+                sample: req.body.sample,
+                notes: req.body.notes
             })
             const tree = await Tree.findOne({_id: req.body.treeId})
             if (!tree) {
@@ -82,7 +85,21 @@ module.exports = {
             await replica.save()
             tree.replicas.push({ replicaUniqueId: replica.replicaUniqueId })
             await tree.save()
-            res.json({"message": "replica inserita", "tree": tree, "id replica" : replica.replicaUniqueId})
+            res.json({"message": "replica inserita", "replica": replica, "id replica" : replica.replicaUniqueId, 'success': true})
+        } catch (err) {
+            res.status(500).json({message: err.message})
+        }
+    },
+
+    deleteTree: async (req, res) => {
+        try {
+            const tree = await Tree.findOneAndDelete({
+                _id: req.params.treeId
+            })
+            if(!tree) {
+                res.status(404).json({message: "Tree not found"})
+            }
+            res.json({message: "Tree deleted", "success": true})
         } catch (err) {
             res.status(500).json({message: err.message})
         }

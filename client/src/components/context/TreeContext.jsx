@@ -6,3 +6,10 @@ export const TreeContext = createContext(
         setTreeList: () => {}
     }
 );
+
+export const SingleTreeContext = createContext(
+    {
+        tree: null,
+        setTree: () => {}
+    }
+);

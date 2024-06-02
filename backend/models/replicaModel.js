@@ -8,7 +8,8 @@ const replicaSchema = new mongoose.Schema({
     },
     replicaUniqueId: String,
     image: Buffer,
-    sample: String
+    sample: String,
+    notes: String
 })
 
 replicaSchema.pre("save", async function(next) {
