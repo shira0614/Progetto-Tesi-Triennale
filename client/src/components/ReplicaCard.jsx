@@ -34,7 +34,7 @@ export default function ReplicaCard(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size='small' onClick={handleOpen}>Compila analisi</Button>
+                    <Button size='small' color='forest' onClick={handleOpen}>Compila analisi</Button>
                 </CardActions>
             </Box>
             {

@@ -114,8 +114,8 @@ export default function AddAnalysisDialogue(props) {
                             />
                         </Box>
                         <Box sx={{display: 'flex', mt: 3, flexDirection: 'column', alignItems: 'flex-start'}}>
-                            <Button>Aggiungi documento</Button>
-                            <Button>Aggiungi immagine</Button>
+                            <Button color='forest' sx={{ mb: 2 }}>Aggiungi documento</Button>
+                            <Button color='forest'>Aggiungi immagine</Button>
                         </Box>
                     </Box>
                 </form>

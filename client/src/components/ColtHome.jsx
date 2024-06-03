@@ -10,6 +10,7 @@ import {Fab} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import AddTreeDialogue from "./AddTreeDialogue.jsx";
+import Button from "@mui/material/Button";
 
 export default function ColtHome() {
     const [treeList, setTreeList] = useState([]);
@@ -70,15 +71,15 @@ export default function ColtHome() {
                     }
                 </Box>
                 {/* TODO aggiustare i Fab */}
-                <Fab variant='extended' onClick={handleAddTree} sx={{ display: { xs: 'none', sm: 'block' },
-                position: 'fixed', bottom: 15, right: 15 }}>
+                <Button color="forest" variant='outlined' onClick={handleAddTree} sx={{ display: { xs: 'none', sm: 'block' },
+                position: 'fixed', bottom: 15, right: 15, textColor: '#ffffff' }}>
                     <AddIcon sx={{ mr: 1
                     }}/>
                     Aggiungi
-                </Fab>
-                <Fab onClick={handleAddTree} sx={{ display: { xs: 'block', sm: 'none' },
+                </Button>
+                <Fab color="forest" onClick={handleAddTree} sx={{ display: { xs: 'block', sm: 'none' },
                 position: 'fixed', bottom: 15, right: 15 }}>
-                    <AddIcon sx={{ mt: 1 }}/>
+                    <AddIcon sx={{ mt: 1, color: '#ffffff' }}/>
                 </Fab>
             </TreeContext.Provider>
         </Box>

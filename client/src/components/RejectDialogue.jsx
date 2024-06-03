@@ -53,7 +53,7 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button variant='outlined' sx={{ color: '#d32727', borderColor: '#d32727'}} onClick={handleSubmit} autoFocus>
+                <Button variant='outlined' color='error' sx={{ mr: 1 }} onClick={handleSubmit} autoFocus>
                     Rifiuta
                 </Button>
                 <Button onClick={handleClose} sx={{ color: '#0c0e0b' }}>Annulla</Button>

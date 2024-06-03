@@ -245,7 +245,7 @@ export function CompletedAnalysis(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button>
+                    <Button color='forest'>
                         <GetAppRoundedIcon sx={{ mr: 1 }}/> Scarica analisi
                     </Button>
                 </CardActions>

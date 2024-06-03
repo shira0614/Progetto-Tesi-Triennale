@@ -75,9 +75,9 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button>Aggiungi immagine</Button>
-                    <Button onClick={handleClose}>Annulla</Button>
-                    <Button type="submit">Aggiungi</Button>
+                    <Button>Carica immagine</Button>
+                    <Button onClick={handleClose} color='error'>Annulla</Button>
+                    <Button color='forest' type="submit">Aggiungi</Button>
                 </DialogActions>
             </Dialog>
         </>
