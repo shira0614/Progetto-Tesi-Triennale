@@ -93,7 +93,8 @@ export default function AddAnalysisDialogue(props) {
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <Box sx={{mt: 3, ml: 3}}>
                         <Typography variant='h5'>Richiesta di analisi per la
-                            replica: {props.replica.replicaUniqueId}</Typography>
+                            replica: {props.replica.replicaUniqueId}
+                        </Typography>
                         &nbsp;
                         <Typography fontWeight='bold'>Pianta madre:
                             <Typography display='inline'> {props.replica.treeId.treeUniqueId}</Typography>

@@ -9,14 +9,15 @@ import Loading from "./Loading.jsx";
 import {Fab} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
+import AddTreeDialogue from "./AddTreeDialogue.jsx";
 
 export default function ColtHome() {
     const [treeList, setTreeList] = useState([]);
     const [loading, setLoading] = useState(true);
     const treeValue = { treeList, setTreeList };
-    const navigate = useNavigate();
+    const [open, setOpen]  = useState(false)
 
-    const handleAddTree = () => { navigate('/addTree') };
+    const handleAddTree = () => { setOpen(true) };
 
     useEffect(() => {
         getApi('trees/')
@@ -45,6 +46,7 @@ export default function ColtHome() {
     return (
         <Box sx={{ overflowY: 'auto' }}>
             <TreeContext.Provider value={treeValue}>
+                <AddTreeDialogue open={open} setOpen={setOpen}/>
                 <DrawerAppBar />
                 <Box>
                     { treeList.map((tree) => {

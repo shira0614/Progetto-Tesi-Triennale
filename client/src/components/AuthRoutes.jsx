@@ -7,7 +7,7 @@ import verifyToken from "../utils/verifyToken.js";
 import { useState } from "react";
 import { useEffect } from "react";
 import ColtAnalysis from "./ColtAnalysis.jsx";
-import AddTree from './AddTree.jsx';
+import AddTreeDialogue from './AddTreeDialogue.jsx';
 import TreeView from './TreeView.jsx';
 
 export default function AuthRoutes() {
@@ -33,7 +33,6 @@ export default function AuthRoutes() {
                 <Route path="/login" element={<Login verify={setToken} />} />
                 <Route path="/" element={userRole === 'coltivatore' ? <ColtHome /> : <LabHome />} />
                 <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
-                <Route path="/addTree" element={userRole === 'coltivatore' ? <AddTree /> : null} />
                 <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
                 <Route path="/:treeId" element={userRole === 'coltivatore' ? <TreeView /> : null } />
             </Routes>

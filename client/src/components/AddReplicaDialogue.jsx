@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { postApi } from "../utils/apiEndpoints.js";
-import { useContext } from "react";
+import {useContext, useState} from "react";
 import {SingleTreeContext} from "./context/TreeContext.jsx";
 
 export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
