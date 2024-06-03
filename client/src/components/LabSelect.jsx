@@ -37,7 +37,7 @@ function getStyles(name, lab, theme) {
   };
 }
 
-export default function LabSelect() {
+export default function LabSelect({onChangeLabs}) {
   const theme = useTheme();
   const [lab, setLab] = React.useState([]);
 
@@ -48,11 +48,12 @@ export default function LabSelect() {
     setLab(
       typeof value === 'string' ? value.split(',') : value,
     );
+    onChangeLabs(value)
   };
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ mt: 3, width: 300 }}>
         <InputLabel id="lab-select-input-label">Laboratori destinatari</InputLabel>
         <Select
           labelId="lab-select-label"

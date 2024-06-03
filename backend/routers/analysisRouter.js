@@ -10,7 +10,7 @@ const router = express.Router()
 
 router.use(verifyToken)
 
-router.post('/addAnalysis', checkColtRole , analysisController.createAnalysis)
+router.post('/newAnalysis', checkColtRole , analysisController.createAnalysis)
 router.post('/acceptAnalysis', checkLabRole , analysisController.acceptAnalysis) 
 router.post('/updateAnalysis', checkLabRole , analysisController.updateAnalysis) //da rivedere
 router.get('/labAnalyses', checkLabRole, analysisController.getLabAnalyses)

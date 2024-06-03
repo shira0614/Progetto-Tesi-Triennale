@@ -102,8 +102,7 @@ export default function TreeView() {
                         <Fab size="small" onClick={handleClick}>
                             <AddIcon />
                         </Fab>
-                        {
-                            replicas.map((replica) => {
+                        {replicas.map((replica) => {
                                 return (
                                     <ReplicaCard
                                         key={replica._id}
@@ -111,6 +110,7 @@ export default function TreeView() {
                                         image={replica.image}
                                         sample={replica.sample}
                                         notes={replica.notes}
+                                        replica={replica}
                                     />
                                 )
                             })

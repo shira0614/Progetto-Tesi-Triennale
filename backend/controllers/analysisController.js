@@ -12,18 +12,22 @@ module.exports = {
             if(!replica) {
                 return res.status(404).json({ message: 'Replica not found' });
             }
+            const labUser = await User.findOne({ username: req.body.labUsername });
+            if (!labUser) {
+                return res.status(404).json({ message: 'Lab not found' });
+            }
             await Analysis.create({
                 shipper: req.userId,
-                laboratory: req.body.laboratoryId,
+                laboratory: labUser._id,
                 replica: req.body.replicaId,
                 status: 'shipped',
                 protocolID : req.body.protocolID,
                 notes: req.body.notes,
-                documents: [req.body.document],
+                documents: req.body.document,
                 image: req.body.image
 
             })
-            res.json({ 'message': 'analysis created' });
+            res.json({ 'message': 'analysis created', 'success': true });
         } catch (err) {
             res.status(500).json({ message: err.message });
         }

@@ -4,10 +4,20 @@ import CardMedia from "@mui/material/CardMedia";
 import * as React from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import AddAnalysisDialogue from "./AddAnalysisDialogue.jsx";
+import {useState} from "react";
 
 export default function ReplicaCard(props) {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    }
     return (
+        <>
+            <AddAnalysisDialogue open={open} setOpen={setOpen} replica={props.replica}/>
         <Card variant='outlined' sx={{
             display: 'flex',
             mb: '1rem',
@@ -23,6 +33,9 @@ export default function ReplicaCard(props) {
                         <Typography display='inline'> {props.notes}</Typography>
                     </Typography>
                 </CardContent>
+                <CardActions>
+                    <Button size='small' onClick={handleOpen}>Compila analisi</Button>
+                </CardActions>
             </Box>
             {
                 props.image ? <CardMedia
@@ -35,5 +48,6 @@ export default function ReplicaCard(props) {
                 }}/>
             }
         </Card>
+        </>
     )
 }
