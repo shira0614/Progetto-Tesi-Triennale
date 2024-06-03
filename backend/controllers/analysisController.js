@@ -39,10 +39,10 @@ module.exports = {
             if (!analysis) {
                 return res.status(404).json({ message: 'Analysis not found' });
             }
-            analysis.status = 'accepted'
+            analysis.status = req.body.status
             if (req.body.notes) analysis.notes = req.body.notes
             await analysis.save()
-            res.json({'message': 'analysis saved', 'analysis': analysis})
+            res.json({'message': 'analysis saved', 'analysis': analysis, 'success': true})
         } catch (err) {
             res.status(500).json({ message: err.message });
         }

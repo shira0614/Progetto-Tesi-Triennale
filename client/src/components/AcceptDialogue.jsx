@@ -15,15 +15,16 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const body = {
-            analysisId: id
+            analysisId: id,
+            status: 'accepted'
         };
         postApi('analysis/acceptAnalysis', body).then((data) => {
             if(data.success) {
-                const updatedList = analysisList.map((analysis) => {
+                let updatedList = analysisList.map((analysis) => {
                     if(analysis._id === id) {
-                        analysis.status = 'accepted';
+                        return {...analysis, status: 'accepted'};
                     }
-                    return updatedList;
+                    return analysis;
                 });
                 setAnalysisList(updatedList);
                 handleClose();

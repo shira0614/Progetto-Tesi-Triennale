@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { deleteApi } from "../utils/apiEndpoints.js";
+import { postApi } from "../utils/apiEndpoints.js";
 import {useContext, useState} from "react";
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 
@@ -14,10 +14,17 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        deleteApi('analysis/deleteAnalysis', id).then((data) => {
+        const body = {
+            analysisId: id,
+            status: 'rejected'
+        };
+        postApi('analysis/acceptAnalysis', body).then((data) => {
             if(data.success) {
-                const updatedList = analysisList.filter((analysis) => {
-                    return analysis._id !== id;
+                let updatedList = analysisList.map((analysis) => {
+                    if(analysis._id === id) {
+                        return {...analysis, status: 'rejected'};
+                    }
+                    return analysis;
                 });
                 setAnalysisList(updatedList);
                 handleClose();
@@ -42,7 +49,7 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText >
-                    Vuoi rifiutare questa analisi? La richiesta verrà eliminata.
+                    Vuoi rifiutare questa analisi?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

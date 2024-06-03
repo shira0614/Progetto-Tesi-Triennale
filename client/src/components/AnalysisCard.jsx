@@ -100,15 +100,15 @@ export function HomeAnalysisCard(props) {
 
 export function NewAnalysisCard(props) {
     const [ openAccept, setOpenAccept ] = useState(false)
-    const [ openDelete, setOpenDelete] = useState(false)
+    const [ openReject, setOpenReject] = useState(false)
 
     const handleOpenAccept = () => {setOpenAccept(true)}
-    const handleOpenDelete = () => {setOpenDelete(true)}
+    const handleOpenReject = () => {setOpenReject(true)}
 
     return (
         <>
         <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
-        <RejectDialog setOpen={setOpenDelete} isOpen={openDelete} id={props._id}/>
+        <RejectDialog setOpen={setOpenReject} isOpen={openReject} id={props._id}/>
             <Card sx={{
                 display: 'flex',
                 border: '3px solid',
@@ -137,7 +137,7 @@ export function NewAnalysisCard(props) {
                 </CardContent>
                 <CardActions>
                     <Button sx={{ color: '#2E644A'}} onClick={handleOpenAccept}>Accetta</Button>
-                    <Button sx={{ color: '#d32727'}} onClick={handleOpenDelete}>Rifiuta</Button>
+                    <Button sx={{ color: '#d32727'}} onClick={handleOpenReject}>Rifiuta</Button>
                 </CardActions>
                 </Box>
                 {
