@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { CssBaseline } from "@mui/material"
 import AuthRoutes from "./components/AuthRoutes.jsx";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
 
 
 export const theme = createTheme({

@@ -11,6 +11,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react'
 
@@ -18,6 +19,8 @@ const baseURL = 'http://localhost:3000'
 
 export default function Login({verify}) {
     const navigate = useNavigate();
+    const theme = useTheme();
+    console.log(theme)
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -102,8 +105,9 @@ export default function Login({verify}) {
                             <Button
                                 type="submit"
                                 fullWidth
+                                color="primary"
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, backgroundColor: '#0c0e0b' , color: '#ffffff' , borderColor: '#0c0e0b' }}
+                                sx={{ mt: 3, mb: 2 }}
                             >
                                 Accedi
                             </Button>
