@@ -4,5 +4,5 @@ const {authUser, createUser} = require('../controllers/userController.js')
 const {checkSuperRole} = require("../middleware/checkRole");
 
 router.post('/login', authUser);
-router.post("/signup", checkSuperRole , createUser);
+router.post("/signup", checkSuperRole ,createUser); //TODO fixare checkSuperRole
 module.exports = router;

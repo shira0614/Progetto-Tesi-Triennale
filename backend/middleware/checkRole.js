@@ -30,6 +30,7 @@ const checkLabRole = async (req, res, next) => {
     }
 };
 
+//TODO fixare checkSuperRole
 const checkSuperRole = async (req, res, next) => {
     try {
         const user = await User.findById(req.userId);
