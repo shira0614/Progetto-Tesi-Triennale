@@ -115,9 +115,19 @@ module.exports = {
 
     getAnalyses: async (req, res) => {
         try {
-            const user = await User.findOne({ _id: req.userId });
+            const user = await User.findOne({ _id: req.userId })
             if (user.role === 'coltivatore') {
-                const analyses = await Analysis.find({ shipper: req.userId });
+                const analyses = await Analysis.find({ shipper: req.userId }).populate([
+                    'laboratory',
+                    'replica',
+                    {
+                        path: 'replica',
+                        populate: {
+                            path: 'treeId',
+                            model: 'Tree'
+                        }
+                    }
+                ]);
                 if(!analyses) {
                     return res.status(404).json({ 'message': 'No analyses found' });
                 } else {

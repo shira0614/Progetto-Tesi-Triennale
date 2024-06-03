@@ -11,6 +11,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import '../index.css'
+import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import { useNavigate } from "react-router-dom";
 import AcceptDialog from "./AcceptDialogue.jsx";
 import RejectDialog from "./RejectDialogue.jsx";
@@ -152,4 +153,113 @@ export function NewAnalysisCard(props) {
             </Card>
         </>
     );
+}
+
+export function ColtAnalysisCard(props) {
+    return (
+        <Card sx={{
+            display: 'flex',
+            border: '3px solid',
+            borderColor: '#ffffff00',
+            m: '1rem',
+        }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography variant='h5' gutterBottom>
+                        {props.analysis.replica.replicaUniqueId}
+                    </Typography>
+                    <Typography variant="body1">
+                        Destinatario: {props.analysis.laboratory.username}
+                    </Typography>
+                    <Typography variant='h6'>
+                        Status:
+                    </Typography>
+                    <Typography>
+                        {props.analysis.status === 'shipped' ? "L'analisi è in attesa di riscontro da parte del laboratorio"
+                        : props.analysis.status === 'accepted' ? "L'analisi è stata accettata dal laboratorio"
+                                :"L'analisi è stata rifiutata dal laboratorio"}
+                    </Typography>
+                    &nbsp;
+                    <Typography variant='h6'>Dettagli analisi</Typography>
+                    <Typography fontWeight='bold'>Note:
+                        <Typography variant='body1'>{props.analysis.notes ? props.analysis.notes : 'Nessuna'}</Typography>
+                    </Typography>
+                    <Typography fontWeight='bold'>Documenti:
+                        &nbsp;
+                        <Typography variant='body1' display='inline'>{props.analysis.document ? props.analysis.document : 'Nessuno'}</Typography>
+                    </Typography>
+                    <Typography fontWeight='bold'>Campioni:
+                        &nbsp;
+                        <Typography variant='body1' display='inline'>{props.analysis.replica.sample}</Typography>
+                    </Typography>
+                </CardContent>
+            </Box>
+            {
+                props.image ? <CardMedia
+                    component="img"
+                    alt="plant image"
+                    height="140"
+                    image = {props.image}
+                /> : <Box className='leaf-mini' sx={{
+                    minWidth: '10vw', minHeight: '100%', ml: 4
+                }}/>
+            }
+        </Card>
+    )
+}
+
+export function CompletedAnalysis(props) {
+    return (
+        <Card sx={{
+            display: 'flex',
+            border: '3px solid',
+            borderColor: '#ffffff00',
+            m: '1rem',
+        }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography variant='h5' gutterBottom>
+                        {props.analysis.replica.replicaUniqueId}
+                    </Typography>
+                    <Typography variant="body1">
+                        Mittente: {props.analysis.laboratory.username}
+                    </Typography>
+                    <Typography variant='h6'>
+                        Status:
+                    </Typography>
+                    <Typography>
+                       L'analisi è stata completata
+                    </Typography>
+                    &nbsp;
+                    <Typography variant='h6'>Dettagli analisi</Typography>
+                    <Typography fontWeight='bold'>Note:
+                        <Typography variant='body1'>{props.analysis.notes ? props.analysis.notes : 'Nessuna'}</Typography>
+                    </Typography>
+                    <Typography fontWeight='bold'>Documenti:
+                        &nbsp;
+                        <Typography variant='body1' display='inline'>{props.analysis.document ? props.analysis.document : 'Nessuno'}</Typography>
+                    </Typography>
+                    <Typography fontWeight='bold'>Campioni:
+                        &nbsp;
+                        <Typography variant='body1' display='inline'>{props.analysis.replica.sample}</Typography>
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button>
+                        <GetAppRoundedIcon sx={{ mr: 1 }}/> Scarica analisi
+                    </Button>
+                </CardActions>
+            </Box>
+            {
+                props.image ? <CardMedia
+                    component="img"
+                    alt="plant image"
+                    height="140"
+                    image = {props.image}
+                /> : <Box className='leaf-mini' sx={{
+                    minWidth: '10vw', minHeight: '100%', ml: 4
+                }}/>
+            }
+        </Card>
+    )
 }
