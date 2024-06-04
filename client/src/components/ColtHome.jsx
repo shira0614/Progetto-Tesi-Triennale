@@ -39,7 +39,6 @@ export default function ColtHome() {
             })
     }, []);
 
-    //TODO Loading component
     if (loading) {
         return <Loading />
     }

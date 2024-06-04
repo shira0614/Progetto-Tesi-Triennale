@@ -24,8 +24,7 @@ export default function LabHome() {
                 setLoading(false);
             })
     }, []);
-
-    //TODO Loading component
+    
         if (loading) {
             return <Loading />
         }
@@ -34,19 +33,11 @@ export default function LabHome() {
             <AnalysisContext.Provider value={analysisValue}>
                 <DrawerAppBar />
                 <Box>
-                {analysisList && filterAnalyses(analysisList, 'shipped').map((analysis) => {
+                {analysisList && filterAnalyses(analysisList, 'accepted').map((analysis) => {
                     return(
                         <HomeAnalysisCard
                             key={analysis._id}
-                            _id={analysis._id}
-                            laboratory={analysis.laboratory}
-                            replica={analysis.replica}
-                            shipper={analysis.shipper}
-                            status={analysis.status}
-                            protocolId={analysis.protocolId}
-                            notes={analysis.notes}
-                            documents={analysis.documents}
-                            image={analysis.image}
+                            analysis={analysis}
                         />
                     )
                 })}

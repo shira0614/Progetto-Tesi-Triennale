@@ -2,6 +2,7 @@ const User = require("../models/userModel")
 const Replica = require('../models/replicaModel')
 const Analysis = require('../models/analysisModel')
 const mongoose = require("mongoose");
+const fs = require('fs');
 const multer = require("multer");
 const upload = multer({ dest: './uploads/' });
 
@@ -48,45 +49,30 @@ module.exports = {
         }
     },
 
-    //sending files over http?
     updateAnalysis: async (req, res) => {
+        console.log('Request file:', req.file);
         try {
-            if (req.body.document) {
+            if (req.file) {
+                const fileBuffer = fs.readFileSync(req.file.path);
+                console.log('File buffer:', fileBuffer);
                 const analysis = await Analysis.findOne({_id: req.body.analysisId});
                 if (!analysis) {
                     return res.status(404).json({ 'message': 'Analysis not found' });
                 }
-                analysis.documents.push(req.body.document);
+                analysis.documents.push({
+                    data: fileBuffer,
+                    contentType: req.file.mimetype
+                });
+                analysis.notes = req.body.notes;
                 analysis.image = req.body.image;
                 analysis.status = 'completed';
                 await analysis.save();
-                return res.json({ 'message': 'Analysis saved', 'analysis': analysis });
+                fs.unlinkSync(req.file.path);
+                return res.json({ 'message': 'Analysis saved', 'analysis': analysis, 'success': true });
             }
             return res.status(400).json({ 'message': 'No document provided' });
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error': err.message });
-        }
-    },
-
-    addDocument: async (req, res) => {
-        try {
-            const analysis = await Analysis.findOne({ _id: req.params.analysisId });
-            if (!analysis) {
-                return res.status(404).json({ message: 'Analysis not found' });
-            }
-            const file = req.file;
-            if (!file) {
-                return res.status(400).json({ message: 'No file provided' });
-            }
-            analysis.documents.push({
-                data: fs.readFileSync(file.path),
-                contentType: file.mimetype
-            });
-            await analysis.save();
-            fs.unlinkSync(file.path); // Delete file after saving to database
-            return res.json({ message: 'File added to analysis', analysis: analysis });
-        } catch (err) {
-            return res.status(500).json({ message: 'An error occurred', error: err.message });
         }
     },
 

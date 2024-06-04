@@ -1,6 +1,6 @@
 export function filterAnalyses(analyses, status) {
     return analyses.filter((analysis) => {
-        return analysis.status !== status;
+        return analysis.status === status;
     });
 }
 

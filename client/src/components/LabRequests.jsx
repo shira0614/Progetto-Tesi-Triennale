@@ -25,7 +25,6 @@ export default function LabRequests() {
             })
     }, []);
 
-    //TODO Loading component
         if (loading) {
             return <Loading />
         }

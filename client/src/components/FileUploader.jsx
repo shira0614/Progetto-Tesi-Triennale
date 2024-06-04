@@ -32,7 +32,6 @@ const SingleFileUploader = () => {
             formData.append("file", file);
 
             try {
-                //TODO aggiungere endpoint
                 const result = await fetch("", {
                     method: "POST",
                     body: formData,

@@ -40,7 +40,7 @@ export function HomeAnalysisCard(props) {
     const handleOpenUpload = () => { setOpenUpload(true) }
     return (
         <>
-            { /* qui il component CompleteDialogue */ }
+            <CompleteDialogue setOpen={setOpenUpload} isOpen={openUpload} analysis={props.analysis}/>
                 <Card sx={{
                     display: 'flex',
                     border: '3px solid',
@@ -50,13 +50,13 @@ export function HomeAnalysisCard(props) {
                     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                         <CardContent sx={{ flex: '1 0 auto' }}>
                                 <Typography variant='h5' gutterBottom >
-                                    {props.replica.replicaUniqueId}
+                                    {props.analysis.replica.replicaUniqueId}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {props.shipper.username}
+                                    {props.analysis.shipper.username}
                                 </Typography>
                                 <Typography variant="body2">
-                                    Status: {props.status}
+                                    Status: {props.analysis.status}
                                 </Typography>
                         </CardContent>
                         <CardActions>
@@ -73,22 +73,22 @@ export function HomeAnalysisCard(props) {
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
                                 <Typography variant='h6' display='block'>Dettagli</Typography>
-                                <Typography variant='h7'>Pianta madre: {props.replica.treeId.treeUniqueId}</Typography>
+                                <Typography variant='h7'>Pianta madre: {props.analysis.replica.treeId.treeUniqueId}</Typography>
                                 &nbsp;
-                                <Typography variant='body2' color="text.secondary" display='inline'>{props.replica.treeId.sottospecie}, {props.replica.treeId.cultivar}</Typography>
-                                <Typography variant='h7' display='block'>Inoculazione: {props.replica.treeId.inoculated? 'Si' : 'No'}</Typography>
-                                <Typography variant='h7' display='block'>Infezione: {props.replica.treeId.infectionType}</Typography>
+                                <Typography variant='body2' color="text.secondary" display='inline'>{props.analysis.replica.treeId.sottospecie}, {props.analysis.replica.treeId.cultivar}</Typography>
+                                <Typography variant='h7' display='block'>Inoculazione: {props.analysis.replica.treeId.inoculated? 'Si' : 'No'}</Typography>
+                                <Typography variant='h7' display='block'>Infezione: {props.analysis.replica.treeId.infectionType}</Typography>
                                 <Typography variant='h7'>Note: </Typography>
-                                <Typography variant='body1'>{props.notes ? props.notes : 'Nessuna'}</Typography>
+                                <Typography variant='body1'>{props.analysis.notes ? props.analysis.notes : 'Nessuna'}</Typography>
                             </CardContent>
                         </Collapse>
                     </Box>
                         {
-                            props.image ? <CardMedia
+                            props.analysis.image ? <CardMedia
                                 component="img"
                                 alt="plant image"
                                 height="140"
-                                image = {props.image}
+                                image = {props.analysis.image}
                             /> : <Box className='leaf-mini' sx={{
                                 minWidth: '10vw', minHeight: '100%', ml: 4
                             }}/>
