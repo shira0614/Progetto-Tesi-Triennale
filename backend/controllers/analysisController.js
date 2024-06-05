@@ -40,6 +40,8 @@ module.exports = {
                 });
                 analysis.image = imageBuffer;
                 await analysis.save();
+                fs.unlinkSync(documentFile.path);
+                fs.unlinkSync(imageFile.path);
             } else {
                 await analysis.save();
             }
