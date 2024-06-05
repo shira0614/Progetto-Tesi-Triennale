@@ -40,7 +40,10 @@ module.exports = {
                     data: documentBuffer,
                     contentType: documentFile.mimetype
                 });
-                analysis.image = imageBuffer;
+                analysis.image = {
+                    data: imageBuffer,
+                    contentType: imageFile.mimetype
+                };
                 await analysis.save();
                 fs.unlinkSync(documentFile.path);
                 fs.unlinkSync(imageFile.path);

@@ -25,7 +25,10 @@ module.exports = {
         try {
             const tree = await Tree.create(local_tree)
             if(req.file){
-                tree.image = fs.readFileSync(req.file.path);
+                tree.image = {
+                    data: fs.readFileSync(req.file.path),
+                    contentType: req.file.mimetype
+                };
                 await tree.save()
                 fs.unlinkSync(req.file.path);
             } else {
@@ -95,7 +98,10 @@ module.exports = {
                 return res.status(404).json({message: "Tree not found"});
             }
             if(req.file){
-                replica.image = fs.readFileSync(req.file.path);
+                replica.image = {
+                    data: fs.readFileSync(req.file.path),
+                    contentType: req.file.mimetype
+                };
                 await replica.save();
                 fs.unlinkSync(req.file.path);
             } else {
