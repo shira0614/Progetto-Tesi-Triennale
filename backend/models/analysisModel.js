@@ -6,6 +6,12 @@ const documentSchema = new Schema({
     contentType: String
 });
 
+const imageSchema = new Schema({
+    data: Buffer,
+    contentType: String
+});
+
+
 const analysisSchema = new Schema({
     laboratory: {
         type: mongoose.Schema.ObjectId,
@@ -26,7 +32,7 @@ const analysisSchema = new Schema({
     protocolId: String,
     notes: String,
     documents: [documentSchema],
-    image: Buffer
+    image: imageSchema
 })
 
 const analysisModel = mongoose.model('Analysis', analysisSchema)

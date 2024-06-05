@@ -1,13 +1,18 @@
 const mongoose = require('mongoose')
 const Tree = require('./treeModel')
 
+const imageSchema = new mongoose.Schema({
+    data: Buffer,
+    contentType: String
+});
+
 const replicaSchema = new mongoose.Schema({
     treeId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Tree'
     },
     replicaUniqueId: String,
-    image: Buffer,
+    image: imageSchema,
     sample: String,
     notes: String
 })

@@ -92,7 +92,10 @@ module.exports = {
 
                 if(req.files['image'] && req.files['image'][0]) {
                     const imageFile = req.files['image'][0];
-                    analysis.image = fs.readFileSync(imageFile);
+                    analysis.image = {
+                        data: fs.readFileSync(imageFile),
+                        contentType: imageFile.mimetype
+                    }
                     await analysis.save();
                     fs.unlinkSync(imageFile.path);
                 }

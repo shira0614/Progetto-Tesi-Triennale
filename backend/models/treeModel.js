@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 
+const imageSchema = new mongoose.Schema({
+    data: Buffer,
+    contentType: String
+});
+
 const treeSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.ObjectId,
@@ -20,7 +25,7 @@ const treeSchema = new mongoose.Schema({
     infectionType: String,
     timestamp: Date,
     notes: String,
-    image: Buffer
+    image: imageSchema
 })
 
 const cultivar = Object.freeze({
