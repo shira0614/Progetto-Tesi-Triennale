@@ -67,7 +67,7 @@ module.exports = {
                 if (!Array.isArray(analysis.documents)) {
                     analysis.documents = [];
                 }
-                
+
                 analysis.documents.push({
                     data: fileBuffer,
                     contentType: req.file.mimetype
