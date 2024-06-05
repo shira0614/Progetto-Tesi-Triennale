@@ -15,5 +15,6 @@ router.post('/acceptAnalysis', checkLabRole , analysisController.acceptAnalysis)
 router.post('/updateAnalysis', upload.fields([{ name: 'document', maxCount: 1 }, { name: 'image', maxCount: 1 }]), analysisController.updateAnalysis);router.get('/labAnalyses', checkLabRole, analysisController.getLabAnalyses)
 router.delete('/deleteAnalysis/:analysisId', checkLabRole, analysisController.deleteAnalysis)
 router.get('/', checkColtRole, analysisController.getAnalyses)
+router.get('/download/:id', analysisController.downloadAnalysis)
 
 module.exports = router

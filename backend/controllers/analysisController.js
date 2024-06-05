@@ -3,7 +3,9 @@ const Replica = require('../models/replicaModel')
 const Analysis = require('../models/analysisModel')
 const mongoose = require("mongoose");
 const fs = require('fs');
+const { Readable } = require('stream');
 const multer = require("multer");
+const JSZip = require("jszip");
 const upload = multer({ dest: './uploads/' });
 
 module.exports = {
@@ -169,6 +171,37 @@ module.exports = {
             }
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
+        }
+    },
+
+    downloadAnalysis: async (req, res) => {
+        try {
+            const analysis = await Analysis.findById(req.params.id);
+            if (!analysis) {
+                return res.status(404).json({ message: 'Analysis not found' });
+            }
+
+            const zip = new JSZip();
+            analysis.documents.forEach((doc, index) => {
+                if (doc && doc.contentType) {
+                    zip.file(`document${index + 1}.${doc.contentType.split('/')[1]}`, doc.data);
+                }
+            });
+
+            zip.file('notes.txt', analysis.notes || 'Non sono presenti note');
+
+            if (analysis.image) {
+                zip.file('image.jpg', analysis.image);
+            }
+
+            zip.generateAsync({ type: 'nodebuffer' }).then((content) => {
+                res.set('Content-Disposition', `attachment; filename=analysis_${analysis._id}.zip`);
+                res.set('Content-Type', 'application/zip');
+                res.send(content);
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred', error: error.message });
         }
     }
 }
