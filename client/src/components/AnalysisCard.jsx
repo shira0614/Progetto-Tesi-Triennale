@@ -12,11 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import '../index.css'
 import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
-import { useNavigate } from "react-router-dom";
 import AcceptDialog from "./AcceptDialogue.jsx";
 import RejectDialog from "./RejectDialogue.jsx";
 import CompleteDialogue from "./CompleteDialogue.jsx";
 import { useState } from 'react';
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -209,6 +211,26 @@ export function ColtAnalysisCard(props) {
 }
 
 export function CompletedAnalysis(props) {
+
+    const handleDownload = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}analysis/download/${props.analysis._id}`, {
+                responseType: 'blob',
+                headers: {
+                    'token': localStorage.getItem('token')
+                }
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `analysis_${props.analysis._id}.zip`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error('Error downloading the analysis:', error);
+        }
+    };
+
     return (
         <Card sx={{
             display: 'flex',
@@ -235,9 +257,9 @@ export function CompletedAnalysis(props) {
                     <Typography fontWeight='bold'>Note:
                         <Typography variant='body1'>{props.analysis.notes ? props.analysis.notes : 'Nessuna'}</Typography>
                     </Typography>
-                    <Typography fontWeight='bold'>Documenti:
+                    <Typography fontWeight='bold'>Allegati:
                         &nbsp;
-                        <Typography variant='body1' display='inline'>{props.analysis.document ? props.analysis.document : 'Nessuno'}</Typography>
+                        <Typography variant='body1' display='inline'>{props.analysis.documents ? 'Si' : 'Nessuno'}</Typography>
                     </Typography>
                     <Typography fontWeight='bold'>Campioni:
                         &nbsp;
@@ -245,7 +267,7 @@ export function CompletedAnalysis(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button color='forest'>
+                    <Button color='forest' onClick={handleDownload}>
                         <GetAppRoundedIcon sx={{ mr: 1 }}/> Scarica analisi
                     </Button>
                 </CardActions>

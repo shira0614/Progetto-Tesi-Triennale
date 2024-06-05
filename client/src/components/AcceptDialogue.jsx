@@ -8,8 +8,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { postApi } from "../utils/apiEndpoints.js";
 import {useContext, useState} from "react";
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
+import axios from "axios";
 
-//TODO implementare il download dei documenti
+const BASE_URL = 'http://localhost:3000/api/'
 
 export default function AcceptDialog({ isOpen, setOpen, id }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
@@ -22,20 +23,44 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
         };
         postApi('analysis/acceptAnalysis', body).then((data) => {
             if(data.success) {
-                let updatedList = analysisList.map((analysis) => {
-                    if(analysis._id === id) {
-                        return {...analysis, status: 'accepted'};
-                    }
-                    return analysis;
+                handleDownload().then(() => {
+                    let updatedList = analysisList.map((analysis) => {
+                        if(analysis._id === id) {
+                            return {...analysis, status: 'accepted'};
+                        }
+                        return analysis;
+                    });
+                    setAnalysisList(updatedList);
+                    handleClose();
+                }).catch((e) => {
+                    console.log(e);
+                    handleClose();
                 });
-                setAnalysisList(updatedList);
-                handleClose();
             }
         }).catch((e) => {
             console.log(e);
             handleClose();
         })
     }
+
+    const handleDownload = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}analysis/download/${id}`, {
+                responseType: 'blob',
+                headers: {
+                    'token': localStorage.getItem('token')
+                }
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `analysis_${id}.zip`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error('Error downloading the analysis:', error);
+        }
+    };
 
     const handleClose = () => {
         setOpen(false);
