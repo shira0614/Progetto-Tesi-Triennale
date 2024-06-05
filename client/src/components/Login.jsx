@@ -110,11 +110,11 @@ export default function Login({verify}) {
                                 Accedi
                             </Button>
                             <Grid container>
-                                    <Link sx={{color: '#0c0e0b'}} onClick={() => {
+                                    <Button color='primary' sx={{ mb: 2 }} onClick={() => {
                                         setOpen(true);
                                     }}>
                                         {"Non hai un account?"}
-                                    </Link>
+                                    </Button>
                                     <Collapse in={open}>
                                     <Alert severity="warning" action={
                                         <IconButton

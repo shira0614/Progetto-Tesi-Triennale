@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import {AnalysisContext} from "./context/AnalysisContetx.jsx";
 import { getApi } from "../utils/apiEndpoints.js";
 import Loading from "./Loading.jsx";
-import {shippedAnalyses, completedAnalyses, acceptedAnalyses} from "../utils/analysisUtils.js";
+import {filterAnalyses, acceptedAnalyses} from "../utils/analysisUtils.js";
 import {ColtAnalysisCard, CompletedAnalysis} from "./AnalysisCard.jsx";
 
 export default function ColtAnalysis() {
@@ -51,7 +51,7 @@ export default function ColtAnalysis() {
                     <TabPanel value="1">
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                             {
-                                analysisList && shippedAnalyses(analysisList).map((analysis) => {
+                                analysisList && filterAnalyses(analysisList, 'shipped').map((analysis) => {
                                     return <ColtAnalysisCard analysis={analysis} key={analysis._id}/>
                                 })
                             }
@@ -69,7 +69,7 @@ export default function ColtAnalysis() {
                     <TabPanel value="3">
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                             {
-                                analysisList && completedAnalyses(analysisList).map((analysis) => {
+                                analysisList && filterAnalyses(analysisList, 'completed').map((analysis) => {
                                     return <CompletedAnalysis analysis={analysis} key={analysis._id}/>
                                 })
                             }

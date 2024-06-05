@@ -24,7 +24,7 @@ export default function LabHome() {
                 setLoading(false);
             })
     }, []);
-    
+
         if (loading) {
             return <Loading />
         }

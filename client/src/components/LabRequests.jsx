@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Loading from './Loading';
 import { NewAnalysisCard } from './AnalysisCard';
 import { Box } from '@mui/material';
-import { shippedAnalyses } from '../utils/analysisUtils';
+import { filterAnalyses } from '../utils/analysisUtils';
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 
 export default function LabRequests() {
@@ -35,7 +35,7 @@ export default function LabRequests() {
                 <Box sx={{ overflowY: 'auto' }}>
                     <DrawerAppBar />
                     <Box>
-                    {analysisList && shippedAnalyses(analysisList).map((analysis) => {
+                    {analysisList && filterAnalyses(analysisList, 'shipped').map((analysis) => {
                         return(
                             <NewAnalysisCard
                                 key={analysis._id}

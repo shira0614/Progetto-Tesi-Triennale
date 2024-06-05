@@ -1,4 +1,10 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+
+const documentSchema = new Schema({
+    data: Buffer,
+    contentType: String
+});
 
 const analysisSchema = new mongoose.Schema({
     laboratory: {
@@ -19,7 +25,7 @@ const analysisSchema = new mongoose.Schema({
     },
     protocolId: String,
     notes: String,
-    documents: [Buffer],
+    documents: [documentSchema],
     image: Buffer
 })
 

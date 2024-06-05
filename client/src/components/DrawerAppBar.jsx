@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Button from '@mui/material/Button';
 import {useEffect, useState} from "react";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
@@ -19,9 +20,9 @@ import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import {ListItemIcon} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 
-
+//TODO cambiare icona ColtHome
 const coltNav = [
-    {path: '/', label: 'Home', icon: HomeRoundedIcon},
+    {path: '/', label: 'Alberi', icon: HomeRoundedIcon},
     {path: '/analyses', label: 'Analisi', icon: BorderColorRoundedIcon}
 ]
 const labNav = [
@@ -54,6 +55,12 @@ export default function DrawerAppBar() {
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
+
+    const handleLogout = () => {
+        window.localStorage.clear();
+        navigate('/login');
+    };
+
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -103,6 +110,24 @@ export default function DrawerAppBar() {
                         sx={{ mr: 2, display: { sm: 'none' } }}
                     >
                         <MenuIcon />
+                    </IconButton>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        onClick={handleLogout}
+                        sx={{ mr: 2, display: { xs: 'none', sm: 'block' } }}
+                    >
+                        <LogoutRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        onClick={handleLogout}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                        <LogoutRoundedIcon />
                     </IconButton>
                     <Typography
                         variant="h6"

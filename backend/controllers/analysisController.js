@@ -51,14 +51,23 @@ module.exports = {
 
     updateAnalysis: async (req, res) => {
         console.log('Request file:', req.file);
+        console.log('Request body:', req.body);
         try {
             if (req.file) {
                 const fileBuffer = fs.readFileSync(req.file.path);
+
                 console.log('File buffer:', fileBuffer);
+
                 const analysis = await Analysis.findOne({_id: req.body.analysisId});
                 if (!analysis) {
                     return res.status(404).json({ 'message': 'Analysis not found' });
                 }
+
+                // Ensure the documents array is initialized
+                if (!Array.isArray(analysis.documents)) {
+                    analysis.documents = [];
+                }
+                
                 analysis.documents.push({
                     data: fileBuffer,
                     contentType: req.file.mimetype

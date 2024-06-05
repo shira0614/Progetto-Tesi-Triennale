@@ -14,6 +14,7 @@ import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 import CoronavirusRoundedIcon from '@mui/icons-material/CoronavirusRounded';
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import axios from 'axios';
 
 export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
@@ -23,21 +24,20 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
         event.preventDefault();
         const data = new FormData(formRef.current);
 
-        console.log('Document file:', data.get('document'));
-
         data.append('analysisId', props.analysis._id);
-        data.append('image', data.get('image'));
-        data.append('notes', data.get('notes'));
 
-        console.log('Body', data)
+        for (let [key, value] of data.entries()) {
+            console.log(`${key}:`, value);
+        }
 
-        postApi('analysis/updateAnalysis', data, {
+        axios.post('http://localhost:3000/api/analysis/updateAnalysis', data, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                'token': localStorage.getItem('token')
             }
         }).then((response) => {
-            if(response.success) {
-                console.log(response);
+            if(response.data.success) {
+                console.log(response.data);
                 let updatedList = analysisList.map((analysis) => {
                     if(analysis._id === props.analysis._id) {
                         return {...analysis, status: 'completed'};
@@ -104,17 +104,8 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="outlined"
-                        color="primary"
                         sx={{ mb: 3 }}
-                    >
-                        Carica immagine
-                    </Button>
-
+                    />
                     <TextField
                         type="file"
                         variant="outlined"
@@ -127,6 +118,7 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        sx={{ mb: 3 }}
                     />
                     <Button
                         type="submit"
@@ -134,14 +126,11 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                         variant="contained"
                         color="primary"
                     >
-                        Carica documento
+                        Invia
                     </Button>
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' onClick={handleSubmit} color='forest' sx={{ color: '#ffffff' }} autoFocus>
-                    Invia
-                </Button>
                 <Button onClick={handleClose} sx={{ color: '#0c0e0b' }}>Annulla</Button>
             </DialogActions>
         </Dialog>
