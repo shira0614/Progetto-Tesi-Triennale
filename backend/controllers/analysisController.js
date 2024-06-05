@@ -69,18 +69,11 @@ module.exports = {
     },
 
     updateAnalysis: async (req, res) => {
-        console.log('Request files:', req.files);
         console.log('Request body:', req.body);
         try {
-            if (req.files) {
+            if (req.files['document'][0]) {
                 const documentFile = req.files['document'][0];
-                const imageFile = req.files['image'][0];
-
                 const documentBuffer = fs.readFileSync(documentFile.path);
-                const imageBuffer = fs.readFileSync(imageFile.path);
-
-                console.log('Document buffer:', documentBuffer);
-                console.log('Image buffer:', imageBuffer);
 
                 const analysis = await Analysis.findOne({_id: req.body.analysisId});
                 if (!analysis) {
@@ -96,12 +89,18 @@ module.exports = {
                     data: documentBuffer,
                     contentType: documentFile.mimetype
                 });
+
+                if(req.files['image'] && req.files['image'][0]) {
+                    const imageFile = req.files['image'][0];
+                    analysis.image = fs.readFileSync(imageFile);
+                    await analysis.save();
+                    fs.unlinkSync(imageFile.path);
+                }
+
                 analysis.notes = req.body.notes;
-                analysis.image = imageBuffer;
                 analysis.status = 'completed';
                 await analysis.save();
                 fs.unlinkSync(documentFile.path);
-                fs.unlinkSync(imageFile.path);
                 return res.json({ 'message': 'Analysis saved', 'analysis': analysis, 'success': true });
             }
             return res.status(400).json({ 'message': 'No document or image provided' });
