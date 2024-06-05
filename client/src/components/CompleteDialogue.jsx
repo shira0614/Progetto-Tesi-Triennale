@@ -3,22 +3,26 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import FailAlert from "./FailAlert.jsx";
 import DialogTitle from '@mui/material/DialogTitle';
 import GrassRoundedIcon from '@mui/icons-material/GrassRounded';
-import { postApi } from "../utils/apiEndpoints.js";
-import {useContext, useRef} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import NaturePeopleRoundedIcon from '@mui/icons-material/NaturePeopleRounded';
 import {FormControl, MenuItem, Select, Chip, Stack} from "@mui/material";
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 import CoronavirusRoundedIcon from '@mui/icons-material/CoronavirusRounded';
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import SuccessAlert from "./SuccessAlert.jsx";
 import axios from 'axios';
 
 export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
-    const formRef = React.useRef();
+    const formRef = useRef();
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openFail, setOpenFail] = useState(false);
+
+    //TODO sistemare gli alert
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -45,9 +49,11 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                     return analysis;
                 });
                 setAnalysisList(updatedList);
+                setOpenSuccess(true);
             }
         }).catch((e) => {
             console.log(e);
+            setOpenFail(true);
         })
     };
 
@@ -56,6 +62,9 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
     };
 
     return (
+        <>
+        <FailAlert open={openFail} setOpen={setOpenFail} message={"L'analisi non è stata inviata correttamente. Riprovare"}></FailAlert>
+        <SuccessAlert open={openSuccess} setOpen={setOpenSuccess} message={'Analisi inviata con successo'}/>
         <Dialog
             open={isOpen}
             onClose={handleClose}
@@ -134,6 +143,7 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                 <Button onClick={handleClose} sx={{ color: '#0c0e0b' }}>Annulla</Button>
             </DialogActions>
         </Dialog>
+        </>
     );
 }
 

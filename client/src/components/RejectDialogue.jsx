@@ -45,7 +45,7 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
             onClose={handleClose}
         >
             <DialogTitle >
-                {"Rifiuto richiesta di analisi"}
+                {"Rifiuta richiesta di analisi"}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText >

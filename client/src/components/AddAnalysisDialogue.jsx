@@ -10,10 +10,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import Box from "@mui/material/Box";
 import {useState, useRef} from "react";
+import axios from 'axios'
 import { postApi } from "../utils/apiEndpoints.js";
 import TextField from "@mui/material/TextField";
 import SuccessAlert from "./SuccessAlert.jsx";
 import FailAlert from "./FailAlert.jsx";
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -52,9 +55,14 @@ export default function AddAnalysisDialogue(props) {
                 image: data.get('image'),
                 document: data.get('document')
             };
-            postApi('analysis/newAnalysis', body).then((response) => {
-                console.log(response);
-                if(response.success) {
+            axios.post(`${BASE_URL}analysis/newAnalysis`, body, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'token': localStorage.getItem('token')
+                }
+            }).then((response) => {
+                if(response.data.success) {
+                    console.log(response.data);
                     setOpenSuccess(true);
                 }
             }).catch((e) => {
@@ -71,6 +79,12 @@ export default function AddAnalysisDialogue(props) {
                 fullScreen
                 open={props.open}
                 onClose={handleClose}
+                PaperProps={{
+                    component: 'form',
+                    ref: formRef,
+                    onSubmit: handleSubmit,
+                    encType: 'multipart/form-data'
+                }}
                 TransitionComponent={Transition}
             >
                 <AppBar sx={{position: 'relative'}}>
@@ -90,7 +104,6 @@ export default function AddAnalysisDialogue(props) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <form ref={formRef} onSubmit={handleSubmit}>
                     <Box sx={{mt: 3, ml: 3}}>
                         <Typography variant='h5'>Richiesta di analisi per la
                             replica: {props.replica.replicaUniqueId}
@@ -114,11 +127,30 @@ export default function AddAnalysisDialogue(props) {
                             />
                         </Box>
                         <Box sx={{display: 'flex', mt: 3, flexDirection: 'column', alignItems: 'flex-start'}}>
-                            <Button color='forest' sx={{ mb: 2 }}>Aggiungi documento</Button>
-                            <Button color='forest'>Aggiungi immagine</Button>
+                            <TextField
+                                type="file"
+                                variant="outlined"
+                                margin="normal"
+                                name="image"
+                                label="Seleziona immagine"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                sx={{ mb: 3 }}
+                            />
+                            <TextField
+                                type="file"
+                                variant="outlined"
+                                margin="normal"
+                                name="document"
+                                label="Seleziona documento"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                sx={{ mb: 3 }}
+                            />
                         </Box>
                     </Box>
-                </form>
             </Dialog>
         </>
     );

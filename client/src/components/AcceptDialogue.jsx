@@ -9,6 +9,8 @@ import { postApi } from "../utils/apiEndpoints.js";
 import {useContext, useState} from "react";
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
 
+//TODO implementare il download dei documenti
+
 export default function AcceptDialog({ isOpen, setOpen, id }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
 
@@ -48,8 +50,8 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
                     {"Accetta richiesta di analisi"}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText >
-                        Vuoi accettare questa analisi?
+                    <DialogContentText>
+                        Accettando questa analisi, verranno scaricati i relativi documenti
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

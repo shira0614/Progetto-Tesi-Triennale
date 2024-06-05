@@ -17,17 +17,32 @@ module.exports = {
             if (!labUser) {
                 return res.status(404).json({ message: 'Lab not found' });
             }
-            await Analysis.create({
+            const local_analysis = {
                 shipper: req.userId,
                 laboratory: labUser._id,
                 replica: req.body.replicaId,
                 status: 'shipped',
                 protocolID : req.body.protocolID,
                 notes: req.body.notes,
-                documents: req.body.document,
-                image: req.body.image
+                documents: []
+            }
+            const analysis = await Analysis.create(local_analysis);
+            if(req.files) {
+                const documentFile = req.files['document'][0];
+                const imageFile = req.files['image'][0];
 
-            })
+                const documentBuffer = fs.readFileSync(documentFile.path);
+                const imageBuffer = fs.readFileSync(imageFile.path);
+
+                analysis.documents.push({
+                    data: documentBuffer,
+                    contentType: documentFile.mimetype
+                });
+                analysis.image = imageBuffer;
+                await analysis.save();
+            } else {
+                await analysis.save();
+            }
             res.json({ 'message': 'analysis created', 'success': true });
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -50,13 +65,18 @@ module.exports = {
     },
 
     updateAnalysis: async (req, res) => {
-        console.log('Request file:', req.file);
+        console.log('Request files:', req.files);
         console.log('Request body:', req.body);
         try {
-            if (req.file) {
-                const fileBuffer = fs.readFileSync(req.file.path);
+            if (req.files) {
+                const documentFile = req.files['document'][0];
+                const imageFile = req.files['image'][0];
 
-                console.log('File buffer:', fileBuffer);
+                const documentBuffer = fs.readFileSync(documentFile.path);
+                const imageBuffer = fs.readFileSync(imageFile.path);
+
+                console.log('Document buffer:', documentBuffer);
+                console.log('Image buffer:', imageBuffer);
 
                 const analysis = await Analysis.findOne({_id: req.body.analysisId});
                 if (!analysis) {
@@ -69,17 +89,18 @@ module.exports = {
                 }
 
                 analysis.documents.push({
-                    data: fileBuffer,
-                    contentType: req.file.mimetype
+                    data: documentBuffer,
+                    contentType: documentFile.mimetype
                 });
                 analysis.notes = req.body.notes;
-                analysis.image = req.body.image;
+                analysis.image = imageBuffer;
                 analysis.status = 'completed';
                 await analysis.save();
-                fs.unlinkSync(req.file.path);
+                fs.unlinkSync(documentFile.path);
+                fs.unlinkSync(imageFile.path);
                 return res.json({ 'message': 'Analysis saved', 'analysis': analysis, 'success': true });
             }
-            return res.status(400).json({ 'message': 'No document provided' });
+            return res.status(400).json({ 'message': 'No document or image provided' });
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error': err.message });
         }

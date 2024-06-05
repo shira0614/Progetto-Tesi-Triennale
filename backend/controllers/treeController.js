@@ -1,8 +1,14 @@
 const Tree = require('../models/treeModel')
 const Replica = require('../models/replicaModel')
+const fs = require('fs');
+const multer = require("multer");
+const upload = multer({ dest: './uploads/' });
+
 
 module.exports = {
     addTree: async (req, res) => {
+        console.log('Request files:', req.file);
+        console.log('Request body:', req.body);
 
         const local_tree = {
             cultivar: req.body.cultivar,
@@ -18,7 +24,13 @@ module.exports = {
 
         try {
             const tree = await Tree.create(local_tree)
-            await tree.save()
+            if(req.file){
+                tree.image = fs.readFileSync(req.file.path);
+                await tree.save()
+                fs.unlinkSync(req.file.path);
+            } else {
+                await tree.save()
+            }
             res.json({"message": "Tree inserted", "tree": tree, "success": true})
         } catch (err) {
             res.status(500).json({message: err.message, "success": false})
@@ -82,7 +94,13 @@ module.exports = {
             if (!tree) {
                 return res.status(404).json({message: "Tree not found"});
             }
-            await replica.save()
+            if(req.file){
+                replica.image = fs.readFileSync(req.file.path);
+                await replica.save();
+                fs.unlinkSync(req.file.path);
+            } else {
+                await replica.save();
+            }
             tree.replicas.push({ replicaUniqueId: replica.replicaUniqueId })
             await tree.save()
             res.json({"message": "replica inserita", "replica": replica, "id replica" : replica.replicaUniqueId, 'success': true})

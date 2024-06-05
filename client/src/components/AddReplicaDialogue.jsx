@@ -6,12 +6,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { postApi } from "../utils/apiEndpoints.js";
+import SuccessAlert from "./SuccessAlert.jsx";
+import FailAlert from "./FailAlert.jsx";
 import {useContext, useState} from "react";
+import axios from "axios";
 import {SingleTreeContext} from "./context/TreeContext.jsx";
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
     const {replicas, setReplicas} = useContext(SingleTreeContext)
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openFail, setOpenFail] = useState(false);
 
     const handleClose = () => {
         setOpen(false)
@@ -26,20 +32,29 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
             image: data.get('image'),
             notes: data.get('notes')
         };
-        postApi('trees/newReplica', body).then((response) => {
-            console.log(response);
-            if(response.success) {
-                replicas.push(response.replica)
+        axios.post(`${BASE_URL}trees/newReplica`, body, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'token': localStorage.getItem('token')
+            }
+        }).then((response) => {
+            if(response.data.success) {
+                console.log(response.data);
+                replicas.push(response.data.replica)
                 setReplicas(replicas)
-                setOpen(false);
+                setOpenSuccess(true)
+                handleClose()
             }
         }).catch((e) => {
             console.log(e);
+            setOpenFail(true)
         });
     }
 
     return (
         <>
+            <FailAlert open={openFail} setOpen={setOpenFail} message={"Non è stato possibile aggiungere la replica correttamente. Riprovare"}></FailAlert>
+            <SuccessAlert open={openSuccess} setOpen={setOpenSuccess} message={'Replica creata con successo'}/>
             <Dialog
                 open={isOpen}
                 onClose={handleClose}
@@ -73,11 +88,21 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
                         fullWidth
                         variant="standard"
                     />
+                    <TextField
+                        type="file"
+                        variant="outlined"
+                        margin="normal"
+                        name="image"
+                        label="Seleziona immagine"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        sx={{ mt: 5 }}
+                    />
                 </DialogContent>
                 <DialogActions>
-                    <Button>Carica immagine</Button>
                     <Button onClick={handleClose} color='error'>Annulla</Button>
-                    <Button color='forest' type="submit">Aggiungi</Button>
+                    <Button type="submit">Aggiungi</Button>
                 </DialogActions>
             </Dialog>
         </>

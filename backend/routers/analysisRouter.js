@@ -10,10 +10,9 @@ const router = express.Router()
 
 router.use(verifyToken)
 
-router.post('/newAnalysis', checkColtRole , analysisController.createAnalysis)
+router.post('/newAnalysis', upload.fields([{ name: 'document', maxCount: 1 }, { name: 'image', maxCount: 1 }]), checkColtRole , analysisController.createAnalysis)
 router.post('/acceptAnalysis', checkLabRole , analysisController.acceptAnalysis)
-router.post('/updateAnalysis', upload.single('document'), analysisController.updateAnalysis);
-router.get('/labAnalyses', checkLabRole, analysisController.getLabAnalyses)
+router.post('/updateAnalysis', upload.fields([{ name: 'document', maxCount: 1 }, { name: 'image', maxCount: 1 }]), analysisController.updateAnalysis);router.get('/labAnalyses', checkLabRole, analysisController.getLabAnalyses)
 router.delete('/deleteAnalysis/:analysisId', checkLabRole, analysisController.deleteAnalysis)
 router.get('/', checkColtRole, analysisController.getAnalyses)
 

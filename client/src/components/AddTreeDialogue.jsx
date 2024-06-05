@@ -11,8 +11,7 @@ import { useState, useRef } from 'react';
 import Button from "@mui/material/Button";
 import CloseIcon from '@mui/icons-material/Close';
 import '../index.css';
-import { postApi } from "../utils/apiEndpoints.js";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 import SuccessAlert from "./SuccessAlert.jsx";
 import FailAlert from "./FailAlert.jsx";
 import AppBar from "@mui/material/AppBar";
@@ -21,6 +20,10 @@ import IconButton from "@mui/material/IconButton";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import * as React from 'react';
+import { useContext } from "react";
+import {TreeContext} from "./context/TreeContext.jsx";
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -29,17 +32,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AddTreeDialogue(props) {
     const [cultivar, setCultivar] = useState('Leccino');
     const [date, setDate] = useState(new Date());
-    const [specieNomeScientifico, setSpecieNomeScientifico] = useState('');
-    const [specieNomeComune, setSpecieNomeComune] = useState('');
-    const [sottospecie, setSottospecie] = useState('');
-    const [infectionType, setInfectionType] = useState('');
     const [inoculated, setInoculated] = useState(true);
-    const [notes, setNotes] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openFail, setOpenFail] = useState(false);
     const formRef = useRef(null);
-
-    //TODO aggiustare il form
+    const { treeList, setTreeList } = useContext(TreeContext);
 
     const handleChange = (event) => {
     setCultivar(event.target.value);
@@ -54,21 +51,25 @@ export default function AddTreeDialogue(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         const data = new FormData(formRef.current);
-        const body = {
-            specieNomeScientifico: specieNomeScientifico,
-            specieNomeComune: specieNomeComune,
-            sottospecie: sottospecie,
-            cultivar: cultivar,
-            inoculated: inoculated,
-            infectionType: infectionType,
-            timestamp: date,
-            notes: notes
-        };
-        console.log(body)
-        postApi('trees/addTree', body).then((response) => {
-            console.log(response);
-            if(response.success) {
+        data.append('inoculated', inoculated);
+        data.append('timestamp', date);
+        data.append('cultivar', cultivar);
+
+        for (let [key, value] of data.entries()) {
+            console.log(`${key}:`, value);
+        }
+
+        axios.post(`${BASE_URL}trees/addTree`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'token': localStorage.getItem('token')
+            }
+        }).then((response) => {
+            if(response.data.success) {
+                console.log(response.data);
+                setTreeList([...treeList, response.data.tree]);
                 setOpenSuccess(true);
             }
         }).catch((e) => {
@@ -86,6 +87,12 @@ export default function AddTreeDialogue(props) {
                 fullScreen
                 open={props.open}
                 onClose={handleClose}
+                PaperProps={{
+                    component: 'form',
+                    ref: formRef,
+                    onSubmit: handleSubmit,
+                    encType: 'multipart/form-data'
+                }}
                 TransitionComponent={Transition}
             >
                 <AppBar sx={{position: 'relative'}}>
@@ -105,114 +112,96 @@ export default function AddTreeDialogue(props) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <form ref={formRef} onSubmit={handleSubmit}>
-                    <Box sx={{display: 'flex', flexDirection: 'column', width: '100vw', height: '100vh'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', width: '100vw'}}>
                         <Typography variant='h6' sx={{ ml: 3, mt: 3}}>Compilare tutti i campi per una corretta catalogazione dell'albero</Typography>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            width: '100%',
-                            height: '100%',
-                            justifyContent: 'space-around',
-                            alignItems: 'stretch',
-                            flex: '1'
-                        }}>
-                            <Box
-                                 onKeyDown={(event) => {
-                                     if (event.key === 'Enter') {
-                                         event.preventDefault();
-                                     }
-                                 }}
-                                 sx={{
-                                     display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly',
-                                     alignItems: 'stretch', flex: '2', flexWrap: 'wrap', gap: '1rem'
-                                 }}>
                                 <FormControl sx={{
-                                    m: '5rem', display: 'flex', flexDirection: 'row', justifyContent: 'center',
+                                    m: 5, display: 'flex', flexDirection: 'row',
                                     alignItems: 'stretch', flex: '1', flexWrap: 'wrap', gap: '3rem'
                                 }}>
-                                    <TextField
-                                        id="s-name"
-                                        label="Nome scientifico"
-                                        variant="outlined"
-                                        value={specieNomeScientifico}
-                                        onChange={(e) => setSpecieNomeScientifico(e.target.value)}
-                                    />
-                                    <TextField
-                                        id="c-name"
-                                        label="Nome comune"
-                                        variant="outlined"
-                                        value={specieNomeComune}
-                                        onChange={(e) => setSpecieNomeComune(e.target.value)}
-                                    />
-                                    <TextField
-                                        id="sub-s"
-                                        label="Sottospecie"
-                                        variant="outlined"
-                                        value={sottospecie}
-                                        onChange={(e) => setSottospecie(e.target.value)}
-                                    />
-                                    <TextField
-                                        id="cultivar"
-                                        select
-                                        label="Cultivar"
-                                        defaultValue="LE"
-                                        value={cultivar}
-                                        onChange={handleChange}
+                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography sx={{ mb: 2 }} variant='h6' color='text.secondary'>Specie</Typography>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
+                                                <TextField
+                                                    id="s-name"
+                                                    label="Nome scientifico"
+                                                    variant="outlined"
+                                                    type='text'
+                                                    name='specieNomeComune'
+                                                />
+                                                <TextField
+                                                    id="c-name"
+                                                    label="Nome comune"
+                                                    variant="outlined"
+                                                    type='text'
+                                                    name='specieNomeScientifico'
+                                                />
+                                                <TextField
+                                                    id="sub-s"
+                                                    label="Sottospecie"
+                                                    variant="outlined"
+                                                    type='text'
+                                                    name='sottospecie'
+                                                />
+                                                <TextField
+                                                    id="cultivar"
+                                                    select
+                                                    label="Cultivar"
+                                                    defaultValue="LE"
+                                                    value={cultivar}
+                                                    onChange={handleChange}
 
-                                    >
-                                        <MenuItem value='Leccino'>Leccino</MenuItem>
-                                        <MenuItem value='Frantoio'>Frantoio</MenuItem>
-                                        <MenuItem value='Moraiolo'>Moraiolo</MenuItem>
-                                    </TextField>
-                                    <TextField
-                                        id="infection"
-                                        label="Infezione"
-                                        variant="outlined"
-                                        value={infectionType}
-                                        onChange={(e) => setInfectionType(e.target.value)}
-                                    />
-                                    <Box>
-                                        <FormLabel id="inoculated">Inoculazione</FormLabel>
-                                        <RadioGroup row
-                                                    defaultValue="true"
-                                                    name="radio-buttons-group"
-                                                    onChange={(e) => setInoculated(e.target.value)}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio/>} label="Si"/>
-                                            <FormControlLabel value="false" control={<Radio/>} label="No"/>
-                                        </RadioGroup>
+                                                >
+                                                    <MenuItem value='Leccino'>Leccino</MenuItem>
+                                                    <MenuItem value='Frantoio'>Frantoio</MenuItem>
+                                                    <MenuItem value='Moraiolo'>Moraiolo</MenuItem>
+                                                </TextField>
+                                        </Box>
                                     </Box>
-                                    <Calendar onDateChange={handleDateChange}/>
-                                    <TextField
-                                        id="notes"
-                                        label="Note"
-                                        variant="outlined"
-                                        fullWidth
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                    />
+                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography sx={{ mb: 2 }} variant='h6' color='text.secondary'>Altre informazioni</Typography>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
+                                            <TextField
+                                                id="infection"
+                                                label="Infezione"
+                                                variant="outlined"
+                                                type='text'
+                                                name='infectionType'
+                                            />
+                                            <Box>
+                                                <FormLabel id="inoculated">Inoculazione</FormLabel>
+                                                <RadioGroup row
+                                                            defaultValue="true"
+                                                            name="radio-buttons-group"
+                                                            onChange={(e) => setInoculated(e.target.value)}
+                                                >
+                                                    <FormControlLabel value="true" control={<Radio/>} label="Si"/>
+                                                    <FormControlLabel value="false" control={<Radio/>} label="No"/>
+                                                </RadioGroup>
+                                            </Box>
+                                            <Calendar onDateChange={handleDateChange}/>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, mt: 5 }}>
+                                            <TextField
+                                                id="notes"
+                                                label="Note"
+                                                type='text'
+                                                variant="outlined"
+                                                name='notes'
+                                            />
+                                            <TextField
+                                                type="file"
+                                                variant="outlined"
+                                                margin="normal"
+                                                name="image"
+                                                label="Seleziona immagine"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        </Box>
+                                    </Box>
                                 </FormControl>
-                            </Box>
-                            <Box sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                flex: '1',
-                                mb: '5rem'
-                            }}>
-                                <Box className='leaf-mini' sx={{
-                                    minWidth: '20vw', minHeight: '20vh', m: '1rem', borderRadius: '10px'
-                                }}/>
-                                <Button variant="outlined" sx={{mb: 1}}>
-                                    Aggiungi immagine
-                                    <input type="file" hidden/>
-                                </Button>
-                            </Box>
-                        </Box>
                     </Box>
-                </form>
             </Dialog>
         </>
 )

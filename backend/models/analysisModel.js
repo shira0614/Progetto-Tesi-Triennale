@@ -6,7 +6,7 @@ const documentSchema = new Schema({
     contentType: String
 });
 
-const analysisSchema = new mongoose.Schema({
+const analysisSchema = new Schema({
     laboratory: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'
