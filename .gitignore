@@ -25,3 +25,4 @@ dist-ssr
 
 backend/config.env
 backend/controllers/uploads
+uploads
