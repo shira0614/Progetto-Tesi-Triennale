@@ -19,7 +19,8 @@ module.exports = {
             inoculated: req.body.inoculated,
             infectionType: req.body.infectionType,
             timestamp: req.body.timestamp ? req.body.timestamp : new Date(),
-            notes: req.body.notes
+            notes: req.body.notes,
+            lastReplicaId: 0
         }
 
         try {

@@ -20,8 +20,9 @@ const replicaSchema = new mongoose.Schema({
 replicaSchema.pre("save", async function(next) {
     if (this.isNew || this.isModified('treeId')) {
         const myTree = await Tree.findOne({_id: this.treeId})
-        const otherReplicas = await mongoose.model('Replica').find({treeId: this.treeId})
-        this.replicaUniqueId = myTree.treeUniqueId + String(otherReplicas.length + 1).padStart(3, "0");
+        this.replicaUniqueId = myTree.treeUniqueId + String(myTree.lastReplicaId).padStart(3, "0");
+        myTree.lastReplicaId = myTree.lastReplicaId + 1
+        await myTree.save()
     }
     next();
 })

@@ -25,7 +25,9 @@ const treeSchema = new mongoose.Schema({
     infectionType: String,
     timestamp: Date,
     notes: String,
-    image: imageSchema
+    image: imageSchema,
+    lastReplicaId: Number,
+    lastCultivarId: Number
 })
 
 const cultivar = Object.freeze({
@@ -38,8 +40,9 @@ treeSchema.pre('save', async function(next) {
     if (this.isNew || this.isModified('cultivar')) {
         const familyCode = cultivar[this.cultivar]
         const inoculationStatus = this.inoculated ? 'I' : 'N';
-        const trees = await mongoose.model('Tree').find({})
-        this.treeUniqueId = familyCode + String(trees.length).padStart(5, "0") + inoculationStatus;
+        const lastTree = await mongoose.model('Tree').find({ cultivar: this.cultivar })
+        this.lastCultivarId = lastTree.length > 0 ? lastTree[lastTree.length - 1].lastCultivarId + 1 : 0
+        this.treeUniqueId = familyCode + String(this.lastCultivarId).padStart(5, "0") + inoculationStatus;
         console.log(this.treeUniqueId)
     }
     next()
