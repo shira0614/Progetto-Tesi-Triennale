@@ -29,23 +29,26 @@ module.exports = {
                 documents: []
             }
             const analysis = await Analysis.create(local_analysis);
-            if(req.files) {
+            if(req.files['document'] && req.files['document'][0]) {
                 const documentFile = req.files['document'][0];
-                const imageFile = req.files['image'][0];
-
                 const documentBuffer = fs.readFileSync(documentFile.path);
-                const imageBuffer = fs.readFileSync(imageFile.path);
 
                 analysis.documents.push({
                     data: documentBuffer,
                     contentType: documentFile.mimetype
                 });
+
+                await analysis.save();
+                fs.unlinkSync(documentFile.path);
+            }
+            if (req.files['image'] && req.files['image'][0]) {
+                const imageFile = req.files['image'][0];
+                const imageBuffer = fs.readFileSync(imageFile.path);
                 analysis.image = {
                     data: imageBuffer,
                     contentType: imageFile.mimetype
                 };
                 await analysis.save();
-                fs.unlinkSync(documentFile.path);
                 fs.unlinkSync(imageFile.path);
             } else {
                 await analysis.save();
@@ -73,8 +76,9 @@ module.exports = {
 
     updateAnalysis: async (req, res) => {
         console.log('Request body:', req.body);
+        console.log('Request files:', req.files);
         try {
-            if (req.files['document'][0]) {
+            if (req.files['document'] && req.files['document'][0] && req.files['document'][0].path) {
                 const documentFile = req.files['document'][0];
                 const documentBuffer = fs.readFileSync(documentFile.path);
 
@@ -96,7 +100,7 @@ module.exports = {
                 if(req.files['image'] && req.files['image'][0]) {
                     const imageFile = req.files['image'][0];
                     analysis.image = {
-                        data: fs.readFileSync(imageFile),
+                        data: fs.readFileSync(imageFile.path),
                         contentType: imageFile.mimetype
                     }
                     await analysis.save();
@@ -195,8 +199,8 @@ module.exports = {
 
             zip.file('notes.txt', analysis.notes || 'Non sono presenti note');
 
-            if (analysis.image) {
-                zip.file('image.jpg', analysis.image);
+            if (analysis.image && analysis.image.data) {
+                zip.file(`image.${analysis.image.contentType.split('/')[1]}`, analysis.image.data);
             }
 
             zip.generateAsync({ type: 'nodebuffer' }).then((content) => {
