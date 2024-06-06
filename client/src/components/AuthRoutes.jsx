@@ -9,10 +9,12 @@ import { useEffect } from "react";
 import ColtAnalysis from "./ColtAnalysis.jsx";
 import AddTreeDialogue from './AddTreeDialogue.jsx';
 import TreeView from './TreeView.jsx';
+import { RoleContext } from "./context/RoleContext.jsx";
 
 export default function AuthRoutes() {
     const [token, setToken] = useState(verifyToken());
     const [userRole, setUserRole] = useState(null);
+    const roleValue = { userRole, setUserRole };
 
     useEffect(() => {
         const result = verifyToken();
@@ -28,14 +30,16 @@ export default function AuthRoutes() {
     }, [localStorage.getItem('role')]);
 
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login verify={setToken} />} />
-                <Route path="/" element={userRole === 'coltivatore' ? <ColtHome /> : <LabHome />} />
-                <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
-                <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
-                <Route path="/:treeId" element={userRole === 'coltivatore' ? <TreeView /> : null } />
-            </Routes>
-        </BrowserRouter>
+        <RoleContext.Provider value={roleValue}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<Login verify={setToken} />} />
+                    <Route path="/" element={userRole === 'coltivatore' ? <ColtHome /> : <LabHome />} />
+                    <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
+                    <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
+                    <Route path="/:treeId" element={userRole === 'coltivatore' ? <TreeView /> : null } />
+                </Routes>
+            </BrowserRouter>
+        </RoleContext.Provider>
     );
 }

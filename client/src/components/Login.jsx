@@ -12,18 +12,20 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-import {useEffect, useState} from 'react'
+import { RoleContext } from "./context/RoleContext.jsx";
+import {useEffect, useState, useContext} from 'react'
 
 const baseURL = 'http://localhost:3000'
 
 export default function Login({verify}) {
     const navigate = useNavigate();
-
+    const { userRole, setUserRole } = useContext(RoleContext)
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
      localStorage.clear();
-    }, []);
+     setUserRole(null);
+    }, [setUserRole]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -44,6 +46,7 @@ export default function Login({verify}) {
             } else {
                 window.localStorage.setItem("token", data.token)
                 window.localStorage.setItem("role", data.role)
+                setUserRole(data.role)
                 window.localStorage.setItem("username", data.username)
                 navigate('/', {replace: true})
             }
