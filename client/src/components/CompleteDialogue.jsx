@@ -34,6 +34,15 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
             console.log(`${key}:`, value);
         }
 
+        if (data.get('image')) {
+            const validTypes = ['image/png', 'image/jpeg'];
+
+            if (!validTypes.includes(data.get('image').type)) {
+                alert("Scegliere un'immagine con un formato .jpg o .png");
+                return;
+            }
+        }
+
         axios.post('http://localhost:3000/api/analysis/updateAnalysis', data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -109,6 +118,7 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                         margin="normal"
                         fullWidth
                         name="image"
+                        helperText="Formati ammessi: .jpg, .png"
                         label="Seleziona immagine"
                         InputLabelProps={{
                             shrink: true,

@@ -55,6 +55,16 @@ export default function AddAnalysisDialogue(props) {
                 image: data.get('image'),
                 document: data.get('document')
             };
+
+            if (data.get('image')) {
+                const validTypes = ['image/png', 'image/jpeg'];
+
+                if (!validTypes.includes(data.get('image').type)) {
+                    alert("Scegliere un'immagine con un formato .jpg o .png");
+                    return;
+                }
+            }
+
             axios.post(`${BASE_URL}analysis/newAnalysis`, body, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -132,6 +142,7 @@ export default function AddAnalysisDialogue(props) {
                                 variant="outlined"
                                 margin="normal"
                                 name="image"
+                                helperText="Formati ammessi: .jpg, .png"
                                 label="Seleziona immagine"
                                 InputLabelProps={{
                                     shrink: true,
