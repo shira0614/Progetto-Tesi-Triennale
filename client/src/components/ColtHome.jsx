@@ -23,6 +23,7 @@ export default function ColtHome() {
     useEffect(() => {
         getApi('trees/')
             .then((response) => {
+                console.log(response)
                 response.forEach(tree => {
                     let date = new Date(tree.timestamp);
                     let day = ("0" + date.getDate()).slice(-2);
@@ -62,7 +63,7 @@ export default function ColtHome() {
                                 notes={tree.notes}
                                 replicas={tree.replicas}
                                 date={tree.timestamp}
-                                image={tree.image}
+                                image={tree.imageUrl}
                                 treeUniqueId={tree.treeUniqueId}
                             />
                         )

@@ -135,7 +135,15 @@ module.exports = {
                 if(!analyses) {
                     return res.status(404).json({ 'message': 'No analyses found' });
                 } else {
-                    return res.json(analyses);
+                    const analysesWithImages = analyses.map(analysis => {
+                        let imageUrl = null;
+                        if (analysis.image && analysis.image.data) {
+                            const base64Image = analysis.image.data.toString('base64');
+                            imageUrl = `data:${analysis.image.contentType};base64,${base64Image}`;
+                        }
+                        return { ...analysis._doc, imageUrl };
+                    });
+                    return res.json(analysesWithImages);
                 }
         } catch (err) {
             return res.status(500).json({ 'message': 'An error occurred', 'error' : err.message });
@@ -160,7 +168,15 @@ module.exports = {
                 if(!analyses) {
                     return res.status(404).json({ 'message': 'No analyses found' });
                 } else {
-                    return res.json({ 'analyses': analyses });
+                    const analysesWithImages = analyses.map(analysis => {
+                        let imageUrl = null;
+                        if (analysis.image && analysis.image.data) {
+                            const base64Image = analysis.image.data.toString('base64');
+                            imageUrl = `data:${analysis.image.contentType};base64,${base64Image}`;
+                        }
+                        return { ...analysis._doc, imageUrl };
+                    });
+                    return res.json(analysesWithImages);
                 }
             } else {
                 return res.status(403).json({ 'message': 'Unauthorized' });

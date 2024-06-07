@@ -21,11 +21,13 @@ export default function ReplicaCard(props) {
         <Card variant='outlined' sx={{
             display: 'flex',
             mb: '1rem',
+            overflow: 'auto',
             mt: '1rem',
         }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',
+                width: '100%', flex: '1 0', alignItems: 'flex-center', justifyContent: 'flex-start'}}>
                 <CardContent>
-                    <Typography variant='h5'>{props.replicaUniqueId}</Typography>
+                    <Typography variant='h5' sx={{ mb: 2 }}>{props.replicaUniqueId}</Typography>
                     <Typography fontWeight='bold'>Campioni:
                         <Typography display='inline'> {props.sample}</Typography>
                     </Typography>
@@ -41,10 +43,10 @@ export default function ReplicaCard(props) {
                 props.image ? <CardMedia
                     component="img"
                     alt="plant image"
-                    height="140"
+                    sx={{ display: 'flex', width: 200, flex: '0 1', alignItems: 'flex-end' }}
                     image = {props.image}
                 /> : <Box className='leaf-mini' sx={{
-                    minWidth: '40%', minHeight: '100%', ml: 8
+                    minWidth: 200, minHeight: '100%', backgroundPosition: '-10px 11px'
                 }}/>
             }
         </Card>

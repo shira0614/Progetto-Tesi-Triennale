@@ -56,7 +56,7 @@ export default function AddAnalysisDialogue(props) {
                 document: data.get('document')
             };
 
-            if (data.get('image')) {
+            if (data.get('image') && data.get('image').size !== 0) {
                 const validTypes = ['image/png', 'image/jpeg'];
 
                 if (!validTypes.includes(data.get('image').type)) {

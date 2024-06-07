@@ -17,12 +17,14 @@ export default function TreeView() {
     const [tree, setTree] = useState(null);
     const [replicas, setReplicas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [imageUrl, setImageUrl] = useState(null);
     const [open, setOpen] = useState(false)
     const treeValue = { tree, setTree, replicas, setReplicas };
 
     useEffect(() => {
         getApi(`trees/${treeId}`)
             .then((response) => {
+                console.log(response)
                 let date = new Date(response.timestamp);
                 let day = String(date.getDate()).padStart(2, '0');
                 let month = String(date.getMonth() + 1).padStart(2, '0');
@@ -30,7 +32,9 @@ export default function TreeView() {
 
                 response.timestamp = `${day}/${month}/${year}`;
 
-                setTree(response);
+                setTree(response.tree);
+                setImageUrl(response.imageUrl);
+
                 getApi(`trees/${treeId}/replicas`).then((response) => {
                     setReplicas(response);
                     setLoading(false);
@@ -57,10 +61,10 @@ export default function TreeView() {
             <AddReplicaDialogue isOpen={open} setOpen={setOpen} treeId={treeId}/>
             <DrawerAppBar />
             <Typography variant='h4' sx={{ mb: '2%', ml: '3%' }}>Scheda dell'albero: {tree.treeUniqueId}</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100vw'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100vw', flexWrap: 'wrap', justifyContent: 'space-between', ml: '3%', alignContent: 'space-between'}}>
                 <Box sx={{ display: 'flex',
-                    flexDirection: 'row', ml: '3%'}}>
-                    <Box sx={{ flex: 1, minWidth: '55%' }}>
+                    flexDirection: 'row'}}>
+                    <Box sx={{ flex: 1, minWidth: '30%' }}>
                         <Typography variant='h5'>Specie</Typography>
                         &nbsp;
                             <Typography fontWeight='bold'>Nome scientifico:
@@ -94,10 +98,10 @@ export default function TreeView() {
                             </Typography>
                             &nbsp;
                             <Typography fontWeight='bold'>Note:
-                                <Typography display='inline'> {tree.notes}</Typography>
+                                <Typography display='inline'> {tree.notes ? tree.notes : 'Nessuna'}</Typography>
                             </Typography>
                     </Box>
-                    <Box sx={{ flex: 2, ml: '20%', minWidth: '70%', overflowY: 'auto', pl: 2 }}>
+                    <Box sx={{ flex: 1, ml: 3, minWidth: '40%', overflow: 'auto', pl: 2 }}>
                     <Typography variant='h5'>Repliche</Typography>
                         <Fab color='forest' size="small" onClick={handleClick} sx={{ mt: 1, mb: 1 }}>
                             <AddIcon sx={{ color: '#ffffff' }}/>
@@ -107,7 +111,7 @@ export default function TreeView() {
                                     <ReplicaCard
                                         key={replica._id}
                                         replicaUniqueId={replica.replicaUniqueId}
-                                        image={replica.image}
+                                        image={replica.imageUrl}
                                         sample={replica.sample}
                                         notes={replica.notes}
                                         replica={replica}
@@ -116,18 +120,22 @@ export default function TreeView() {
                             })
                         }
                     </Box>
+                    {
+                        imageUrl && <Box
+                            component='img'
+                            alt='Tree image'
+                            src={imageUrl}
+                            sx={{
+                                flex: 1,
+                                maxHeight: '70%',
+                                maxWidth: '70%',
+                                objectFit: 'contain',
+                                pl: '5%',
+                                pr: '3%'
+                            }}
+                        />
+                    }
                 </Box>
-                {
-                    tree.image && <Box
-                    component='img'
-                    alt='Tree image'
-                    src={tree.image}
-                    sx={{
-                        minHeight: 200,
-                        minWidth: 200
-                    }}
-                    />
-                }
             </Box>
             </SingleTreeContext.Provider>
         </Box>

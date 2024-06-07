@@ -86,13 +86,14 @@ export function HomeAnalysisCard(props) {
                         </Collapse>
                     </Box>
                         {
-                            props.analysis.image ? <CardMedia
+                            props.analysis.imageUrl ? <CardMedia
                                 component="img"
                                 alt="plant image"
-                                height="140"
-                                image = {props.analysis.image}
+                                objectFit='contain'
+                                sx={{ display: 'flex', width: 250, flex: '0 1', alignItems: 'flex-end', ml: 3 }}
+                                image = {props.analysis.imageUrl}
                             /> : <Box className='leaf-mini' sx={{
-                                minWidth: '10vw', minHeight: '100%', ml: 4
+                                minWidth: 250, minHeight: '100%', ml: 3
                             }}/>
                         }
                 </Card>
@@ -117,8 +118,8 @@ export function NewAnalysisCard(props) {
                 borderColor: '#ffffff00',
                 m: '1rem',
             }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column',
+                    width: '100%', flex: '1 0', alignItems: 'flex-center', justifyContent: 'flex-start'}}>                <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant='h5' gutterBottom>
                         {props.replica.replicaUniqueId}
                     </Typography>
@@ -146,10 +147,11 @@ export function NewAnalysisCard(props) {
                     props.image ? <CardMedia
                         component="img"
                         alt="plant image"
-                        height="140"
+                        objectFit='contain'
+                        sx={{ display: 'flex', width: 250, flex: '0 1', alignItems: 'flex-end', ml: 3 }}
                         image = {props.image}
                     /> : <Box className='leaf-mini' sx={{
-                        minWidth: '10vw', minHeight: '100%', ml: 4
+                        minWidth: 250, minHeight: '100%', ml: 3
                     }}/>
                 }
             </Card>
@@ -165,8 +167,9 @@ export function ColtAnalysisCard(props) {
             borderColor: '#ffffff00',
             m: '1rem',
         }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',
+                width: '100%', flex: '1 0', alignItems: 'flex-center', justifyContent: 'flex-start'}}>
+                <CardContent sx={{ flex: '1' }}>
                     <Typography variant='h5' gutterBottom>
                         {props.analysis.replica.replicaUniqueId}
                     </Typography>
@@ -197,13 +200,14 @@ export function ColtAnalysisCard(props) {
                 </CardContent>
             </Box>
             {
-                props.image ? <CardMedia
+                props.analysis.imageUrl ? <CardMedia
                     component="img"
                     alt="plant image"
-                    height="140"
-                    image = {props.image}
-                /> : <Box className='leaf-mini' sx={{
-                    minWidth: '10vw', minHeight: '100%', ml: 4
+                    objectFit='contain'
+                    sx={{ display: 'flex', width: 200, flex: '0 1', alignItems: 'flex-end', ml: 2 }}
+                    image = {props.analysis.imageUrl}
+                /> : <Box className='leaf-mini'sx={{
+                    minWidth: 200, minHeight: '100%', backgroundPosition: '20px 0'
                 }}/>
             }
         </Card>
@@ -236,7 +240,7 @@ export function CompletedAnalysis(props) {
             display: 'flex',
             border: '3px solid',
             borderColor: '#ffffff00',
-            m: '1rem',
+            m: '1rem'
         }}>
             <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
@@ -273,13 +277,14 @@ export function CompletedAnalysis(props) {
                 </CardActions>
             </Box>
             {
-                props.image ? <CardMedia
+                props.analysis.imageUrl ? <CardMedia
                     component="img"
                     alt="plant image"
-                    height="140"
-                    image = {props.image}
-                /> : <Box className='leaf-mini' sx={{
-                    minWidth: '10vw', minHeight: '100%', ml: 4
+                    objectFit='contain'
+                    sx={{ display: 'flex', width: 200, flex: '0 1', alignItems: 'flex-end', ml: 5 }}
+                    image = {props.analysis.imageUrl}
+                /> : <Box className='leaf-mini'sx={{
+                    minWidth: 200, minHeight: '100%', backgroundPosition: '20px 0', ml: 5
                 }}/>
             }
         </Card>

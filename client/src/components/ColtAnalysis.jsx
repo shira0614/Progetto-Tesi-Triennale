@@ -24,7 +24,7 @@ export default function ColtAnalysis() {
 
     useEffect(() => {
         getApi('analysis').then((response) => {
-            setAnalysisList(response.analyses)
+            setAnalysisList(response)
             setLoading(false)
         }).catch((error) => {
             console.log(error)

@@ -47,7 +47,7 @@ export default function LabRequests() {
                                 protocolId={analysis.protocolId}
                                 notes={analysis.notes}
                                 documents={analysis.documents}
-                                image={analysis.image}
+                                image={analysis.imageUrl}
                             />
                         )
                     })}

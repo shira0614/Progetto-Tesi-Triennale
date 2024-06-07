@@ -19,10 +19,13 @@ export default function TreeCard(props) {
             border: '3px solid',
             borderColor: '#ffffff00',
             m: '1rem',
+            width: { xs: '90vw', sm: '50vw' },
+            minHeight: 100,
         }}>
             <CardActionArea onClick={handleClick}>
-                <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-                    <CardContent sx={{ flex: '1 0 auto' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column',
+                    width: '100%', flex: '1 0', alignItems: 'flex-center', justifyContent: 'flex-start'}}>
+                    <CardContent sx={{ flex: '1' }}>
                         <Typography gutterBottom variant="h5" component="div">
                             {props.treeUniqueId}
                         </Typography>
@@ -37,10 +40,11 @@ export default function TreeCard(props) {
                 props.image ? <CardMedia
                     component="img"
                     alt="plant image"
-                    height="140"
+                    objectFit='contain'
+                    sx={{ display: 'flex', width: 250, flex: '0 1', alignItems: 'flex-end' }}
                     image = {props.image}
                 /> : <Box className='leaf-mini' sx={{
-                    minWidth: '10vw', minHeight: '100%'
+                    minWidth: 250, minHeight: '100%'
                 }}/>
             }
         </Card>

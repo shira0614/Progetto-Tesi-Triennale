@@ -50,8 +50,17 @@ module.exports = {
                 res.status(404).json({message: "Trees not found"})
             }
 
-            console.log(trees)
-            res.json(trees)
+            const treesWithImages = trees.map(tree => {
+                let imageUrl = null;
+                if (tree.image && tree.image.data) {
+                    const base64Image = tree.image.data.toString('base64');
+                    imageUrl = `data:${tree.image.contentType};base64,${base64Image}`;
+                }
+                return { ...tree._doc, imageUrl };
+            });
+
+            res.json(treesWithImages)
+
         } catch (err) {
             res.status(500).json({message: err.message})
         }
@@ -66,7 +75,14 @@ module.exports = {
             if(!tree) {
                 res.status(404).json({message: "Tree not found"})
             }
-            res.json(tree)
+            console.log('Image data:', tree.image && tree.image.data);
+            let imageUrl = null;
+            if (tree.image && tree.image.data) {
+                const base64Image = tree.image.data.toString('base64');
+                imageUrl = `data:${tree.image.contentType};base64,${base64Image}`;
+            }
+
+            res.json({ "tree": tree, "imageUrl": imageUrl });
         } catch (err) {
             res.status(500).json({message: err.message})
         }
@@ -80,7 +96,15 @@ module.exports = {
             if(!replicas) {
                 res.status(404).json({message: "Replicas not found"})
             }
-            res.json(replicas)
+            const replicasWithImages = replicas.map(replica => {
+                let imageUrl = null;
+                if (replica.image && replica.image.data) {
+                    const base64Image = replica.image.data.toString('base64');
+                    imageUrl = `data:${replica.image.contentType};base64,${base64Image}`;
+                }
+                return { ...replica._doc, imageUrl };
+            });
+            res.json(replicasWithImages)
         } catch (err) {
             res.status(500).json({message: err.message})
         }
