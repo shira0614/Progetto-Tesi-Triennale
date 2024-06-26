@@ -9,13 +9,16 @@ import {useEffect, useState} from "react";
 import {AnalysisContext} from "./context/AnalysisContetx.jsx";
 import { getApi } from "../utils/apiEndpoints.js";
 import Loading from "./Loading.jsx";
-import {filterAnalyses, acceptedAnalyses} from "../utils/analysisUtils.js";
+import Badge from '@mui/material/Badge';
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import {filterAnalyses, acceptedAnalyses, badgeAnalyses} from "../utils/analysisUtils.js";
 import {ColtAnalysisCard, CompletedAnalysis} from "./AnalysisCard.jsx";
 
 export default function ColtAnalysis() {
     const [analysisList, setAnalysisList] = useState([])
     const [value, setValue] = React.useState('1');
     const [loading, setLoading] = useState(true);
+    const [badgeCounter, setBadgeCounter] = useState(0)
     const analysisValue = { analysisList, setAnalysisList }
 
     const handleChange = (event, newValue) => {
@@ -25,6 +28,7 @@ export default function ColtAnalysis() {
     useEffect(() => {
         getApi('analysis').then((response) => {
             setAnalysisList(response)
+            setBadgeCounter(badgeAnalyses(response).length)
             setLoading(false)
         }).catch((error) => {
             console.log(error)
@@ -45,7 +49,14 @@ export default function ColtAnalysis() {
                         <TabList onChange={handleChange}>
                             <Tab label="In attesa" value="1" />
                             <Tab label="Nuove" value="2" />
-                            <Tab label="Completate" value="3" />
+                            <Tab label={
+                                <div>
+                                    Completate
+                                    <Badge badgeContent={badgeCounter} color='primary'>
+                                        <MailOutlineRoundedIcon sx={{ ml: 1, mb: 0.3 }}/>
+                                    </Badge>
+                                </div>
+                            } value="3" />
                         </TabList>
                     </Box>
                     <TabPanel value="1">

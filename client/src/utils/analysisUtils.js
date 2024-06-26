@@ -9,3 +9,9 @@ export function acceptedAnalyses(analyses) {
         return analysis.status === 'accepted' || analysis.status === 'rejected';
     });
 }
+
+export function badgeAnalyses(analyses) {
+    return analyses.filter((analysis) => {
+        return analysis.status === 'completed' && !analysis.downloaded
+    })
+}

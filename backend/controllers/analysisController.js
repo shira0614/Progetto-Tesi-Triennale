@@ -26,7 +26,8 @@ module.exports = {
                 status: 'shipped',
                 protocolID : req.body.protocolID,
                 notes: req.body.notes,
-                documents: []
+                documents: [],
+                downloaded: false
             }
             const analysis = await Analysis.create(local_analysis);
             if(req.files['document'] && req.files['document'][0]) {
@@ -224,6 +225,10 @@ module.exports = {
                 res.set('Content-Type', 'application/zip');
                 res.send(content);
             });
+
+            analysis.downloaded = true;
+            await analysis.save();
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'An error occurred', error: error.message });

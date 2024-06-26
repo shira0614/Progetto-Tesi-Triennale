@@ -32,7 +32,8 @@ const analysisSchema = new Schema({
     protocolId: String,
     notes: String,
     documents: [documentSchema],
-    image: imageSchema
+    image: imageSchema,
+    downloaded: Boolean
 })
 
 const analysisModel = mongoose.model('Analysis', analysisSchema)
