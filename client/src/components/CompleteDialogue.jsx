@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import FailAlert from "./FailAlert.jsx";
 import DialogTitle from '@mui/material/DialogTitle';
 import GrassRoundedIcon from '@mui/icons-material/GrassRounded';
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import NaturePeopleRoundedIcon from '@mui/icons-material/NaturePeopleRounded';
 import {FormControl, MenuItem, Select, Chip, Stack} from "@mui/material";
 import { AnalysisContext } from "./context/AnalysisContetx.jsx";
@@ -15,14 +15,14 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import SuccessAlert from "./SuccessAlert.jsx";
 import axios from 'axios';
+import { AlertContext } from "./context/AlertContext.jsx";
+
+const BASE_URL = 'http://localhost:3000/api/'
 
 export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
     const formRef = useRef();
-    const [openSuccess, setOpenSuccess] = useState(false);
-    const [openFail, setOpenFail] = useState(false);
-
-    //TODO sistemare gli alert
+    const { openSuccess, setOpenSuccess, openFail, setOpenFail } = useContext(AlertContext)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +43,7 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
             }
         }
 
-        axios.post('http://localhost:3000/api/analysis/updateAnalysis', data, {
+        axios.post(`${BASE_URL}analysis/updateAnalysis`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'token': localStorage.getItem('token')
@@ -59,21 +59,20 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                 });
                 setAnalysisList(updatedList);
                 setOpenSuccess(true);
+                handleClose();
             }
         }).catch((e) => {
             console.log(e);
-            setOpenFail(true);
-        })
+            setOpenFail(true)
+        });
     };
 
     const handleClose = () => {
         setOpen(false);
     };
 
+
     return (
-        <>
-        <FailAlert open={openFail} setOpen={setOpenFail} message={"L'analisi non è stata inviata correttamente. Riprovare"}></FailAlert>
-        <SuccessAlert open={openSuccess} setOpen={setOpenSuccess} message={'Analisi inviata con successo'}/>
         <Dialog
             open={isOpen}
             onClose={handleClose}
@@ -153,7 +152,6 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
                 <Button onClick={handleClose} sx={{ color: '#0c0e0b' }}>Annulla</Button>
             </DialogActions>
         </Dialog>
-        </>
     );
 }
 
