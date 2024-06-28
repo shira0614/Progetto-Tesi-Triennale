@@ -57,7 +57,7 @@ export function HomeAnalysisCard(props) {
                     borderColor: '#ffffff00',
                     m: '1rem',
                 }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                         <CardContent sx={{ flex: '1 0 auto' }}>
                                 <Typography variant='h5' gutterBottom >
                                     {props.analysis.replica.replicaUniqueId}
