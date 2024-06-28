@@ -17,6 +17,7 @@ import RejectDialog from "./RejectDialogue.jsx";
 import CompleteDialogue from "./CompleteDialogue.jsx";
 import { useState } from 'react';
 import axios from 'axios';
+import Badge from '@mui/material/Badge';
 
 const BASE_URL = 'http://localhost:3000/api/'
 
@@ -30,6 +31,13 @@ const ExpandMore = styled((props) => {
       duration: theme.transitions.duration.shortest,
     }),
   }));
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: 3,
+        padding: '0 4px',
+    },
+}));
 
 export function HomeAnalysisCard(props) {
     const [expanded, setExpanded] = useState(false);
@@ -272,7 +280,14 @@ export function CompletedAnalysis(props) {
                 </CardContent>
                 <CardActions>
                     <Button color='forest' onClick={handleDownload}>
-                        <GetAppRoundedIcon sx={{ mr: 1 }}/> Scarica analisi
+                        {
+                            props.analysis.downloaded ?
+                                <GetAppRoundedIcon sx={{ mr: 1 }}/> :
+                                <StyledBadge variant='dot' color='error' sx={{ mr: 1 }}>
+                                    <GetAppRoundedIcon />
+                                </StyledBadge>
+                        }
+                        Scarica analisi
                     </Button>
                 </CardActions>
             </Box>
