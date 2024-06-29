@@ -8,7 +8,7 @@ import {getApi} from "../utils/apiEndpoints.js";
 import Loading from "./Loading.jsx";
 import {Fab} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
+import {dateArrFormatter} from "../utils/treeUtils.jsx";
 import AddTreeDialogue from "./AddTreeDialogue.jsx";
 import Button from "@mui/material/Button";
 
@@ -24,13 +24,7 @@ export default function ColtHome() {
         getApi('trees/')
             .then((response) => {
                 console.log(response)
-                response.forEach(tree => {
-                    let date = new Date(tree.timestamp);
-                    let day = ("0" + date.getDate()).slice(-2);
-                    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                    let year = date.getFullYear();
-                    tree.timestamp = `${day}/${month}/${year}`;
-                });
+                dateArrFormatter(response);
                 setTreeList(response);
                 setLoading(false);
             })

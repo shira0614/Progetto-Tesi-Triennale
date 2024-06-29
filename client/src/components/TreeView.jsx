@@ -10,6 +10,7 @@ import ReplicaCard from "./ReplicaCard.jsx";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import AddReplicaDialogue from "./AddReplicaDialogue.jsx";
+import {dateFormatter} from "../utils/treeUtils.jsx";
 import { SingleTreeContext } from "./context/TreeContext.jsx";
 
 export default function TreeView() {
@@ -25,12 +26,7 @@ export default function TreeView() {
         getApi(`trees/${treeId}`)
             .then((response) => {
                 console.log(response)
-                let date = new Date(response.timestamp);
-                let day = String(date.getDate()).padStart(2, '0');
-                let month = String(date.getMonth() + 1).padStart(2, '0');
-                let year = date.getFullYear();
-
-                response.timestamp = `${day}/${month}/${year}`;
+                response.tree.timestamp = dateFormatter(response.tree.timestamp);
 
                 setTree(response.tree);
                 setImageUrl(response.imageUrl);
