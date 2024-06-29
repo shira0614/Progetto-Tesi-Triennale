@@ -10,6 +10,8 @@ import {AnalysisContext} from "./context/AnalysisContetx.jsx";
 import { getApi } from "../utils/apiEndpoints.js";
 import Loading from "./Loading.jsx";
 import Badge from '@mui/material/Badge';
+import ScheduleSendRoundedIcon from '@mui/icons-material/ScheduleSendRounded';
+import AnnouncementRoundedIcon from '@mui/icons-material/AnnouncementRounded';
 import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
 import {filterAnalyses, acceptedAnalyses, badgeAnalyses} from "../utils/analysisUtils.js";
 import {ColtAnalysisCard, CompletedAnalysis} from "./AnalysisCard.jsx";
@@ -45,18 +47,13 @@ export default function ColtAnalysis() {
             <AnalysisContext.Provider value={analysisValue}>
             <Box sx={{ width: '100%', typography: 'body1' }}>
                 <TabContext value={value}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', display: 'flex' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', display: 'flex', justifyContent: 'center', position: 'sticky', top: 0 }}>
                         <TabList onChange={handleChange}>
-                            <Tab label="In attesa" value="1" />
-                            <Tab label="Nuove" value="2" />
-                            <Tab label={
-                                <div>
-                                    Completate
-                                    <Badge badgeContent={badgeCounter} color='primary'>
-                                        <MailOutlineRoundedIcon sx={{ ml: 1, mb: 0.3 }}/>
-                                    </Badge>
-                                </div>
-                            } value="3" />
+                            <Tab label="In attesa" value="1" icon={<ScheduleSendRoundedIcon sx={{ mb: 0.4 }}/>} iconPosition="end" sx={{ width: '200px' }} />
+                            <Tab label="Nuove" value="2" sx={{ width: '200px' }} icon={<AnnouncementRoundedIcon sx={{ mb: 0.3 }}/>} iconPosition="end" />
+                            <Tab label='Completate' value="3" sx={{ width: '200px' }} iconPosition="end" icon={<Badge badgeContent={badgeCounter} color='primary'>
+                                <MailOutlineRoundedIcon sx={{ mb: 0.4 }}/>
+                            </Badge>}/>
                         </TabList>
                     </Box>
                     <TabPanel value="1">

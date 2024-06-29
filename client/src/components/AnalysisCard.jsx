@@ -188,7 +188,7 @@ export function ColtAnalysisCard(props) {
                         Status:
                     </Typography>
                     <Typography>
-                        {props.analysis.status === 'shipped' ? "L'analisi è in attesa di riscontro da parte del laboratorio"
+                        {props.analysis.status === 'shipped' ? "L'analisi è in attesa di riscontro \n da parte del laboratorio"
                         : props.analysis.status === 'accepted' ? "L'analisi è stata accettata dal laboratorio"
                                 :"L'analisi è stata rifiutata dal laboratorio"}
                     </Typography>
@@ -253,7 +253,8 @@ export function CompletedAnalysis(props) {
             borderColor: '#ffffff00',
             m: '1rem'
         }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',
+                width: '100%', flex: '1 0', alignItems: 'flex-center', justifyContent: 'flex-start'}}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant='h5' gutterBottom>
                         {props.analysis.replica.replicaUniqueId}
