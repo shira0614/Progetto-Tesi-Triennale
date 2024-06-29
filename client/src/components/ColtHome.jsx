@@ -65,11 +65,9 @@ export default function ColtHome() {
                     }
                 </Box>
                 {/* TODO aggiustare i Fab */}
-                <Button color="forest" variant='outlined' onClick={handleAddTree} sx={{ display: { xs: 'none', sm: 'block' },
-                position: 'fixed', bottom: 15, right: 15, textColor: '#ffffff' }}>
-                    <AddIcon sx={{ mr: 1
-                    }}/>
-                    Aggiungi
+                <Button color="forest" variant='contained' onClick={handleAddTree} sx={{ display: { xs: 'none', sm: 'block' },
+                position: 'fixed', bottom: 15, right: 15, color: '#ffffff' }}>
+                    Aggiungi nuovo albero
                 </Button>
                 <Fab color="forest" onClick={handleAddTree} sx={{ display: { xs: 'block', sm: 'none' },
                 position: 'fixed', bottom: 15, right: 15 }}>

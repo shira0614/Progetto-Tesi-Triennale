@@ -15,7 +15,8 @@ export const theme = createTheme({
         main: '#ffffff',
     },
     forest: {
-        main: '#2E644A'
+        main: '#2E644A',
+        secondary: '#3d8864'
     },
       lime: {
         main: '#73d645'

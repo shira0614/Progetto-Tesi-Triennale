@@ -145,10 +145,10 @@ export default function DrawerAppBar() {
                                         color: location.pathname === item.path ? '#000000' : '#ffffff',
                                 "&:hover": {
                                     backgroundColor: "#262c23",
+                                    color: '#ffffff'
                                 },
                                 "&.Mui-selected:hover": {
-                                    backgroundColor: "#262c23",
-                                    color: '#ffffff' //TODO fixare selected text color
+                                    backgroundColor: "#262c23"
                                 }
                             }}>
                                 {item.label}

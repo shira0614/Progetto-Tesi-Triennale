@@ -99,7 +99,7 @@ export default function TreeView() {
                     </Box>
                     <Box sx={{ flex: 1, ml: 3, minWidth: '40%', overflow: 'auto', pl: 2 }}>
                     <Typography variant='h5'>Repliche</Typography>
-                        <Fab color='forest' size="small" onClick={handleClick} sx={{ mt: 1, mb: 1 }}>
+                        <Fab color='forest' size="small" onClick={handleClick} sx={{ mt: 1, mb: 1, '&:hover': { backgroundColor: '#3d8864' } }}>
                             <AddIcon sx={{ color: '#ffffff' }}/>
                         </Fab>
                         {replicas.map((replica) => {
