@@ -15,7 +15,7 @@ import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import AcceptDialog from "./AcceptDialogue.jsx";
 import RejectDialog from "./RejectDialogue.jsx";
 import CompleteDialogue from "./CompleteDialogue.jsx";
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import Badge from '@mui/material/Badge';
 
@@ -223,6 +223,7 @@ export function ColtAnalysisCard(props) {
 }
 
 export function CompletedAnalysis(props) {
+    const [downloaded, setDownloaded] = useState(props.analysis.downloaded);
 
     const handleDownload = async () => {
         try {
@@ -238,6 +239,8 @@ export function CompletedAnalysis(props) {
             link.setAttribute('download', `analysis_${props.analysis._id}.zip`);
             document.body.appendChild(link);
             link.click();
+            setDownloaded(true);
+
         } catch (error) {
             console.error('Error downloading the analysis:', error);
         }
@@ -281,7 +284,7 @@ export function CompletedAnalysis(props) {
                 <CardActions>
                     <Button color='forest' onClick={handleDownload}>
                         {
-                            props.analysis.downloaded ?
+                            downloaded ?
                                 <GetAppRoundedIcon sx={{ mr: 1 }}/> :
                                 <StyledBadge variant='dot' color='error' sx={{ mr: 1 }}>
                                     <GetAppRoundedIcon />
