@@ -1,21 +1,20 @@
 const BASE_URL = 'http://localhost:3000/';
+import axios from "axios";
 
 async function getApi(endpoint) {
     try {
-        const response = await fetch(`${BASE_URL}api/${endpoint}`, {
-            method: 'get',
+        const response = await axios.get(`${BASE_URL}api/${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'token': localStorage.getItem('token'),
             },
         });
-        const content = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`Errore ${response.status}: ${content.message}`);
+        if (!response.status === 200) {
+            throw new Error(`Errore ${response.status}: ${response.data.message}`);
         }
 
-        return content;
+        return response.data;
     } catch (e) {
         throw new Error(`${e.message}`);
     }
@@ -23,21 +22,18 @@ async function getApi(endpoint) {
 
 async function postApi(endpoint, body) {
     try {
-        const response = await fetch(`${BASE_URL}api/${endpoint}`, {
-            method: 'post',
+        const response = await axios.post(`${BASE_URL}api/${endpoint}`, body, {
             headers: {
                 'Content-Type': 'application/json',
-                'token': localStorage.getItem('token')
+                'token': localStorage.getItem('token'),
             },
-            body: JSON.stringify(body)
         });
-        const content = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`Errore ${response.status}: ${content.message}`);
+        if (!response.status === 200) {
+            throw new Error(`Errore ${response.status}: ${response.data.message}`);
         }
 
-        return content;
+        return response.data;
     } catch (e) {
         throw new Error(`${e.message}`);
     }
@@ -45,21 +41,19 @@ async function postApi(endpoint, body) {
 
 async function putApi(endpoint, body) {
     try {
-        const response = await fetch(`${BASE_URL}api/${endpoint}`, {
-            method: 'put',
+        const response = await axios.put(`${BASE_URL}api/${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'token': localStorage.getItem('token')
             },
             body: JSON.stringify(body)
         });
-        const content = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`Errore ${response.status}: ${content.message}`);
+        if (!response.status === 200) {
+            throw new Error(`Errore ${response.status}: ${response.data.message}`);
         }
 
-        return content;
+        return response.data;
     } catch (e) {
         throw new Error(`${e.message}`);
     }
@@ -67,20 +61,18 @@ async function putApi(endpoint, body) {
 
 async function deleteApi(endpoint, id) {
     try {
-        const response = await fetch(`${BASE_URL}api/${endpoint}/${id}`, {
-            method: 'delete',
+        const response = await axios.delete(`${BASE_URL}api/${endpoint}/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'token': localStorage.getItem('token')
             },
         });
-        const content = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`Errore ${response.status}: ${content.message}`);
+        if (!response.status === 200) {
+            throw new Error(`Errore ${response.status}: ${response.data.message}`);
         }
 
-        return content;
+        return response.data;
     } catch (e) {
         throw new Error(`${e.message}`);
     }

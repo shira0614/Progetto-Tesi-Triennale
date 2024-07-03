@@ -8,7 +8,7 @@ import {getApi} from "../utils/apiEndpoints.js";
 import Loading from "./Loading.jsx";
 import {Fab} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import {dateArrFormatter} from "../utils/treeUtils.jsx";
+import {dateArrFormatter} from "../utils/treeUtils.js";
 import AddTreeDialogue from "./AddTreeDialogue.jsx";
 import Button from "@mui/material/Button";
 

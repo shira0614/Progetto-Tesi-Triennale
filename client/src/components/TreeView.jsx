@@ -10,7 +10,7 @@ import ReplicaCard from "./ReplicaCard.jsx";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import AddReplicaDialogue from "./AddReplicaDialogue.jsx";
-import {dateFormatter} from "../utils/treeUtils.jsx";
+import {dateFormatter} from "../utils/treeUtils.js";
 import { SingleTreeContext } from "./context/TreeContext.jsx";
 
 export default function TreeView() {

@@ -61,7 +61,7 @@ export default function AddTreeDialogue(props) {
             console.log(`${key}:`, value);
         }
 
-        if (data.get('image')) {
+        if (data.get('image') && data.get('image').size) {
             const validTypes = ['image/png', 'image/jpeg'];
 
             if (!validTypes.includes(data.get('image').type)) {

@@ -226,9 +226,12 @@ module.exports = {
                 res.send(content);
             });
 
-            analysis.downloaded = true;
-            await analysis.save();
-
+            const user = await User.findOne({ _id: req.userId })
+            if (user.role === 'coltivatore') {
+                analysis.downloaded = true;
+                await analysis.save();
+            }
+            
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'An error occurred', error: error.message });
