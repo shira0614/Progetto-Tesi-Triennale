@@ -66,7 +66,7 @@ export function HomeAnalysisCard(props) {
                                     Inviata da: {props.analysis.shipper.username}
                                 </Typography>
                                 <Typography variant="body1">
-                                    ID: {props.protocolId}
+                                    ID: {props.analysis.protocolId}
                                 </Typography>
                                 &nbsp;
                                 <Typography variant="body1" color="text.secondary">
@@ -249,7 +249,8 @@ export function CompletedAnalysis(props) {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `analysis_${props.analysis._id}.zip`);
+            const filename = props.analysis.protocolId ? `analysis_${props.analysis.protocolId}.zip` : `analysis_${props.analysis._id}.zip`;
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
             setDownloaded(true);

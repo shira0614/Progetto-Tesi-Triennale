@@ -219,8 +219,9 @@ module.exports = {
                 zip.file(`image.${analysis.image.contentType.split('/')[1]}`, analysis.image.data);
             }
 
+            const downloadId = analysis.protocolId ? analysis.protocolId : analysis._id;
             zip.generateAsync({ type: 'nodebuffer' }).then((content) => {
-                res.set('Content-Disposition', `attachment; filename=analysis_${analysis._id}.zip`);
+                res.set('Content-Disposition', `attachment; filename=analysis_${downloadId}.zip`);
                 res.set('Content-Type', 'application/zip');
                 res.send(content);
             });
