@@ -122,7 +122,7 @@ export function NewAnalysisCard(props) {
 
     return (
         <>
-        <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id}/>
+        <AcceptDialog setOpen={setOpenAccept} isOpen={openAccept} id={props._id} protocolId={props.protocolId}/>
         <RejectDialog setOpen={setOpenReject} isOpen={openReject} id={props._id}/>
             <Card sx={{
                 display: 'flex',

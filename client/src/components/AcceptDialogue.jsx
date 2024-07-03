@@ -12,7 +12,7 @@ import axios from "axios";
 
 const BASE_URL = 'http://localhost:3000/api/'
 
-export default function AcceptDialog({ isOpen, setOpen, id }) {
+export default function AcceptDialog({ isOpen, setOpen, id, protocolId }) {
     const { analysisList, setAnalysisList } = useContext(AnalysisContext);
 
     const handleSubmit = (event) => {
@@ -54,7 +54,8 @@ export default function AcceptDialog({ isOpen, setOpen, id }) {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `analysis_${id}.zip`);
+            const filename = protocolId ? `analysis_${protocolId}.zip` : `analysis_${id}.zip`;
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
         } catch (error) {

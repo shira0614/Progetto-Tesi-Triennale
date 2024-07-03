@@ -209,7 +209,25 @@ module.exports = {
             const zip = new JSZip();
             analysis.documents.forEach((doc, index) => {
                 if (doc && doc.contentType) {
-                    zip.file(`document${index + 1}.${doc.contentType.split('/')[1]}`, doc.data);
+                    let extension;
+                    switch (doc.contentType) {
+                        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                            extension = 'docx'; // Handle .docx files
+                            break;
+                        case 'application/vnd.ms-excel':
+                            extension = 'xls'; // Correctly set extension for .xls files
+                            break;
+                        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                            extension = 'xlsx'; // Handle .xlsx files
+                            break;
+                        case 'application/xml':
+                            extension = 'xml'; // Handle .xml files
+                            break;
+                        default:
+                            extension = doc.contentType.split('/')[1]; // Default handling for other types
+                            break;
+                    }
+                    zip.file(`document${index + 1}.${extension}`, doc.data, {binary: true});
                 }
             });
 
