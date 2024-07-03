@@ -32,6 +32,16 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
             image: data.get('image'),
             notes: data.get('notes')
         };
+
+        if (data.get('image') && data.get('image').size) {
+            const validTypes = ['image/png', 'image/jpeg'];
+
+            if (!validTypes.includes(data.get('image').type)) {
+                alert("Scegliere un'immagine con un formato .jpg o .png");
+                return;
+            }
+        }
+
         axios.post(`${BASE_URL}trees/newReplica`, body, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -93,6 +103,7 @@ export default function AddReplicaDialogue({isOpen, setOpen, treeId}) {
                         variant="outlined"
                         margin="normal"
                         name="image"
+                        helperText="Formati ammessi: .jpg, .png"
                         label="Seleziona immagine"
                         InputLabelProps={{
                             shrink: true,

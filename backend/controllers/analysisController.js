@@ -24,7 +24,6 @@ module.exports = {
                 laboratory: labUser._id,
                 replica: req.body.replicaId,
                 status: 'shipped',
-                protocolID : req.body.protocolID,
                 notes: req.body.notes,
                 documents: [],
                 downloaded: false
@@ -231,7 +230,7 @@ module.exports = {
                 analysis.downloaded = true;
                 await analysis.save();
             }
-            
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'An error occurred', error: error.message });

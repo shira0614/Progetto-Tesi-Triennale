@@ -62,11 +62,15 @@ export function HomeAnalysisCard(props) {
                                 <Typography variant='h5' gutterBottom >
                                     {props.analysis.replica.replicaUniqueId}
                                 </Typography>
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {props.analysis.shipper.username}
+                                <Typography>
+                                    Inviata da: {props.analysis.shipper.username}
                                 </Typography>
-                                <Typography variant="body2">
-                                    Status: {props.analysis.status}
+                                <Typography variant="body1">
+                                    ID: {props.protocolId}
+                                </Typography>
+                                &nbsp;
+                                <Typography variant="body1" color="text.secondary">
+                                    Status: Accettata
                                 </Typography>
                         </CardContent>
                         <CardActions>
@@ -132,11 +136,16 @@ export function NewAnalysisCard(props) {
                         {props.replica.replicaUniqueId}
                     </Typography>
                     <Typography variant="body1">
-                        {props.shipper.username}
+                        Inviata da: {props.shipper.username}
                     </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        Status: {props.status}
+                    <Typography variant="body1">
+                        ID: {props.protocolId}
                     </Typography>
+                    &nbsp;
+                    <Typography color="text.secondary">
+                        Status: In attesa di riscontro
+                    </Typography>
+                    &nbsp;
                     <Typography variant='h6'>Dettagli</Typography>
                     <Typography variant='h7'>Pianta madre: {props.replica.treeId.treeUniqueId}</Typography>
                     &nbsp;
@@ -184,6 +193,10 @@ export function ColtAnalysisCard(props) {
                     <Typography variant="body1">
                         Destinatario: {props.analysis.laboratory.username}
                     </Typography>
+                    <Typography variant="body1">
+                        ID: {props.analysis.protocolId}
+                    </Typography>
+                    &nbsp;
                     <Typography variant='h6'>
                         Status:
                     </Typography>
@@ -262,6 +275,10 @@ export function CompletedAnalysis(props) {
                     <Typography variant="body1">
                         Mittente: {props.analysis.laboratory.username}
                     </Typography>
+                    <Typography variant="body1">
+                        ID: {props.analysis.protocolId}
+                    </Typography>
+                    &nbsp;
                     <Typography variant='h6'>
                         Status:
                     </Typography>
