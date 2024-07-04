@@ -66,9 +66,9 @@ export default function AddAnalysisDialogue(props) {
             }
 
             axios.post(`${BASE_URL}analysis/newAnalysis`, body, {
+                withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'token': localStorage.getItem('token')
+                    'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
                 if(response.data.success) {

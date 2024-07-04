@@ -1,28 +1,18 @@
+import React, { useState, useEffect, useContext } from 'react';
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Login from './Login';
 import ColtHome from "./ColtHome.jsx";
 import LabHome from "./LabHome.jsx";
 import LabRequests from "./LabRequests.jsx";
-import {createBrowserRouter, Navigate, Route, Router, RouterProvider, Routes, BrowserRouter} from "react-router-dom";
-import verifyToken from "../utils/verifyToken.js";
-import { useState } from "react";
-import { useEffect } from "react";
 import ColtAnalysis from "./ColtAnalysis.jsx";
-import AddTreeDialogue from './AddTreeDialogue.jsx';
 import TreeView from './TreeView.jsx';
+import { AuthContext } from './context/AuthContext.jsx';
 import { RoleContext } from "./context/RoleContext.jsx";
 
 export default function AuthRoutes() {
-    const [token, setToken] = useState(verifyToken());
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const roleValue = { userRole, setUserRole };
-
-    useEffect(() => {
-        const result = verifyToken();
-        setToken(result);
-        if (result) {
-            setUserRole(localStorage.getItem('role'));
-        }
-    }, []);
 
     useEffect(() => {
         const role = localStorage.getItem('role');
@@ -30,16 +20,18 @@ export default function AuthRoutes() {
     }, [localStorage.getItem('role')]);
 
     return (
-        <RoleContext.Provider value={roleValue}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/login" element={<Login verify={setToken} />} />
-                    <Route path="/" element={userRole === 'coltivatore' ? <ColtHome /> : <LabHome />} />
-                    <Route path="/analyses" element={userRole === 'coltivatore' ? <ColtAnalysis /> : null} />
-                    <Route path="/new" element={userRole === 'laboratorio' ? <LabRequests /> : null} />
-                    <Route path="/:treeId" element={userRole === 'coltivatore' ? <TreeView /> : null } />
-                </Routes>
-            </BrowserRouter>
-        </RoleContext.Provider>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+            <RoleContext.Provider value={roleValue}>
+                <BrowserRouter>
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/" element={isAuthenticated ? (userRole === 'coltivatore' ? <ColtHome /> : <LabHome />) : <Navigate to="/login" />} />
+                            <Route path="/analyses" element={isAuthenticated && userRole === 'coltivatore' ? <ColtAnalysis /> : <Navigate to="/login" />} />
+                            <Route path="/new" element={isAuthenticated && userRole === 'laboratorio' ? <LabRequests /> : <Navigate to="/login" />} />
+                            <Route path="/:treeId" element={isAuthenticated && userRole === 'coltivatore' ? <TreeView /> : <Navigate to="/login" />} />
+                        </Routes>
+                </BrowserRouter>
+            </RoleContext.Provider>
+        </AuthContext.Provider>
     );
 }

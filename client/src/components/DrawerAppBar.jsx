@@ -13,14 +13,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Button from '@mui/material/Button';
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRounded';
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import {ListItemIcon} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
+import {AuthContext} from "./context/AuthContext.jsx";
+import Cookies from 'js-cookie';
 
-//TODO cambiare icona ColtHome
 const coltNav = [
     {path: '/', label: 'Alberi', icon: HomeRoundedIcon},
     {path: '/analyses', label: 'Analisi', icon: BorderColorRoundedIcon}
@@ -37,6 +38,7 @@ export default function DrawerAppBar() {
     const location = useLocation();
     const [selectedRoute, setSelectedRoute] = React.useState(location.pathname);
     const navigate = useNavigate();
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
         const route = navItems.find((route) => route.path === location.pathname);
@@ -58,6 +60,8 @@ export default function DrawerAppBar() {
 
     const handleLogout = () => {
         window.localStorage.clear();
+        Cookies.remove('token');
+        setIsAuthenticated(false);
         navigate('/login');
     };
 

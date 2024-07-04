@@ -47,9 +47,7 @@ export default function AcceptDialog({ isOpen, setOpen, id, protocolId }) {
         try {
             const response = await axios.get(`${BASE_URL}analysis/download/${id}`, {
                 responseType: 'blob',
-                headers: {
-                    'token': localStorage.getItem('token')
-                }
+                withCredentials: true
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');

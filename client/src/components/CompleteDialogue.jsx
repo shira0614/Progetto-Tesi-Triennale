@@ -44,9 +44,9 @@ export default function CompleteDialogue({ isOpen, setOpen, ...props }) {
         }
 
         axios.post(`${BASE_URL}analysis/updateAnalysis`, data, {
+            withCredentials: true,
             headers: {
-                'Content-Type': 'multipart/form-data',
-                'token': localStorage.getItem('token')
+                'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
             if(response.data.success) {

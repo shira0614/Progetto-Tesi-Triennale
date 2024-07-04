@@ -1,7 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,46 +12,44 @@ import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { RoleContext } from "./context/RoleContext.jsx";
-import {useEffect, useState, useContext} from 'react'
+import {useContext, useState} from 'react'
+import {AuthContext} from "./context/AuthContext.jsx";
+import axios from "axios";
 
 const baseURL = 'http://localhost:3000'
 
-export default function Login({verify}) {
+export default function Login() {
     const navigate = useNavigate();
-    const { userRole, setUserRole } = useContext(RoleContext)
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-     localStorage.clear();
-     setUserRole(null);
-    }, [setUserRole]);
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+    const { setUserRole } = useContext(RoleContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        fetch(`${baseURL}/api/user/login`, {
-            method: 'post',
+        axios.post(`${baseURL}/api/user/login`, {
+            username: data.get('username'),
+            password: data.get('password'),
+        }, {
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: data.get('username'),
-                password: data.get('password')
-            }),
-        }).then((response) => response.json()).then((data) => {
-            verify(data.success);
-            if (!data.success) {
-                alert("Email o password incorretti")
-            } else {
-                window.localStorage.setItem("token", data.token)
-                window.localStorage.setItem("role", data.role)
-                setUserRole(data.role)
-                window.localStorage.setItem("username", data.username)
-                navigate('/', {replace: true})
-            }
-        }).catch(e => {
-            console.log(e)
-        })
+            }}).then((response) => {
+                const { data } = response;
+                console.log(data)
+                if (!data.success) {
+                    alert("Email o password incorretti");
+                } else {
+                    setIsAuthenticated(true)
+                    window.localStorage.setItem("role", data.role)
+                    setUserRole(data.role)
+                    window.localStorage.setItem("username", data.username)
+                    navigate('/', {replace: true})
+                }
+            })
+            .catch((error) => {
+                console.error("Login error:", error);
+            });
     };
 
     return (

@@ -71,9 +71,9 @@ export default function AddTreeDialogue(props) {
         }
 
         axios.post(`${BASE_URL}trees/addTree`, data, {
+            withCredentials: true,
             headers: {
-                'Content-Type': 'multipart/form-data',
-                'token': localStorage.getItem('token')
+                'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
             if(response.data.success) {

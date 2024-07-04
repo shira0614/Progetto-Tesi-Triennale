@@ -4,10 +4,10 @@ import axios from "axios";
 async function getApi(endpoint) {
     try {
         const response = await axios.get(`${BASE_URL}api/${endpoint}`, {
+            withCredentials: true,
             headers: {
-                'Content-Type': 'application/json',
-                'token': localStorage.getItem('token'),
-            },
+                'Content-Type': 'application/json'
+            }
         });
 
         if (!response.status === 200) {
@@ -23,9 +23,9 @@ async function getApi(endpoint) {
 async function postApi(endpoint, body) {
     try {
         const response = await axios.post(`${BASE_URL}api/${endpoint}`, body, {
+            withCredentials: true,
             headers: {
-                'Content-Type': 'application/json',
-                'token': localStorage.getItem('token'),
+                'Content-Type': 'application/json'
             },
         });
 
@@ -42,9 +42,9 @@ async function postApi(endpoint, body) {
 async function putApi(endpoint, body) {
     try {
         const response = await axios.put(`${BASE_URL}api/${endpoint}`, {
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
-                'token': localStorage.getItem('token')
             },
             body: JSON.stringify(body)
         });
@@ -62,9 +62,9 @@ async function putApi(endpoint, body) {
 async function deleteApi(endpoint, id) {
     try {
         const response = await axios.delete(`${BASE_URL}api/${endpoint}/${id}`, {
+            withCredentials: true,
             headers: {
-                'Content-Type': 'application/json',
-                'token': localStorage.getItem('token')
+                'Content-Type': 'application/json'
             },
         });
 

@@ -245,9 +245,7 @@ export function CompletedAnalysis(props) {
         try {
             const response = await axios.get(`${BASE_URL}analysis/download/${props.analysis._id}`, {
                 responseType: 'blob',
-                headers: {
-                    'token': localStorage.getItem('token')
-                }
+                withCredentials: true
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -257,6 +255,7 @@ export function CompletedAnalysis(props) {
             document.body.appendChild(link);
             link.click();
 
+            //Questo non è necessario per l'analisi in sé ma per l'update di badgeCounter
             const updatedAnalysisList = analysisList.map(analysis => {
                 if (analysis._id === props.analysis._id) {
                     return { ...analysis, downloaded: true };
@@ -264,9 +263,8 @@ export function CompletedAnalysis(props) {
                 return analysis;
             });
             setAnalysisList(updatedAnalysisList);
-
-            // Recalculate badgeCounter based on updated analysisList
             setBadgeCounter(badgeAnalyses(updatedAnalysisList).length);
+            setDownloaded(true)
 
         } catch (error) {
             console.error('Error downloading the analysis:', error);
