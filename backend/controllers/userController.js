@@ -30,22 +30,31 @@ const authUser = (req, res) => {
                 if (!user) {
                     res.status(403).json({success: false, message: "Incorrect username or password"});
                 } else {
+                    const expirationTime = Math.floor(Date.now() / 1000) + (24 * 60 * 60); // Current time in seconds + 86400 seconds (24h)
                     const token = jwt.sign(
                         {
                             data: {
                                 userId: user._id,
-                                username: user.username,
+                                username: user.username
                             },
-                            exp: new Date().setDate(new Date().getDate() + 1) // expires in 24h
+                            exp: expirationTime
                         },
                         SECRET_KEY
                     );
+
+                    // Send the token in a cookie
+                    res.cookie('token', token, {
+                        httpOnly: true, // The cookie is not accessible via JavaScript
+                        secure: process.env.NODE_ENV === 'production', // In production, set secure to true to send over HTTPS
+                        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Adjust sameSite for dev and prod
+                        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+                    });
+
                     res.status(201).json({
                         success: true,
                         message: "Login successful",
-                        token: token,
-                        role: user.role,
-                        username: user.username
+                        username: user.username,
+                        role: user.role
                     });
                 }}
         }
