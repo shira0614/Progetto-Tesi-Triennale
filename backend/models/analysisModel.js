@@ -37,7 +37,10 @@ const analysisSchema = new Schema({
         type: String,
         enum: ['shipped', 'completed', 'accepted', 'rejected']
     },
-    protocolId: String,
+    protocolId: {
+        type: String,
+        unique: true
+    },
     notes: String,
     documents: [documentSchema],
     image: imageSchema,

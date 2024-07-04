@@ -15,9 +15,11 @@ import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import AcceptDialog from "./AcceptDialogue.jsx";
 import RejectDialog from "./RejectDialogue.jsx";
 import CompleteDialogue from "./CompleteDialogue.jsx";
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import Badge from '@mui/material/Badge';
+import {badgeAnalyses} from "../utils/analysisUtils.js";
+import {AnalysisContext} from "./context/AnalysisContetx.jsx";
 
 const BASE_URL = 'http://localhost:3000/api/'
 
@@ -237,6 +239,7 @@ export function ColtAnalysisCard(props) {
 
 export function CompletedAnalysis(props) {
     const [downloaded, setDownloaded] = useState(props.analysis.downloaded);
+    const { badgeCounter, setBadgeCounter, analysisList , setAnalysisList } = useContext(AnalysisContext);
 
     const handleDownload = async () => {
         try {
@@ -253,7 +256,17 @@ export function CompletedAnalysis(props) {
             link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
-            setDownloaded(true);
+
+            const updatedAnalysisList = analysisList.map(analysis => {
+                if (analysis._id === props.analysis._id) {
+                    return { ...analysis, downloaded: true };
+                }
+                return analysis;
+            });
+            setAnalysisList(updatedAnalysisList);
+
+            // Recalculate badgeCounter based on updated analysisList
+            setBadgeCounter(badgeAnalyses(updatedAnalysisList).length);
 
         } catch (error) {
             console.error('Error downloading the analysis:', error);

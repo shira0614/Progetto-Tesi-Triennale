@@ -21,7 +21,7 @@ export default function ColtAnalysis() {
     const [value, setValue] = React.useState('1');
     const [loading, setLoading] = useState(true);
     const [badgeCounter, setBadgeCounter] = useState(0)
-    const analysisValue = { analysisList, setAnalysisList }
+    const analysisValue = { analysisList, setAnalysisList, badgeCounter, setBadgeCounter }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -35,7 +35,7 @@ export default function ColtAnalysis() {
         }).catch((error) => {
             console.log(error)
         })
-    }, []);
+    }, [badgeCounter]);
 
     if (loading) {
         return <Loading />
