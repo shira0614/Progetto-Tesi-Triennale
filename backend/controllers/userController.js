@@ -44,7 +44,7 @@ const authUser = (req, res) => {
 
                     // Send the token in a cookie
                     res.cookie('token', token, {
-                        httpOnly: true, // The cookie is not accessible via JavaScript
+                        httpOnly: false, // The cookie is not accessible via JavaScript
                         secure: process.env.NODE_ENV === 'production', // In production, set secure to true to send over HTTPS
                         sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Adjust sameSite for dev and prod
                         maxAge: 24 * 60 * 60 * 1000 // 24 hours

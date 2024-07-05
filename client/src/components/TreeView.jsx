@@ -97,7 +97,7 @@ export default function TreeView() {
                                 <Typography display='inline'> {tree.notes ? tree.notes : 'Nessuna'}</Typography>
                             </Typography>
                     </Box>
-                    <Box sx={{ flex: 1, ml: 3, minWidth: '40%', overflow: 'auto', pl: 2 }}>
+                    <Box sx={{ flex: 1, ml: 3, minWidth: '30rem', overflow: 'auto', pl: 2 }}>
                     <Typography variant='h5'>Repliche</Typography>
                         <Fab color='forest' size="small" onClick={handleClick} sx={{ mt: 1, mb: 1, '&:hover': { backgroundColor: '#3d8864' } }}>
                             <AddIcon sx={{ color: '#ffffff' }}/>
@@ -123,11 +123,11 @@ export default function TreeView() {
                             src={imageUrl}
                             sx={{
                                 flex: 1,
-                                maxHeight: '70%',
-                                maxWidth: '70%',
+                                maxHeight: '50%',
+                                maxWidth: '50%',
                                 objectFit: 'contain',
                                 pl: '5%',
-                                pr: '3%'
+                                pr: '5%'
                             }}
                         />
                     }
