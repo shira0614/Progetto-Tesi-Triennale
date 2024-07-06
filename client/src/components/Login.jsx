@@ -11,9 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-import { RoleContext } from "./context/RoleContext.jsx";
-import {useContext, useState} from 'react'
-import {AuthContext} from "./context/AuthContext.jsx";
+import { useState } from 'react'
 import axios from "axios";
 
 const baseURL = 'http://localhost:3000'
@@ -21,8 +19,6 @@ const baseURL = 'http://localhost:3000'
 export default function Login() {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-    const { setUserRole } = useContext(RoleContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,19 +30,18 @@ export default function Login() {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json'
-            }}).then((response) => {
-                const { data } = response;
-                console.log(data)
-                if (!data.success) {
-                    alert("Email o password incorretti");
-                } else {
-                    setIsAuthenticated(true)
-                    window.localStorage.setItem("role", data.role)
-                    setUserRole(data.role)
-                    window.localStorage.setItem("username", data.username)
-                    navigate('/', {replace: true})
-                }
-            })
+            }
+        }).then((response) => {
+            const { data } = response;
+            console.log(data)
+            if (!data.success) {
+                alert("Email o password incorretti");
+            } else {
+                window.localStorage.setItem("role", data.role)
+                window.localStorage.setItem("username", data.username)
+                navigate('/', { replace: true })
+            }
+        })
             .catch((error) => {
                 console.error("Login error:", error);
             });
@@ -87,7 +82,7 @@ export default function Login() {
                                 label="Username"
                                 name="username"
                                 autoFocus
-                                sx={{ borderColor: '#0c0e0b'}}
+                                sx={{ borderColor: '#0c0e0b' }}
                             />
                             <TextField
                                 margin="normal"
@@ -98,7 +93,7 @@ export default function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                sx={{ borderColor: '#0c0e0b'}}
+                                sx={{ borderColor: '#0c0e0b' }}
                             />
                             <Button
                                 type="submit"
@@ -110,27 +105,27 @@ export default function Login() {
                                 Accedi
                             </Button>
                             <Grid container>
-                                    <Button color='primary' sx={{ mb: 2 }} onClick={() => {
-                                        setOpen(true);
-                                    }}>
-                                        {"Non hai un account?"}
-                                    </Button>
-                                    <Collapse in={open}>
+                                <Button color='primary' sx={{ mb: 2 }} onClick={() => {
+                                    setOpen(true);
+                                }}>
+                                    {"Non hai un account?"}
+                                </Button>
+                                <Collapse in={open}>
                                     <Alert severity="warning" action={
                                         <IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size='small'
-                                        onClick={() => {
-                                            setOpen(false);
-                                        }}
+                                            aria-label="close"
+                                            color="inherit"
+                                            size='small'
+                                            onClick={() => {
+                                                setOpen(false);
+                                            }}
                                         >
-                                        <CloseIcon fontSize="inherit" />
+                                            <CloseIcon fontSize="inherit" />
                                         </IconButton>
                                     }>
-                                    Per la creazione di un account, rivolgiti a un responsabile.
+                                        Per la creazione di un account, rivolgiti a un responsabile.
                                     </Alert>
-                                    </Collapse>
+                                </Collapse>
                             </Grid>
                         </Box>
                     </Box>

@@ -1,6 +1,15 @@
 const BASE_URL = 'http://localhost:3000/';
 import axios from "axios";
 
+function handleUnauthorized(e) {
+    if (e.response && e.response.status === 403) {
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+        return true;
+    }
+    return false;
+}
+
 async function getApi(endpoint) {
     try {
         const response = await axios.get(`${BASE_URL}api/${endpoint}`, {
@@ -16,7 +25,9 @@ async function getApi(endpoint) {
 
         return response.data;
     } catch (e) {
-        throw new Error(`${e.message}`);
+        if (!handleUnauthorized(e)) {
+            throw new Error(`${e.message}`);
+        }
     }
 }
 
@@ -35,7 +46,9 @@ async function postApi(endpoint, body) {
 
         return response.data;
     } catch (e) {
-        throw new Error(`${e.message}`);
+        if (!handleUnauthorized(e)) {
+            throw new Error(`${e.message}`);
+        }
     }
 }
 
@@ -55,7 +68,9 @@ async function putApi(endpoint, body) {
 
         return response.data;
     } catch (e) {
-        throw new Error(`${e.message}`);
+        if (!handleUnauthorized(e)) {
+            throw new Error(`${e.message}`);
+        }
     }
 }
 
@@ -74,7 +89,9 @@ async function deleteApi(endpoint, id) {
 
         return response.data;
     } catch (e) {
-        throw new Error(`${e.message}`);
+        if (!handleUnauthorized(e)) {
+            throw new Error(`${e.message}`);
+        }
     }
 }
 export { getApi, putApi, postApi, deleteApi };

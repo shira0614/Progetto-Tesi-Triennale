@@ -1,8 +1,11 @@
-const  express = require('express')
+const express = require('express')
 const router = express.Router()
-const {authUser, createUser} = require('../controllers/userController.js')
-const {checkSuperRole} = require("../middleware/checkRole");
+const { authUser, createUser, userInfo, logoutUser } = require('../controllers/userController.js')
+const { checkSuperRole } = require("../middleware/checkRole");
+const verifyToken = require('../middleware/verifytoken.js');
 
 router.post('/login', authUser);
-router.post("/signup", checkSuperRole ,createUser);
+router.post('/logout', verifyToken, logoutUser);
+router.post("/signup", checkSuperRole, createUser);
+router.get('/info', verifyToken, userInfo);
 module.exports = router;

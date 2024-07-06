@@ -13,22 +13,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import Button from '@mui/material/Button';
-import {useEffect, useState, useContext} from "react";
+import { useEffect, useState } from "react";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRounded';
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
-import {ListItemIcon} from "@mui/material";
-import {useLocation, useNavigate} from "react-router-dom";
-import {AuthContext} from "./context/AuthContext.jsx";
+import { ListItemIcon } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { postApi } from '../utils/apiEndpoints';
 
 const coltNav = [
-    {path: '/', label: 'Alberi', icon: HomeRoundedIcon},
-    {path: '/analyses', label: 'Analisi', icon: BorderColorRoundedIcon}
+    { path: '/', label: 'Colture', icon: HomeRoundedIcon },
+    { path: '/analyses', label: 'Analisi', icon: BorderColorRoundedIcon }
 ]
 const labNav = [
-    {path: '/', label: 'Analisi in corso', icon: BorderColorRoundedIcon},
-    {path: '/new', label: 'Richieste', icon: MarkEmailUnreadRoundedIcon},
+    { path: '/', label: 'Analisi in corso', icon: BorderColorRoundedIcon },
+    { path: '/new', label: 'Richieste', icon: MarkEmailUnreadRoundedIcon },
 ]
 
 export default function DrawerAppBar() {
@@ -38,7 +38,6 @@ export default function DrawerAppBar() {
     const location = useLocation();
     const [selectedRoute, setSelectedRoute] = React.useState(location.pathname);
     const navigate = useNavigate();
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
         const route = navItems.find((route) => route.path === location.pathname);
@@ -58,13 +57,15 @@ export default function DrawerAppBar() {
         setMobileOpen((prevState) => !prevState);
     };
 
-    const handleLogout = () => {
-        window.localStorage.clear();
-        Cookies.remove('token');
-        setIsAuthenticated(false);
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            await postApi('user/logout');
+            window.localStorage.clear();
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
     };
-
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -92,10 +93,10 @@ export default function DrawerAppBar() {
                                 },
                             }}>
                             <ListItemIcon>
-                                <item.icon sx={{color: (selectedRoute === item.path) ? 'white' : 'black'}}/>
+                                <item.icon sx={{ color: (selectedRoute === item.path) ? 'white' : 'black' }} />
                             </ListItemIcon>
                             <ListItemText primary={item.label}
-                                          sx={{color: (selectedRoute === item.path) ? 'white' : 'black'}}/>
+                                sx={{ color: (selectedRoute === item.path) ? 'white' : 'black' }} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -143,18 +144,19 @@ export default function DrawerAppBar() {
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
                             <Button key={item.label}
-                                    onClick={() => navigate(item.path)}
-                                    sx={{ m: '0.5rem' ,
-                                        backgroundColor: location.pathname === item.path ? '#ffffff' : '#0c0e0b',
-                                        color: location.pathname === item.path ? '#000000' : '#ffffff',
-                                "&:hover": {
-                                    backgroundColor: "#262c23",
-                                    color: '#ffffff'
-                                },
-                                "&.Mui-selected:hover": {
-                                    backgroundColor: "#262c23"
-                                }
-                            }}>
+                                onClick={() => navigate(item.path)}
+                                sx={{
+                                    m: '0.5rem',
+                                    backgroundColor: location.pathname === item.path ? '#ffffff' : '#0c0e0b',
+                                    color: location.pathname === item.path ? '#000000' : '#ffffff',
+                                    "&:hover": {
+                                        backgroundColor: "#262c23",
+                                        color: '#ffffff'
+                                    },
+                                    "&.Mui-selected:hover": {
+                                        backgroundColor: "#262c23"
+                                    }
+                                }}>
                                 {item.label}
                             </Button>
                         ))}
@@ -177,7 +179,7 @@ export default function DrawerAppBar() {
                     {drawer}
                 </Drawer>
             </nav>
-            <Toolbar sx={{ mt: '3rem'}}/>
+            <Toolbar sx={{ mt: '3rem' }} />
         </Box>
     );
 }

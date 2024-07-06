@@ -56,7 +56,7 @@ export default function TreeView() {
             <SingleTreeContext.Provider value={treeValue}>
             <AddReplicaDialogue isOpen={open} setOpen={setOpen} treeId={treeId}/>
             <DrawerAppBar />
-            <Typography variant='h4' sx={{ mb: '2%', ml: '3%' }}>Scheda dell'albero: {tree.treeUniqueId}</Typography>
+            <Typography variant='h4' sx={{ mb: '2%', ml: '3%' }}>Scheda della coltura: {tree.treeUniqueId}</Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', width: '100vw', flexWrap: 'wrap', justifyContent: 'space-between', ml: '3%', alignContent: 'space-between'}}>
                 <Box sx={{ display: 'flex',
                     flexDirection: 'row'}}>
