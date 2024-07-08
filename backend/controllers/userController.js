@@ -42,12 +42,11 @@ const authUser = (req, res) => {
                         SECRET_KEY
                     );
 
-                    // Send the token in a cookie
                     res.cookie('token', token, {
-                        httpOnly: true, // The cookie is not accessible via JavaScript
-                        secure: process.env.NODE_ENV === 'production', // In production, set secure to true to send over HTTPS
-                        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Adjust sameSite for dev and prod
-                        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+                        maxAge: 24 * 60 * 60 * 1000 // 24 ore
                     });
 
                     res.status(201).json({
@@ -67,6 +66,10 @@ const userInfo = async (req, res) => {
         const user = await User.findById(req.userId);
         if (!user) {
             throw new Error('User not found');
+        }
+        const token = req.cookies.token;
+        if(!token) {
+            throw new Error('Token not found');
         }
         res.status(200).json({
             success: true,

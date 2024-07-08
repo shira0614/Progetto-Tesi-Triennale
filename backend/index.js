@@ -29,19 +29,9 @@ app.use(cors(
 app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
-app.use(expressSession(
-    {
-        secret: SECRET_KEY,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {secure: true, maxAge: 1000 * 60 * 60 * 24}
-    }));
-app.use(passport.initialize())
-app.use(passport.session());
 
+app.use(passport.initialize())
 passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 
 app.use('/api/user', userRoute)
@@ -50,7 +40,7 @@ app.use('/api/analysis', analysisRoute)
 app.use('/api/verify', verifyRoute)
 
 
-mongoose.connect(ATLAS_URI)
+mongoose.connect(ATLAS_URI) 
 const db = mongoose.connection
 
 db.once('open', () => app.listen(3000, () => {

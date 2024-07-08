@@ -19,7 +19,6 @@ import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRound
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import { ListItemIcon } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
 import { postApi } from '../utils/apiEndpoints';
 
 const coltNav = [
