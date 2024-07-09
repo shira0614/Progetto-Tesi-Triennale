@@ -7,8 +7,6 @@ const mongoose = require('mongoose')
 const userRoute = require('./routers/userRouter');
 const treeRoute = require('./routers/treeRouter');
 const analysisRoute = require('./routers/analysisRouter');
-const verifyRoute = require('./routers/verifyRouter');
-
 
 const User = require('./models/userModel');
 const passport = require('passport');
@@ -37,7 +35,6 @@ passport.use(User.createStrategy());
 app.use('/api/user', userRoute)
 app.use('/api/trees', treeRoute)
 app.use('/api/analysis', analysisRoute)
-app.use('/api/verify', verifyRoute)
 
 
 mongoose.connect(ATLAS_URI) 
