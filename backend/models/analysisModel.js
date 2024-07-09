@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {addAbortSignal} = require("stream");
 const Schema = mongoose.Schema;
 
-const analysisId = function () {
+const generateAnalysisId = function () {
     const timestamp = (new Date().getTime() / 1000 | 0).toString(16);
     return timestamp + 'xxxxxx'.replace(/[x]/g, function() {
         return (Math.random() * 16 | 0).toString(16);
@@ -49,7 +49,7 @@ const analysisSchema = new Schema({
 
 analysisSchema.pre('save', async function(next) {
     if(this.isNew) {
-        this.protocolId = analysisId();
+        this.protocolId = generateAnalysisId();
     }
     next();
 });

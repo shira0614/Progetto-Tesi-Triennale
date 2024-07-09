@@ -150,7 +150,7 @@ module.exports = {
         }
     },
 
-    getAnalyses: async (req, res) => {
+    getColtAnalyses: async (req, res) => {
         try {
             const user = await User.findOne({ _id: req.userId })
             if (user.role === 'coltivatore') {

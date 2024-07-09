@@ -110,7 +110,7 @@ module.exports = {
         }
     },
 
-    newReplica: async (req, res) => {
+    addReplica: async (req, res) => {
         try {
             const replica = await Replica.create({
                 treeId: req.body.treeId,

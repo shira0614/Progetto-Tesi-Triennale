@@ -12,7 +12,7 @@ router.use(verifyToken)
 router.use(checkColtRole)
 
 router.post('/addTree', upload.single('image'), treeController.addTree)
-router.post('/newReplica', upload.single('image'), treeController.newReplica)
+router.post('/newReplica', upload.single('image'), treeController.addReplica)
 router.get('/:treeId/replicas', treeController.getReplicas)
 router.get('/:treeId', treeController.getTree)
 router.get('/', treeController.getTrees)
