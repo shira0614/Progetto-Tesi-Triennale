@@ -13,12 +13,14 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react'
 import axios from "axios";
+import PasswordErrorAlert from './PasswordErrorAlert';
 
 const baseURL = 'http://localhost:3000'
 
 export default function Login() {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -44,11 +46,13 @@ export default function Login() {
         })
             .catch((error) => {
                 console.error("Login error:", error);
+                setAlertOpen(true);
             });
     };
 
     return (
         <>
+            <PasswordErrorAlert open={alertOpen} setOpen={setAlertOpen} />
             <Grid container component="main" sx={{ height: '100vh', width: '100vw' }}>
                 <Grid
                     item
