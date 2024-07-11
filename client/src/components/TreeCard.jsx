@@ -33,7 +33,7 @@ export default function TreeCard(props) {
                         <Typography variant="body2" color="text.secondary">
                             {props.scifiName}, {props.commonName}, {props.subSpecie}
                         </Typography>
-                        <Typography sx={{ mt: 1}}>Data di aggiunta: {props.date}</Typography>
+                        <Typography sx={{ mt: 1}}>Data di nascita: {props.date}</Typography>
                     </CardContent>
                 </Box>
             </CardActionArea>
